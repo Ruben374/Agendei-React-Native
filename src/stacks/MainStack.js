@@ -13,5 +13,6 @@ export default () => (
     }}
   >
     <Stack.Screen name='Preload' component={Preload} />
+    <Stack.Screen name='Login' component={Login} />
   </Stack.Navigator>
 )
