@@ -7,7 +7,7 @@ const Stack = createStackNavigator()
 
 export default () => (
   <Stack.Navigator
-    initialRouteName='Preload'
+    initialRouteName='Login'
     screenOptions={{
       headerShown: false
     }}
