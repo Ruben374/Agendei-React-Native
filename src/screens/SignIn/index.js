@@ -5,29 +5,38 @@ import {useNavigation} from '@react-navigation/native'
 import InputField from '../../components/InputField'
 import EmailIcon from '../../assets/Email.png'
 import PasswordIcon from '../../assets/Password.png'
+import Person from '../../assets/Person.png'
 
-const Login = () => {
+const SignIn = () => {
 
-  const navigation= useNavigation();
+const navigation= useNavigation();
 
+  const [nameField, setnameField] = useState('')
   const [emailField, setEmailField] = useState('')
   const [passwordField, setPasswordField] = useState('')
 
-  const handleLoginMessagePress=()=>{
+const handleSignInMessagePress=()=>{
   navigation.reset({
-      routes: [{name: 'SignIn'}],
+      routes: [{name: 'Login'}],
     });
 }
+
   return (
     <View style={styles.Container}>
       <View style={styles.FormArea}>
+        <InputField
+          IconSvg={Person}
+          placeholder='Digite seu nome'
+          value={nameField}
+          onChangeText={text => setEmailField(text)}
+        />
         <InputField
           IconSvg={EmailIcon}
           placeholder='Digite seu email'
           value={emailField}
           onChangeText={text => setEmailField(text)}
         />
-          <InputField
+        <InputField
           IconSvg={PasswordIcon}
           placeholder='Digite sua senha'
           value={passwordField}
@@ -35,15 +44,20 @@ const Login = () => {
           password
         />
         <TouchableOpacity style={styles.CostumBtn}>
-          <Text style={styles.CostumBtnTxt}>ENTRAR</Text>
+          <Text style={styles.CostumBtnTxt}>CADASTRAR</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.LoginMessage}  onPress={handleLoginMessagePress}>
-        <Text style={styles.LoginMessageText}>Ja possui uma conta?</Text>
-        <Text style={styles.LoginMessageTextBold}>Faça login</Text>
+      <TouchableOpacity
+        style={styles.SignInMessage}
+        onPress={handleSignInMessagePress}
+      >
+        <Text style={styles.SignInMessageText}>
+          Ainda não possui uma conta?{' '}
+        </Text>
+        <Text style={styles.SignInMessageTextBold}>Cadastre-se</Text>
       </TouchableOpacity>
     </View>
   )
 }
 
-export default Login
+export default SignIn

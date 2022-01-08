@@ -23,18 +23,18 @@ const Styles = StyleSheet.create({
     fontSize: 18,
     color: '#FFFF'
   },
-  LoginMessage: {
+  SignInMessage: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 50,
     marginBottom: 20
   },
-  LoginMessageText: {
+  SignInMessageText: {
     fontSize: 16,
     color: '#52616B',
     opacity: 1
   },
-  LoginMessageTextBold: {
+  SignInMessageTextBold: {
     fontSize: 16,
     color: '#52616B',
     fontWeight: 'bold',
