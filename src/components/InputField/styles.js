@@ -16,8 +16,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#555',
     marginLeft:10,
-     
-  
   }
 })
 export default styles
