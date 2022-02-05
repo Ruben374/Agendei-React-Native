@@ -1,10 +1,5 @@
 import React, { useEffect } from 'react'
-import {
-  View,
-  Text,
-  ActivityIndicator,
-  Image
-} from 'react-native'
+import { View, Text, ActivityIndicator, Image } from 'react-native'
 import styles from './styles'
 import Logo from '../../assets/logo.png'
 import { useNavigation } from '@react-navigation/native'
@@ -18,13 +13,16 @@ const Preload = () => {
     const checkToken = async () => {
       const token = await AsyncStorage.getItem('token')
       if (token) {
-      console.log('bm vindo a tela home')
+        const response = await Api.verifyToken(token)
+        if (response.token) {
+          await AsyncStorage.setItem('token', response.token);
+          navigation.navigate('MainTab')
+        }
       } else {
         navigation.navigate('Login')
       }
     }
-checkToken()
-
+    checkToken()
   }, [])
 
   return (
