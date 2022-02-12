@@ -16,8 +16,10 @@ const Preload = () => {
         const response = await Api.verifyToken(token)
         if (response.token) {
           await AsyncStorage.setItem('token', response.token);
-          navigation.navigate('MainTab')
-        }
+          navigation.navigate('Home')
+        }else {
+        navigation.navigate('Login')
+      }
       } else {
         navigation.navigate('Login')
       }

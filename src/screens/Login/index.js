@@ -24,21 +24,16 @@ const Login = () => {
       const response = await Api.Login(emailField, passwordField)
       console.log(response.token)
       if (response.token) {
-        await AsyncStorage.setItem('token', response.token);
-        //se tudo tiver certo vai para preload
+        await AsyncStorage.setItem('token', response.token)
+        //se tudo tiver certo vai para Home
         navigation.reset({
-          routes: [{ name: 'Preload' }]
+          routes: [{ name: 'Home' }]
         })
       } else {
-        Alert.alert('Ups!', 'Password ou senha errados', [
-          { text: 'OK'}
-        ])
+        Alert.alert('Ups!', 'Password ou senha errados', [{ text: 'OK' }])
       }
-    }
-    else{
-      Alert.alert('Erro!', 'Preencha todos os campos', [
-          { text: 'OK'}
-        ])
+    } else {
+      Alert.alert('Erro!', 'Preencha todos os campos', [{ text: 'OK' }])
     }
   }
 
@@ -66,8 +61,8 @@ const Login = () => {
         style={styles.LoginMessage}
         onPress={handleLoginMessagePress}
       >
-        <Text style={styles.LoginMessageText}>Ja possui uma conta?</Text>
-        <Text style={styles.LoginMessageTextBold}>Faça login</Text>
+        <Text style={styles.LoginMessageText}>Ainda não possui uma conta?</Text>
+        <Text style={styles.LoginMessageTextBold}>Cadastre-se</Text>
       </TouchableOpacity>
     </View>
   )

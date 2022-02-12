@@ -3,14 +3,15 @@ import { createStackNavigator } from '@react-navigation/stack'
 import Preload from '../screens/Preload'
 import Login from '../screens/Login'
 import SignIn from '../screens/SignIn'
-import Home from '../screens/Home'
-import MainTab from '../screens/MainTab'
+import Choose from '../screens/Choose'
+import MainTab from './MainTab'
+
 
 const Stack = createStackNavigator()
 
 export default () => (
   <Stack.Navigator
-    initialRouteName='Preload'
+    initialRouteName='MainTab'
     screenOptions={{
       headerShown: false
     }}
@@ -18,7 +19,8 @@ export default () => (
     <Stack.Screen name='Preload' component={Preload} />
     <Stack.Screen name='Login' component={Login} />
     <Stack.Screen name='SignIn' component={SignIn} />
-    <Stack.Screen name='Home' component={Home} />
+    <Stack.Screen name='Choose' component={Choose} />
     <Stack.Screen name='MainTab' component={MainTab} />
+
   </Stack.Navigator>
 )
