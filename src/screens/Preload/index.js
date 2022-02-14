@@ -13,13 +13,8 @@ const Preload = () => {
     const checkToken = async () => {
       const token = await AsyncStorage.getItem('token')
       if (token) {
-        const response = await Api.verifyToken(token)
-        if (response.token) {
-          await AsyncStorage.setItem('token', response.token);
-          navigation.navigate('Home')
-        }else {
-        navigation.navigate('Login')
-      }
+  //const t= await AsyncStorage.removeItem('token');
+       navigation.navigate('Choose')
       } else {
         navigation.navigate('Login')
       }

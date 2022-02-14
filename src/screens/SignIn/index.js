@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Alert } from 'react-native'
 import styles from './styles.js'
 import { useNavigation } from '@react-navigation/native'
 import InputField from '../../components/InputField'
 import EmailIcon from '../../assets/Email.png'
 import PasswordIcon from '../../assets/Password.png'
 import Person from '../../assets/Person.png'
+import Api from '../../Api'
 
 const SignIn = () => {
   const navigation = useNavigation()
 
-  const [nameField, setnameField] = useState('')
+  const [nameField, setNameField] = useState('')
   const [emailField, setEmailField] = useState('')
   const [passwordField, setPasswordField] = useState('')
 
@@ -20,6 +21,29 @@ const SignIn = () => {
     })
   }
 
+  const handleCadastrarPress = async () => {
+    if (
+      nameField.trim() !== '' &&
+      emailField.trim() !== '' &&
+      passwordField.trim() !== ''
+    ) {
+      const response = await Api.SignUp(nameField, emailField, passwordField)
+      if (response.status == 201) {
+        const login = await Api.Login(emailField, passwordField)
+        if (login.token) {
+          navigation.reset({
+            routes: [{ name: 'Choose' }]
+          })
+        }
+      }
+      else if(response.status == 422) {
+         Alert.alert('Erro!', 'Email ja cadastrado', [{ text: 'OK' }]) 
+      }
+    } else {
+      Alert.alert('Erro!', 'Preencha todos os campos', [{ text: 'OK' }])
+    }
+  }
+
   return (
     <View style={styles.Container}>
       <View style={styles.FormArea}>
@@ -27,7 +51,7 @@ const SignIn = () => {
           IconSvg={Person}
           placeholder='Digite seu nome'
           value={nameField}
-          onChangeText={text => setEmailField(text)}
+          onChangeText={text => setNameField(text)}
         />
         <InputField
           IconSvg={EmailIcon}
@@ -42,7 +66,10 @@ const SignIn = () => {
           onChangeText={text => setPasswordField(text)}
           password
         />
-        <TouchableOpacity style={styles.CostumBtn}>
+        <TouchableOpacity
+          style={styles.CostumBtn}
+          onPress={handleCadastrarPress}
+        >
           <Text style={styles.CostumBtnTxt}>CADASTRAR</Text>
         </TouchableOpacity>
       </View>

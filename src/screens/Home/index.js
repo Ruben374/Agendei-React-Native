@@ -1,13 +1,23 @@
 import React from 'react'
-import {View, Text} from 'react-native'
+import { View, Text, Image } from 'react-native'
 import styles from './styles.js'
 
-const Home=()=>{
-    
-return(
-    <View>
-        <Text>ola mundo</Text>
+import Dentista from '../../assets/Dentista.png'
+
+const Home = () => {
+  return (
+    <View style={styles.Container}>
+      <View style={styles.Content}>
+        <Image source={Dentista} />
+        <View style={styles.df}>
+          <Text style={styles.colorWhite}>ola mundo</Text>
+          <Text>Didjfff</Text>
+        </View>
+        <View style={styles.cor}>
+           <Text> Coração</Text>
+        </View>
+      </View>
     </View>
-)
+  )
 }
-export default Home 
+export default Home

@@ -27,7 +27,7 @@ const Login = () => {
         await AsyncStorage.setItem('token', response.token)
         //se tudo tiver certo vai para Home
         navigation.reset({
-          routes: [{ name: 'Home' }]
+          routes: [{ name: 'Choose' }]
         })
       } else {
         Alert.alert('Ups!', 'Password ou senha errados', [{ text: 'OK' }])

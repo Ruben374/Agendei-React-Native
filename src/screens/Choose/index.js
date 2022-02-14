@@ -27,11 +27,11 @@ const Choose = () => {
   const [categoryList, setcategoryList] = useState([])
   useEffect(() => {
     const getCategorys = async () => {
-      const response = await Api.getCategorys()
-
-      if (response.Quantidade > 0) {
-        setcategoryList(response.Categorias)
-        console.log(response.Categorias)
+      const response = await Api.getCategories()
+      console.log(response.length)
+      if (response.length > 0) {
+        setcategoryList(response)
+        console.log(response)
       }
     }
     getCategorys()
@@ -39,13 +39,10 @@ const Choose = () => {
 
   const handleLogoutButton = async () => {
     try {
-      const token = await AsyncStorage.getItem('token')
-      const response = await Api.Logout(token)
-      if (response) {
-        navigation.reset({
-          routes: [{ name: 'Login' }]
-        })
-      }
+      await AsyncStorage.removeItem('token')
+      navigation.reset({
+        routes: [{ name: 'Login' }]
+      })
     } catch (error) {
       Alert.alert('Erro!', error.message, [{ text: 'OK' }])
     }
@@ -63,9 +60,9 @@ const Choose = () => {
           {categoryList.map((item, key) => (
             <TouchableOpacity key={key} style={styles.elemento}>
               <Image
-                style={{ width:48,height:48}}
+                style={{ width: 48, height: 48 }}
                 source={{
-                  uri:`http://192.168.10.142:3009/${item.image}`
+                  uri: `http://192.168.10.142:3009/${item.image}`
                 }}
               />
             </TouchableOpacity>
