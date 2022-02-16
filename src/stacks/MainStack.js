@@ -11,7 +11,7 @@ const Stack = createStackNavigator()
 
 export default () => (
   <Stack.Navigator
-    initialRouteName='MainTab'
+    initialRouteName='Choose'
     screenOptions={{
       headerShown: false
     }}

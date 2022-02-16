@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const BASE_API = 'http://192.168.1.11:3009'
+const BASE_API = 'http://192.168.10.145:3009'
 
 export default {
   Login: async (email, password) => {
@@ -19,6 +19,7 @@ export default {
       console.log(error.message)
     }
   },
+  
   getCategories: async () => {
     try {
       const request = await fetch(`${BASE_API}/category`)
