@@ -22,14 +22,13 @@ const Styles = StyleSheet.create({
   Title: {
     fontSize: 25,
     color: '#323434',
-    alignSelf:'center'
-    
+    alignSelf: 'center'
   },
-  ForYouMessage:{
+  ForYouMessage: {
     fontSize: 20,
     color: '#323434',
-    alignSelf:'center',
-  marginTop:5,
+    alignSelf: 'center',
+    marginTop: 5
   },
   InputArea: {
     width: '100%',
@@ -54,28 +53,13 @@ const Styles = StyleSheet.create({
     height: 35
   },
   tela: {
-    marginTop:20,
-  alignSelf:'center',
-  display: 'flex',
-  flexDirection:'row',
-  flexWrap:'wrap',
-  alignItems:'center',
-  justifyContent:'space-between'
-  },
-  linha: {
+    marginTop: 20,
+    alignSelf: 'center',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-evenly'
-  },
-
-  elemento: {
-    width: 90,
-    marginBottom: 10,
-    padding: 20,
-    backgroundColor: '#F0F5F9',
-    display: 'flex',
+    flexWrap: 'wrap',
     alignItems: 'center',
-    
+    justifyContent: 'space-between'
   }
 })
 

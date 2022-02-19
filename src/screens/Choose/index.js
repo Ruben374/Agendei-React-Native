@@ -6,19 +6,14 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
-  Alert
+  Alert,
+  ActivityIndicator 
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import styles from './styles.js'
 import InputField from '../../components/InputField'
-import TargetIcon from '../../assets/Target.png'
-import Dentista from '../../assets/Dentista.png'
-import lavagem from '../../assets/lavagem.png'
-import unhas from '../../assets/unhas.png'
-import veterinario from '../../assets/veterinario.png'
-import secador from '../../assets/secador.png'
-import mecanico from '../../assets/mecanico.png'
 import Top from '../../assets/top.png'
+import CategoryCard from '../../components/CategoryCard'
 import Api from '../../Api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -47,7 +42,9 @@ const Choose = () => {
       Alert.alert('Erro!', error.message, [{ text: 'OK' }])
     }
   }
-
+const onPress= async(id,name)=>{
+navigation.navigate('MainTab',{id,name})
+}
   return (
     <View style={styles.Container}>
       <ScrollView style={styles.Scroll}>
@@ -57,16 +54,11 @@ const Choose = () => {
         <Text style={styles.ForYouMessage}>O que você precisa?</Text>
 
         <View style={styles.tela}>
-          {categoryList.map((item, key) => (
-            <TouchableOpacity key={key} style={styles.elemento}>
-              <Image
-                style={{ width: 48, height: 48 }}
-                source={{
-                  uri: `http://192.168.10.142:3009/${item.image}`
-                }}
-              />
-            </TouchableOpacity>
-          ))}
+          {categoryList.length <= 0 ? (
+             <ActivityIndicator size='large' color='red' />
+          ) : (
+            categoryList.map((item, key) => <CategoryCard Data={item} key={key} onPress={onPress}/>)
+          )}
         </View>
         <TouchableOpacity
           onPress={handleLogoutButton}

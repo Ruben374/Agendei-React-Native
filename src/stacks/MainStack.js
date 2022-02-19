@@ -11,7 +11,7 @@ const Stack = createStackNavigator()
 
 export default () => (
   <Stack.Navigator
-    initialRouteName='Choose'
+    initialRouteName='Preload'
     screenOptions={{
       headerShown: false
     }}

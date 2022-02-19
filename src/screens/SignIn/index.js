@@ -31,6 +31,8 @@ const SignIn = () => {
       if (response.status == 201) {
         const login = await Api.Login(emailField, passwordField)
         if (login.token) {
+
+          //aqui devo cetar o token 
           navigation.reset({
             routes: [{ name: 'Choose' }]
           })

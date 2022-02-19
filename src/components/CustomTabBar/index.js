@@ -6,12 +6,16 @@ import HomeIcon from '../../assets/teste.png'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Fontisto } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons'
-
+import { Ionicons } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
 
-const CustomTabBar = ({ state, navigation }) => {
+const CustomTabBar = ({ state, navigation, route, k }) => {
   const goTo = screenName => {
-    navigation.navigate(screenName)
+    if ((ScreenName = 'Search')) {
+      console.log(route.params)
+    } else {
+      navigation.navigate(screenName)
+    }
   }
   return (
     <View style={styles.TabArea}>
@@ -48,9 +52,9 @@ const CustomTabBar = ({ state, navigation }) => {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.TabItem}>
-        <AntDesign
-          name='heart'
+      <TouchableOpacity style={styles.TabItem} onPress={() => goTo('Profile')}>
+        <Ionicons
+          name='person'
           size={40}
           color={
             state.index === 3 ? 'rgba(63,93,125,1)' : 'rgba(63,93,125,0.2)'

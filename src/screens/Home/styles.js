@@ -1,48 +1,36 @@
 import { StyleSheet } from 'react-native'
 
 const Styles = StyleSheet.create({
-	Container: {
+	s:{
 		flex: 1,
-		backgroundColor: '#FFFFFF',
-		paddingVertical: 40,
-		paddingHorizontal: 20
+    padding: 10,
+	 backgroundColor: '#FFFFFF',
 	},
+  Container: {
+    flex: 1,
+   backgroundColor: 'transparent',
+    alignItems: 'center',
+    padding: 5
+  },
+  TopMessage: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+    marginTop: 10,
+    padding: 10
+  },
+  TopMessageText: {
+    fontSize: 25,
+    color: '#A0A0A0',
+    flex: 1,
+    flexWrap: 'wrap'
+  },
+  TopMessageIcon: {
+    marginTop: 5
+  },
 
-	ContainerContent:{
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		backgroundColor: '#3f5d7d',
-		padding: '5px',
-	},
 
-  	ContainerContentCenterImage: {
-    	justifyContent: 'center',
-		alignItems: 'center',
-	},
-
-	ContainerContentInformation:{
-		flexDirection: 'row',
-	},
-
-	ContainerContentStar:{
-		flexDirection: 'row',
-	},
-
-	ContainerContentH1:{
-		fontSize: '24px',
-		color: '#ffffff',
-	},
-
-	ContainerContentText:{
-		color: '#fff',
-		fontSize: '14px',
-		marginLeft: "8px",
-	},
-
-	ContainerContentHeart:{
-		marginLeft: '12px',
-		color: '#ffffff',
-		padding: '0 5px'
-	},
 })
 export default Styles

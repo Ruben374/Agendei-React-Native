@@ -2,19 +2,42 @@ import React from 'react'
 import { View, TextInput, Image } from 'react-native'
 import styles from './styles.js'
 
+const InputField = ({
+  IconName,
+  IconColor,
+  placeholder,
+  value,
+  onChangeText,
+  password,
+  Icon,
+  IconPosition
+}) => {
+  let g = ''
+  let t = ''
 
-const InputField = ({ IconSvg,placeholder, value, onChangeText,password }) => {
+  if (IconPosition === 'left') {
+    g = styles.InputArea
+    t = styles.Input
+  } else {
+    g = styles.InputAreaR
+    t = styles.InputR
+  }
   return (
-    <View style={styles.InputArea}>
-  <Image source={IconSvg} style={{width:35,height:35}}/>
+    <View style={g}>
+      {IconPosition == 'left' && (
+        <Icon name={IconName} size={35} color={IconColor} />
+      )}
       <TextInput
-        style={styles.Input}
+        style={t}
         placeholder={placeholder}
         placeholderTextColor='#555'
         value={value}
         onChangeText={onChangeText}
-         secureTextEntry={password}
+        secureTextEntry={password}
       />
+      {IconPosition == 'right' && (
+        <Icon name={IconName} size={35} color={IconColor} />
+      )}
     </View>
   )
 }
