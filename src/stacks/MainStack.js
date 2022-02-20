@@ -4,6 +4,7 @@ import Preload from '../screens/Preload'
 import Login from '../screens/Login'
 import SignIn from '../screens/SignIn'
 import Choose from '../screens/Choose'
+import Est from '../screens/Est'
 import MainTab from './MainTab'
 
 
@@ -21,6 +22,7 @@ export default () => (
     <Stack.Screen name='SignIn' component={SignIn} />
     <Stack.Screen name='Choose' component={Choose} />
     <Stack.Screen name='MainTab' component={MainTab} />
-
+   <Stack.Screen name='Est' component={Est} />
+   
   </Stack.Navigator>
 )

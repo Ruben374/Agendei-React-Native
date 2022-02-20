@@ -4,13 +4,14 @@ import styles from './styles.js'
 import Dentista from '../../assets/Dentista.png'
 import { Entypo } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
-
+import { useNavigation } from '@react-navigation/native'
 const EstCard = ({Data}) => {
 
-
+const navigation = useNavigation()
 
   const onPress = async () => {
-    console.log('click')
+
+    navigation.navigate('Est',{Data:Data})
   }
 console.log(Data.img)
   return (

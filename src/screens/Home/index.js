@@ -8,32 +8,33 @@ import { AntDesign } from '@expo/vector-icons'
 import Api from '../../Api'
 
 const Home = ({ navigation, route }) => {
-
-
   const [estList, setEstList] = useState([])
 
+  const getEst = async () => {
+    const response = await Api.getEst(route.params.id)
+    setEstList(response)
+  }
   useEffect(() => {
-    const getEst = async () => {
-      const response = await Api.getEst(route.params.id)
-      setEstList(response)
-    }
     getEst()
   }, [])
-    const handleSearchButton=()=>{
-  navigation.navigate('Search',{estList})
-}
+
   return (
     <ScrollView style={styles.s}>
       <View style={styles.Container}>
         <View style={styles.TopMessage}>
-          <Text style={styles.TopMessageText}>Econtre {route.params.categoryname}</Text>
-          <TouchableOpacity style={styles.TopMessageIcon} onPress={handleSearchButton}>
+          <Text style={styles.TopMessageText}>
+            Econtre {route.params.categoryname}
+          </Text>
+          <TouchableOpacity
+            style={styles.TopMessageIcon}
+            onPress={()=> navigation.navigate('Search')}
+          >
             <AntDesign name='search1' size={30} color='black' />
           </TouchableOpacity>
         </View>
-      {estList.map((item,key)=>(
-		  <EstCard key={key} Data={item}/>
-	  ))}
+        {estList.map((item, key) => (
+          <EstCard key={key} Data={item} />
+        ))}
       </View>
     </ScrollView>
   )
