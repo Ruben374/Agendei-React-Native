@@ -19,7 +19,7 @@ export default {
       console.log(error.message)
     }
   },
-  
+
   getCategories: async () => {
     try {
       const request = await fetch(`${BASE_API}/category`)
@@ -29,7 +29,7 @@ export default {
       console.log(error.message)
     }
   },
-   getEst: async (categoryId) => {
+  getEst: async categoryId => {
     try {
       const request = await fetch(`${BASE_API}/est/${categoryId}`)
       const response = await request.json()
@@ -53,6 +53,15 @@ export default {
     } catch (error) {
       console.log(error.message)
       return error
+    }
+  },
+  getEstServices: async estId => {
+    try {
+      const request = await fetch(`${BASE_API}/services/${estId}`)
+      const response = await request.json()
+      return response
+    } catch (error) {
+      console.log(error.message)
     }
   }
 }

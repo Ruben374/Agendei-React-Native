@@ -4,15 +4,16 @@ import styles from './styles.js'
 import Dentista from '../../assets/Dentista.png'
 import { Entypo } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
-
+import { useNavigation } from '@react-navigation/native'
 const EstCard = ({Data}) => {
 
-
+const navigation = useNavigation()
 
   const onPress = async () => {
-    console.log('click')
-  }
-console.log(Data.img)
+
+    navigation.navigate('Est',{Data:Data})
+  } 
+
   return (
     <TouchableOpacity style={styles.ContainerContent} onPress={onPress}>
       <View style={styles.ContainerContentCenterImage}>
@@ -27,7 +28,7 @@ console.log(Data.img)
           <View style={styles.ContainerContentInformation}>
             <Entypo name='location-pin' size={20} color='#fff' />
             <Text style={styles.ContainerContentText}>
-              R. Sagrada Esperança - Luanda
+            {Data.address.bairro}-{Data.address.rua}
             </Text>
           </View>
 

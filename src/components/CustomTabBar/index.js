@@ -11,11 +11,7 @@ import { AntDesign } from '@expo/vector-icons'
 
 const CustomTabBar = ({ state, navigation, route, k }) => {
   const goTo = screenName => {
-    if ((ScreenName = 'Search')) {
-      console.log(route.params)
-    } else {
       navigation.navigate(screenName)
-    }
   }
   return (
     <View style={styles.TabArea}>
