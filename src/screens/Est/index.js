@@ -13,7 +13,7 @@ import ServicesCard from '../../components/ServicesCard'
 import Api from '../../Api'
 
 
-const Est = ({ Data, navigation, route }) => {
+const Est = ({ Data, navigation, route }) => { 
   const [services, Setservices] = useState([])
   const [refreshing, setRefreshing] = useState(false)
   const [loading, setLoading] = useState(false)
