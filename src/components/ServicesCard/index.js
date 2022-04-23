@@ -1,15 +1,23 @@
 import React from 'react'
-import { View, Text,TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import styles from './styles'
 
-const ServicesCard = ({item}) => {
+import { useNavigation } from '@react-navigation/native'
+
+const ServicesCard = ({ item }) => {
+  const navigation = useNavigation()
+
+  const handleOnPress = () => {
+    navigation.navigate('ConfirmAppointments', {item:item})
+  }
+
   return (
-    <View  style={styles.CardContainer}>
+    <View style={styles.CardContainer}>
       <View>
         <Text style={styles.ServiceName}>{item.name}</Text>
         <Text style={styles.ServicePrice}>{item.preco}kz</Text>
       </View>
-      <TouchableOpacity style={styles.CardButton}>
+      <TouchableOpacity style={styles.CardButton} onPress={handleOnPress}>
         <Text style={styles.CardButtonText}>Agendar</Text>
       </TouchableOpacity>
     </View>

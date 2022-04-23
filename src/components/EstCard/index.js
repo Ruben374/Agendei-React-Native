@@ -18,7 +18,7 @@ const navigation = useNavigation()
     <TouchableOpacity style={styles.ContainerContent} onPress={onPress}>
       <View style={styles.ContainerContentCenterImage}>
        <Image  style={{width:70,height:70}}  source={{
-            uri: `http://192.168.10.142:3009/${Data.img}`
+            uri: `https://teste-api-api.herokuapp.com/${Data.img}`
           }} />
       </View>
 

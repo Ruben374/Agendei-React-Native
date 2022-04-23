@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import {
   View,
   Text,
@@ -11,22 +11,24 @@ import {
 import styles from './styles.js'
 import ServicesCard from '../../components/ServicesCard'
 import Api from '../../Api'
+import { UserContext } from '../../contexts/UserContext'
 
-
-const Est = ({ Data, navigation, route }) => { 
+const Est = ({ Data, navigation, route, state }) => {
+  const { state: user } = useContext(UserContext)
   const [services, Setservices] = useState([])
   const [refreshing, setRefreshing] = useState(false)
   const [loading, setLoading] = useState(false)
-
+  const estId = route.params.Data._id
+  const userId = user.id
   const getServices = async () => {
     setLoading(true)
     Setservices([])
-    console.log(route.params.Data)
-    console.log(route.params.Data._id)
-    const response = await Api.getEstServices(route.params.Data._id)
-    console.log(response)
+    //console.log(route.params.Data)
+    //console.log(route.params.Data._id)
+    const response = await Api.getEstServices(estId)
+    //console.log(response)
     Setservices(response)
-    setLoading(false);
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -48,7 +50,7 @@ const Est = ({ Data, navigation, route }) => {
       <View style={styles.Container}>
         <ImageBackground
           source={{
-            uri: `http://192.168.10.142:3009/${route.params.Data.img}`
+            uri: `https://teste-api-api.herokuapp.com/${route.params.Data.img}`
           }}
           style={styles.Hero}
         />
@@ -64,16 +66,17 @@ const Est = ({ Data, navigation, route }) => {
           </Text>
         </View>
         <Text style={styles.ServicesTitle}>Lista de Serviços:</Text>
-        {loading && <ActivityIndicator size='large' style={{marginTop:40}} color='#3F5D7D'/>}
+        {loading && (
+          <ActivityIndicator
+            size='large'
+            style={{ marginTop: 40 }}
+            color='#3F5D7D'
+          />
+        )}
         {services.map((item, key) => (
           <ServicesCard key={key} item={item} style={styles.CardContainer} />
         ))}
       </View>
-      
-
-
-
-
     </ScrollView>
   )
 }

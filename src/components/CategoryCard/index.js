@@ -14,7 +14,7 @@ const CategoryCard = ({Data,onPress}) => {
         <Image
           style={{ width: 48, height: 48 }}
           source={{
-            uri: `http://192.168.10.142:3009/${image}`
+            uri: `https://teste-api-api.herokuapp.com/${image}`
           }}
         />
       </TouchableOpacity>

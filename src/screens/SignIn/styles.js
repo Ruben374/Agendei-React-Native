@@ -1,23 +1,54 @@
 import { StyleSheet } from 'react-native'
 
 const Styles = StyleSheet.create({
-  Container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    display: 'flex',
+  Scroll: {
+    flexGrow: 1,
+    backgroundColor: '#fff',
+    justifyContent: 'center'
+  },
+
+  Card: {
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    backgroundColor: '#F0F5F9',
+    alignItems: 'center',
     justifyContent: 'center',
-    alignItems: 'center'
+    position: 'absolute',
+    right: -50,
+    top: -50
+  },
+  ScreenTitle: {
+    padding: 15
+  },
+  ScreenTitleText: {
+    fontSize: 40,
+    color: '#3F5D7D'
   },
   FormArea: {
     width: '100%',
-    padding: 20
+    padding: 15
   },
+  InputMessage: {
+    fontSize: 18,
+    marginTop:8,
+    color:'rgba(0, 0, 0, 0.5)'
+  },
+  Input: {
+    width: '100%',
+    fontSize: 18,
+    borderBottomWidth: 1,
+    borderBottomColor:'rgba(0, 0, 0, 0.5)',
+    marginTop: 5
+  },
+
   CostumBtn: {
-    height: 45,
+   padding:15,
     backgroundColor: '#3F5D7D',
-    borderRadius: 30,
+    borderRadius: 10,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop:30
   },
   CostumBtnTxt: {
     fontSize: 18,
@@ -26,7 +57,7 @@ const Styles = StyleSheet.create({
   SignInMessage: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 50,
+    marginTop:10,
     marginBottom: 20
   },
   SignInMessageText: {

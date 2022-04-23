@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import {
   View,
   ScrollView,
@@ -7,7 +7,7 @@ import {
   Image,
   TouchableOpacity,
   Alert,
-  ActivityIndicator 
+  ActivityIndicator
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import styles from './styles.js'
@@ -16,19 +16,21 @@ import Top from '../../assets/top.png'
 import CategoryCard from '../../components/CategoryCard'
 import Api from '../../Api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
-const Choose = () => {
+import { UserContext } from '../../contexts/UserContext'
+const Choose = ({ state }) => {
+  const { state: user } = useContext(UserContext)
   const navigation = useNavigation()
   const [categoryList, setcategoryList] = useState([])
-  useEffect(() => {
-    const getCategorys = async () => {
-      const response = await Api.getCategories()
-      console.log(response.length)
-      if (response.length > 0) {
-        setcategoryList(response)
-        console.log(response)
-      }
+  const getCategorys = async () => {
+    console.log(user.id)
+    const response = await Api.getCategories()
+    //console.log(response.length)
+    if (response.length > 0) {
+      setcategoryList(response)
+      //console.log(response)
     }
+  }
+  useEffect(() => {
     getCategorys()
   }, [])
 
@@ -42,9 +44,9 @@ const Choose = () => {
       Alert.alert('Erro!', error.message, [{ text: 'OK' }])
     }
   }
-const onPress= async(id,name)=>{
-navigation.navigate('MainTab',{id,name})
-}
+  const onPress = async (id, name) => {
+    navigation.navigate('MainTab', { id, name })
+  }
   return (
     <View style={styles.Container}>
       <ScrollView style={styles.Scroll}>
@@ -55,11 +57,14 @@ navigation.navigate('MainTab',{id,name})
 
         <View style={styles.tela}>
           {categoryList.length <= 0 ? (
-             <ActivityIndicator size='large' color='red' />
+            <ActivityIndicator size='large' color='red' />
           ) : (
-            categoryList.map((item, key) => <CategoryCard Data={item} key={key} onPress={onPress}/>)
+            categoryList.map((item, key) => (
+              <CategoryCard Data={item} key={key} onPress={onPress} />
+            ))
           )}
         </View>
+{/*
         <TouchableOpacity
           onPress={handleLogoutButton}
           style={{
@@ -74,6 +79,7 @@ navigation.navigate('MainTab',{id,name})
         >
           <Text style={{ fontSize: 25, color: 'white' }}>Sair</Text>
         </TouchableOpacity>
+        */}
       </ScrollView>
     </View>
   )
