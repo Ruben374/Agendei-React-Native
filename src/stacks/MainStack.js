@@ -11,6 +11,9 @@ import EditProfile from '../screens/EditProfile'
 import MainTab from './MainTab'
 import ChangePassword from '../screens/ChangePassword'
 import Favorites from '../screens/Favorites'
+import Ratting from '../screens/Ratting'
+import ResetPasswordSendEmail from '../screens/ResetPasswordSendEmail'
+import ResetPassword from '../screens/ResetPassword'
 
 const Stack = createStackNavigator()
 
@@ -32,6 +35,8 @@ export default () => (
    <Stack.Screen name='EditProfile' component={EditProfile} />
    <Stack.Screen name='ChangePassword' component={ChangePassword}/>
    <Stack.Screen name='Favorites' component={Favorites}/>
-   
+   <Stack.Screen name='Ratting' component={Ratting}/>
+   <Stack.Screen name='ResetPasswordSendEmail' component={ResetPasswordSendEmail}/>
+   <Stack.Screen name='ResetPassword' component={ResetPassword}/>
   </Stack.Navigator>
 )

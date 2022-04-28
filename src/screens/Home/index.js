@@ -6,8 +6,11 @@ import EstCard from '../../components/EstCard'
 import Dentista from '../../assets/Dentista.png'
 import { AntDesign } from '@expo/vector-icons'
 import Api from '../../Api'
+import { useIsFocused } from "@react-navigation/native";
 
+   
 const Home = ({ navigation, route }) => {
+  const isFocused = useIsFocused();
   const [estList, setEstList] = useState([])
 
   const getEst = async () => {
@@ -16,7 +19,7 @@ const Home = ({ navigation, route }) => {
   }
   useEffect(() => {
     getEst()
-  }, [])
+  }, [isFocused ])
 
   return (
     <ScrollView style={styles.s}>

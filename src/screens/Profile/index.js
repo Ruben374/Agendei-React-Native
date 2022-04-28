@@ -41,44 +41,46 @@ const Profile = () => {
       aspect: [4, 3],
       quality: 1
     })
-    console.log(JSON.stringify(_image))
+    //console.log(JSON.stringify(_image))
     if (!_image.cancelled) {
       setImage(_image.uri)
-    }
-    userDispatch({
-      type: 'setavatar',
-      payload: {
-        avatar: _image.uri
-      }
-    })
-    let apiUrl = 'http://192.168.10.30:3005/clients/clientimage'
-    let uri = _image.uri
-    let uriParts = uri.split('.')
-    let fileType = uriParts[uriParts.length - 1]
 
-    let formData = new FormData()
-    console.log(fileType)
-    formData.append('file', {
-      uri,
-      name: `photo.` + fileType,
-      type: 'image/jpeg'
-    })
-    formData.append('id', user.id)
-    //console.log(formData)
+      userDispatch({
+        type: 'setavatar',
+        payload: {
+          avatar: _image.uri
+        }
+      })
+      let apiUrl = 'http://192.168.43.227:3005/clients/clientimage'
+      let uri = _image.uri
+      let uriParts = uri.split('.')
+      let fileType = uriParts[uriParts.length - 1]
 
-    let options = {
-      method: 'POST',
-      body: formData,
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'multipart/form-data'
+      let formData = new FormData()
+      console.log(fileType)
+      formData.append('file', {
+        uri,
+        name: `photo.` + fileType,
+        type: 'image/jpeg'
+      })
+      formData.append('id', user.id)
+
+      //console.log(formData)
+      let options = {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data'
+        }
       }
-    }
-    try {
-      const response = await fetch(apiUrl, options)
-      console.log(response)
-    } catch (error) {
-      console.log(error)
+
+      try {
+        const response = await fetch(apiUrl, options)
+        console.log(response)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
@@ -86,7 +88,7 @@ const Profile = () => {
     // avatar da api
     console.log(user.avatar)
     if (!user.avatar == '' && user.avatar[0] == 'u' && user.avatar[1] == 'p') {
-      const join = 'http://192.168.10.30:3005/' + user.avatar
+      const join = 'http://192.168.43.227:3005/' + user.avatar
       setImage(join)
     }
     //avatar do contexto
@@ -112,9 +114,9 @@ const Profile = () => {
     }
   }
 
-  const handleModalButton=async ()=>{
-    try{
-      const response = await Api.UpdateClient('Name', user.id,name,'')
+  const handleModalButton = async () => {
+    try {
+      const response = await Api.UpdateClient('Name', user.id, name, '')
       alert(response.message)
       userDispatch({
         type: 'setname',
@@ -122,8 +124,7 @@ const Profile = () => {
           name: name
         }
       })
-    }
-    catch(error){
+    } catch (error) {
       alert(error.message)
     }
   }

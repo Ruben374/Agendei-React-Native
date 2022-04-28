@@ -52,42 +52,71 @@ const animateCell = ({ hasValue, index, isFocused }) => {
 }
 
 const AnimatedExample = ({ route }) => {
+  const type = route.params.type
   const { dispatch: userDispatch } = useContext(UserContext)
   const navigation = useNavigation()
   const [value, setValue] = useState('')
   const [loading, setLoading] = useState(false)
   const handlebtnconfirm = async () => {
-    try {
-      //navigation.navigate('Choose')
-      const response = await Api.ConfirmCode(value, route.params.email)
-      if (response.id && response.token) {
-        await AsyncStorage.setItem('token', response.token)
+    if (type == 1) {
+      try {
+        //navigation.navigate('Choose')
+        const response = await Api.ConfirmCode(value, route.params.email)
+        if (response.id && response.token) {
+          await AsyncStorage.setItem('token', response.token)
 
-        userDispatch({
-          type: 'setId',
-          payload: {
-            id: response.id
-          }
-        })
-        userDispatch({
-          type: 'setname',
-          payload: {
-            name: response.name
-          }
-        })
-        userDispatch({
-          type: 'setavatar',
-          payload: {
-            avatar: response.avatar
-          }
-        })
+          userDispatch({
+            type: 'setId',
+            payload: {
+              id: response.id
+            }
+          })
+          userDispatch({
+            type: 'setname',
+            payload: {
+              name: response.name
+            }
+          })
+          userDispatch({
+            type: 'setavatar',
+            payload: {
+              avatar: response.avatar
+            }
+          })
 
-        navigation.reset({
-          routes: [{ name: 'Choose' }]
-        })
+          navigation.reset({
+            routes: [{ name: 'Choose' }]
+          })
+        }
+      } catch (error) {
+        Alert(error)
       }
-    } catch (error) {
-      Alert(error)
+    }
+    if (type == 2) {
+      if (value.trim() !== '') {
+        const res = await Api.VerifyCodeToResetPassword(
+          route.params.email,
+          value
+        )
+        if (res.status == 200) {
+          navigation.reset({
+            routes: [
+              {
+                name: 'ResetPassword',
+                params: { email:route.params.email}
+              }
+            ]
+          })
+        }
+        if (res.status == 422) {
+          alert(res.message)
+        }
+        if (res.status == 500) {
+          alert('Não foi possivel realizar esta operação')
+        }
+      } else {
+        alert('Preencha o campo')
+      }
     }
   }
 

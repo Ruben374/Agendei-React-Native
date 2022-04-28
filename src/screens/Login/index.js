@@ -203,7 +203,7 @@ const Login = () => {
           <Text style={styles.InputMessage}>Senha</Text>
           <TouchableOpacity
             onPress={() => {
-              setModalVisible(true)
+             navigation.navigate('ResetPasswordSendEmail')
             }}
           >
             <Text style={styles.ForgotPasswordText}>Esqueceu?</Text>
@@ -212,9 +212,8 @@ const Login = () => {
         <View
           style={{
             flexDirection: 'row',
-            borderBottomWidth: 1,
-            borderBottomColor: 'rgba(0, 0, 0, 0.5)',
-
+            borderBottomWidth: 2,
+            borderBottomColor: '#3F5D7D',
             justifyContent: 'center',
             alignItems: 'center'
           }}

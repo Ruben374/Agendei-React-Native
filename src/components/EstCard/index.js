@@ -18,7 +18,7 @@ const navigation = useNavigation()
     <TouchableOpacity style={styles.ContainerContent} onPress={onPress}>
       <View style={styles.ContainerContentCenterImage}>
        <Image  style={{width:70,height:70}}  source={{
-            uri: `https://teste-api-api.herokuapp.com/${Data.img}`
+            uri: `http://192.168.43.227:3005/${Data.img}`
           }} />
       </View>
 
@@ -28,13 +28,13 @@ const navigation = useNavigation()
           <View style={styles.ContainerContentInformation}>
             <Entypo name='location-pin' size={20} color='#fff' />
             <Text style={styles.ContainerContentText}>
-            {Data.address.bairro}-{Data.address.rua}
+            { Data.address}
             </Text>
           </View>
 
           <View style={styles.ContainerContentStar}>
             <Entypo name='star' size={20} color='#FFD700' />
-            <Text style={styles.ContainerContentText}>4.8</Text>
+            <Text style={styles.ContainerContentText}>{Data.ratingmedia.toFixed(1)}</Text>
           </View>
         </View>
       </View>

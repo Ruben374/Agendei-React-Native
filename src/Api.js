@@ -162,6 +162,40 @@ export default {
       return error
     }
   },
+  Ratting: async (clientId, estId, rate) => {
+    try {
+      const request = await fetch(`${BASE_API}/est/rating`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ clientId, estId, rate })
+      })
+      const response = await request.json()
+      return response
+    } catch (error) {
+      console.log(error.message)
+      return error
+    }
+  },
+  UploadRate: async (clientId, estId, rate) => {
+    try {
+      const request = await fetch(`${BASE_API}/est/uploadrate`, {
+        method: 'PATCH',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ clientId, estId, rate })
+      })
+      const response = await request.json()
+      return response
+    } catch (error) {
+      console.log(error.message)
+      return error
+    }
+  },
   getEstServices: async estId => {
     try {
       const request = await fetch(`${BASE_API}/services/${estId}`)
@@ -183,6 +217,15 @@ export default {
   getAppointments: async clientId => {
     try {
       const request = await fetch(`${BASE_API}/appointments/${clientId}`)
+      const response = await request.json()
+      return response
+    } catch (error) {
+      console.log(error.message)
+    }
+  },
+  GetEst: async id => {
+    try {
+      const request = await fetch(`${BASE_API}/est/get/${id}`)
       const response = await request.json()
       return response
     } catch (error) {
@@ -220,6 +263,22 @@ export default {
           Accept: 'application/json',
           'Content-Type': 'multipart/form-data'
         }
+      })
+      const response = await request.json()
+      return response
+    } catch (error) {
+      console.log(error.message)
+    }
+  },
+  VerifyRate: async (clientId, estId) => {
+    try {
+      const request = await fetch(`${BASE_API}/est/getrate`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ clientId, estId })
       })
       const response = await request.json()
       return response

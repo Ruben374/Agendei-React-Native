@@ -31,97 +31,128 @@ const SignIn = () => {
   const [confirmPasswordField, setConfirmPasswordField] = useState('')
   const [pass1, setPass1] = useState(true)
   const [pass2, setPass2] = useState(true)
-  const [border, setBorder] = useState('rgba(0, 0, 0, 0.5)')
+  const [border, setBorder] = useState('#3F5D7D')
   const [passwordStrengthMessage, setPasswordStrengthMessage] = useState('')
-  const [validateInput, setValidateInput] = useState({
-    case: false,
-    number: false,
-    length: false
-  })
+  const [validatePassword, setValidatePassword] = useState(true)
+  const [nameValidate, setNameValidate] = useState(true)
+  const [validateEmail, setValidateEmail] = useState(true)
+  const [validateConfirmPassword, setValidateConfirmPassword] = useState(true)
 
   const handleSignInMessagePress = () => {
     navigation.reset({
       routes: [{ name: 'Login' }]
     })
   }
-
-  const VerifyPassword = () => {
-    if (
-      validateInput.length == true &&
-      validateInput.number == true &&
-      validateInput.case == true
-    ) {
-      setPasswordStrengthMessage('')
-      setBorder('rgba(0, 0, 0, 0.5)')
+  const verifyName = name => {
+    if (name == ' ') {
+      console.log('vazio')
+    }
+    if (!!name.match(/[A-Z][a-z]* [A-Z][a-z]*/)) {
+      setNameValidate(true)
+      //console.log('true')
       return true
     } else {
-      setPasswordStrengthMessage(
-        'Sua senha deve conter: no minimo 6 carcteres, números, letra maiúscula e letra minúscula'
-      )
-      setBorder('red')
+      setNameValidate(false)
+      //console.log('false')
+      return false
+    }
+  }
+
+  const verifyEmail = email => {
+    const teste = !!email.match(
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+    )
+    if (teste) {
+     // console.log('email bom')
+      setValidateEmail(true)
+      return true
+    } else {
+    //  console.log('email mau')
+      setValidateEmail(false)
+      return false
+    }
+  }
+
+  const VerifyPassword = password => {
+    //setPasswordField(password)
+    //console.log(validateInput)
+    const regexUppercase = password.match(/^(?=.*[A-Z]).+$/)
+    //const regexLowercase = password.match(/^(?=.*[a-z]).+$/)
+    const regexNumber = password.match(/^(?=.*[0-9]).+$/)
+    const length = password.length >= 6
+
+    //console.log(regexUppercase)
+    //console.log(length)
+    //console.log(regexUppercase)
+    if (regexUppercase && regexNumber && length) {
+      console.log('boa senha')
+      setValidatePassword(true)
+      return true
+    } else {
+      console.log('ma senha')
+      setValidatePassword(false)
       return false
     }
   }
 
   const handleCadastrarPress = async () => {
-
-    if(VerifyPassword()){
-      setLoading(true)
-      if (
-        nameField.trim() !== '' &&
-        emailField.trim() !== '' &&
-        passwordField.trim() !== '' &&
-        confirmPasswordField.trim() !== ''
-      ) {
-        VerifyPassword()
-        if (passwordField == confirmPasswordField) {
-          VerifyPassword()
-          const response = await Api.SignUp(nameField, emailField, passwordField)
-          if (response === true) {
-            /*
-            const login = await Api.Login(emailField, passwordField)
-            if (login.token) {
-    
-              //aqui devo cetar o token 
-              navigation.reset({
-                routes: [{ name: 'Choose' }]
-              })
-            }*/
-            navigation.reset({
-              routes: [{ name: 'ConfirmSignUp', params: { email: emailField } }]
-            })
-          } else if (response.status == 422) {
-            setLoading(false)
-            Alert.alert('Erro!', 'Email ja cadastrado', [{ text: 'OK' }])
+    setLoading(true)
+    // console.log('email:' + verifyEmail(emailField))
+    if (
+      nameField.trim() !== '' &&
+      emailField.trim() !== '' &&
+      passwordField.trim() !== '' &&
+      confirmPasswordField.trim() !== ''
+    ) {
+      if (verifyName(nameField)) {
+        if (verifyEmail(emailField)) {
+          if (VerifyPassword(passwordField)) {
+            if (passwordField == confirmPasswordField) {
+              setValidateConfirmPassword(true)
+              const response = await Api.SignUp(
+                nameField,
+                emailField,
+                passwordField
+              )
+              console.log(response)
+              if (response.status === 201) {
+                setLoading(false)
+                navigation.reset({
+                  routes: [
+                    {
+                      name: 'ConfirmSignUp',
+                      params: { email: emailField, type: 1 }
+                    }
+                  ]
+                })
+              } else if (response.status == 422) {
+                setLoading(false)
+                Alert.alert('Erro!', 'Email ja cadastrado', [{ text: 'OK' }])
+              } else if (response.status == 302) {
+                navigation.reset({
+                  routes: [
+                    {
+                      name: 'ConfirmSignUp',
+                      params: { email: emailField, type: 1 }
+                    }
+                  ]
+                })
+              }
+            } else {
+              setLoading(false)
+              setValidateConfirmPassword(false)
+            }
           }
-        } else {
-          Alert.alert('Erro!', 'Passwords Diferentes', [{ text: 'OK' }])
         }
-      } else {
-        setLoading(false)
-        Alert.alert('Erro!', 'Preencha todos os campos', [{ text: 'OK' }])
       }
+    } else {
       setLoading(false)
+      Alert.alert('Erro!', 'Preencha todos os campos', [{ text: 'OK' }])
     }
-    
+    setLoading(false)
   }
 
   const [step, setstep] = useState('')
-
-  const secureText = password => {
-    setPasswordField(password)
-    console.log(validateInput)
-    const regexUppercase = new RegExp(/^(?=.*[A-Z]).+$/)
-    const regexLowercase = new RegExp(/^(?=.*[a-z]).+$/)
-    const regexNumber = new RegExp(/^(?=.*[0-9]).+$/)
-    const length = password.length >= 6
-
-    setValidateInput({
-      case: regexUppercase.test(password) && regexLowercase.test(password),
-      number: regexNumber.test(password),
-      length
-    })
-  }
 
   return (
     <ScrollView contentContainerStyle={styles.Scroll}>
@@ -142,8 +173,14 @@ const SignIn = () => {
           placeholderTextColor='#555'
           selectionColor='#3F5D7D'
           value={nameField}
+          maxLength={20}
           onChangeText={text => setNameField(text)}
         />
+        <View style={{}}>
+          <Text style={{ color: 'red' }}>
+            {nameValidate ? '' : 'Nome invalido'}
+          </Text>
+        </View>
         <Text style={styles.InputMessage}>Seu email</Text>
         <TextInput
           style={styles.Input}
@@ -152,12 +189,18 @@ const SignIn = () => {
           value={emailField}
           onChangeText={text => setEmailField(text)}
         />
+        <View style={{}}>
+          <Text style={{ color: 'red' }}>
+            {validateEmail ? '' : 'Email invalido'}
+          </Text>
+        </View>
+
         <Text style={styles.InputMessage}>Senha</Text>
         <View
           style={{
             flexDirection: 'row',
-            borderBottomWidth: 1,
-            borderBottomColor:border,
+            borderBottomWidth: 2,
+            borderBottomColor: border,
             justifyContent: 'center',
             alignItems: 'center'
           }}
@@ -171,7 +214,7 @@ const SignIn = () => {
             selectionColor='#3F5D7D'
             secureTextEntry={pass2}
             value={passwordField}
-            onChangeText={text => secureText(text)}
+            onChangeText={text => setPasswordField(text)}
           />
 
           {pass2 ? (
@@ -184,21 +227,20 @@ const SignIn = () => {
             </TouchableOpacity>
           )}
         </View>
-        <View
-          style={{
-            justifyContent: 'center',
-            width: '100%'
-          }}
-        >
-          <Text style={{ flex:1,flexWrap:'wrap',color: 'red' }}> {passwordStrengthMessage} </Text>
+        <View style={{}}>
+          <Text style={{ color: 'red' }}>
+            {validatePassword
+              ? ''
+              : 'Sua senha deve conter: no minimo 6 carcteres, números, letra maiúscula e letra minúscula'}
+          </Text>
         </View>
 
         <Text style={styles.InputMessage}>Confirme senha</Text>
         <View
           style={{
             flexDirection: 'row',
-            borderBottomWidth: 1,
-            borderBottomColor: 'rgba(0, 0, 0, 0.5)',
+            borderBottomWidth: 2,
+            borderBottomColor: '#3F5D7D',
             justifyContent: 'center',
             alignItems: 'center'
           }}
@@ -216,14 +258,18 @@ const SignIn = () => {
           />
           {pass1 ? (
             <TouchableOpacity onPress={() => setPass1(!pass1)}>
-            <Ionicons name='ios-eye-off-outline' size={24} color='black' />
+              <Ionicons name='ios-eye-off-outline' size={24} color='black' />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity onPress={() => setPass1(!pass1)}>
-              
               <Ionicons name='ios-eye-outline' size={24} color='black' />
             </TouchableOpacity>
           )}
+        </View>
+        <View style={{}}>
+          <Text style={{ color: 'red' }}>
+            {validateConfirmPassword ? '' : 'As senhas divergem'}
+          </Text>
         </View>
 
         {loading ? (

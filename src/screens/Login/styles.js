@@ -55,8 +55,8 @@ const Styles = StyleSheet.create({
   Input: {
     width: '100%',
     fontSize: 18,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.5)',
+    borderBottomWidth: 2,
+    borderBottomColor: '#3F5D7D',
     marginTop: 5
   },
 
@@ -114,7 +114,7 @@ const Styles = StyleSheet.create({
 
   ModalButtonText: {
     fontSize: 22,
-    color:'#fff'
+    color: '#fff'
   },
 
   ModalButtons: {
@@ -139,7 +139,7 @@ const Styles = StyleSheet.create({
   },
   ModalInputText: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   }
 })
 
