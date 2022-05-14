@@ -1,81 +1,100 @@
-import React, { useState } from 'react'
-import styles from './styles.js'
-import { View, Text, Image, TextInput, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  TextInput,
+  ImageBackground,
+  FlatList,
+} from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import styles from "./styles.js";
+import EstCard from "../../components/EstCard";
+import Dentista from "../../assets/Dentista.png";
+import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import Api from "../../Api";
+import { useIsFocused } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import { Card } from "react-native-shadow-cards";
+import { Ionicons } from "@expo/vector-icons";
+import { Fontisto } from "@expo/vector-icons";
 
-import imageCheck from '../../assets/icon-check.png'
-import imageClose from '../../assets/icon-close.png'
+let vetor = [1, 2, 3, 4];
 
-const Favorites = () => {
-  const [validateInput, setValidateInput] = useState({
-    case: false,
-    number: false,
-    length: false
-  })
-  const [step,setstep] = useState('')
+const Favorites = ({ navigation, route }) => {
+  const isFocused = useIsFocused();
+  const [estList, setEstList] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
 
-  const secureText = password => {
-    const regexUppercase = new RegExp(/^(?=.*[A-Z]).+$/)
-    const regexLowercase = new RegExp(/^(?=.*[a-z]).+$/)
-    const regexNumber = new RegExp(/^(?=.*[0-9]).+$/)
-    const length = password.length >= 6
-
-    setValidateInput({
-      case: regexUppercase.test(password) && regexLowercase.test(password),
-      number: regexNumber.test(password),
-      length
-    })
- 
-  }
+  const getEst = async () => {
+    const response = await Api.getEst(route.params.id);
+    setEstList(response);
+  };
+  /*   useEffect(() => {
+    getEst()
+  }, [isFocused ]) */
 
   return (
-    <View>
+    <ScrollView style={styles.Scroll}>
       <View style={styles.Container}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='Senha'
-          secureTextEntry
-          onChangeText={password => {
-            secureText(password)
-          }}
-        />
-        
-          <Text style={{alignSelf: 'flex-end',padding:5}}>{step}</Text>
-       
-
-        <View style={styles.Content}>
-          <Text style={styles.Title}>Sua senha deve ter:</Text>
-
-          <View style={styles.View}>
-            <Image
-              source={validateInput.length ? imageCheck : imageClose}
-              style={styles.Image}
-            />
-            <Text>6 carcteres</Text>
-          </View>
-          <View style={styles.View}>
-            <Image
-              source={validateInput.number ? imageCheck : imageClose}
-              style={styles.Image}
-            />
-            <Text>Números</Text>
-          </View>
-          <View style={styles.View}>
-            <Image
-              source={validateInput.case ? imageCheck : imageClose}
-              style={styles.Image}
-            />
-            <Text>Letra maiúscula e letra minúscula</Text>
-          </View>
+        <View style={styles.Header}>
+          <Text style={styles.HeaderText}>Meus Favoritos</Text>
+          <TouchableOpacity style={styles.HeaderIcon}>
+            <FontAwesome name="search" size={30} color="#222455" />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          style={{ alignSelf: 'center', backgroundColor: 'blue' }}
-        >
-          <Text style={{ padding: 10, color: 'white', fontSize: 15 }}>
-            Submit
-          </Text>
-        </TouchableOpacity>
+
+        <View>
+          <TouchableOpacity style={{ marginTop: 30, alignItems: "center" }}  onPress={()=>navigation.navigate("Est")}>
+            <Card style={styles.Card} elevation={12}>
+              <View>
+                <ImageBackground
+                  style={[{ width: "100%" }, styles.CardContentTop]}
+                  source={{
+                    uri: "https://cdn.shopify.com/s/files/1/0408/8473/articles/header_10-barbearias_b99bc3d5-2ed1-435e-a2ee-bf091ba5c0ac.jpg?v=1568418224",
+                  }}
+                >
+                  <View style={styles.CardContentMessages}>
+                    <View style={styles.CardContentOpenCloseMessages}>
+                      <Text style={styles.CardContentOpenCloseMessagesText}>
+                        ABERTO
+                      </Text>
+                    </View>
+
+                    <View style={styles.CardContentRatingMessage}>
+                      <Ionicons name="star" size={15} color="yellow" />
+                      <Text style={{ color: "#222455", fontFamily: "NotoSans_700Bold",marginTop:3 }}>
+                        4.5
+                      </Text>
+                    </View>
+                  </View>
+                </ImageBackground>
+
+                <View style={styles.CardContentBottom}>
+                  <View style={styles.CardContentBottomTop}>
+                    <View style={styles.CardContentBottomName}>
+                      <Text style={styles.EstName}>Catinho do corte</Text>
+                      <Text style={styles.EstCategory}>Barbearia</Text>
+                    </View>
+                    <View style={styles.CardContentBottomAddress}>
+                      <Text style={styles.EstAddress}>
+                        camama, frente ao cinfo
+                      </Text>
+                    </View>
+                  </View>
+                  <TouchableOpacity style={styles.CardContentBottomBottom}>
+                    <Fontisto name="favorite" size={24} color="#222455" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Card>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  )
-}
-export default Favorites
+    </ScrollView>
+  );
+};
+export default Favorites;

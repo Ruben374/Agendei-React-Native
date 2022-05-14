@@ -1,15 +1,16 @@
 import { StyleSheet } from "react-native";
+
 const Styles = StyleSheet.create({
+  lista: {
+    marginTop: 10,
+    height: 250,
+  },
   Scroll: {
     flex: 1,
     backgroundColor: "#fff",
   },
-  Container: {
-    padding: 15,
-    height: "100%",
-    flex: 1,
-  },
   Header: {
+    width: "100%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -17,52 +18,50 @@ const Styles = StyleSheet.create({
   HeaderText: {
     fontSize: 20,
     fontFamily: "NotoSans_700Bold",
-    color:"#222455"
+    color: "#222455",
   },
-  HeaderBtnCancel: {
-    color: "red",
-    fontSize: 17,
-    fontWeight: "bold",
-  },
-  FormArea: {
-    width: "100%",
-    marginTop: 40,
-    alignItems: "center",
-    padding: 10,
-    marginTop: 50,
-  },
-  ViewInput: {
+  HeaderIcon: {},
+  SearchArea: {
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     padding: 10,
-    borderWidth: 1,
+
     borderRadius: 10,
-    borderColor:"#A9A9A9"
+    marginTop: 5,
   },
-
-  TextInput: {
+  SearchInput: {
     flex: 1,
+    marginRight: 10,
     marginLeft: 10,
-    fontSize: 16,
-    fontFamily: "NotoSans_700Bold",
-    color:"#696969"
+    fontFamily: "NotoSans_400Regular",
+    color: "#222455",
   },
-  UpdateButton: {
-    width: "100%",
-    padding: 15,
-    backgroundColor: "#5663ff",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop:50,
-    borderRadius:10
-  },
-  UpdateButtonText: {
-    fontSize: 18,
-    fontFamily: "NotoSans_700Bold",
-    color: "#fff",
 
+  Container: {
+    height: "100%",
+    flex: 1,
+    padding: 15,
+  },
+  CardCategoryContent: {
+    width: "100%",
+    height: 80,
+    elevation: 5,
+    borderRadius: 10,
+    marginTop: 20,
+  },
+  CategoryCard: {
+    flex: 1,
+    padding: 15,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  CategoryCardText: {
+    fontSize: 25,
+    fontFamily: "NotoSans_700Bold",
+    color: "#222455",
+    elevation: 15,
   },
 });
 export default Styles;

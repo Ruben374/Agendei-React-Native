@@ -1,75 +1,80 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet } from "react-native";
 
 const Styles = StyleSheet.create({
   s: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: "#fff",
   },
 
   Container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center'
+    backgroundColor: "#fff",
+    alignItems: "center",
   },
   Title: {
-    flexWrap: 'wrap',
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: '#3F5D7D'
+    flexWrap: "wrap",
+    fontSize: 25,
+    fontFamily: "NotoSans_700Bold",
+    color: "#222455",
   },
   AppointmentsCard: {
-    width: '100%',
-    padding: 10
+    width: "100%",
+    padding: 10,
   },
   ServicesName: {
-    width: '100%',
-    flexWrap: 'wrap',
-    fontWeight: 'bold',
-    color: '#3F5D7D',
-    fontSize:20
+    width: "100%",
+    flexWrap: "wrap",
+    fontFamily: "NotoSans_700Bold",
+    color: "#222455",
+    fontSize: 20,
   },
   EstName: {
     marginBottom: 10,
-    color:'#A0A0A0',
-    fontSize:15,
-     width: '100%',
-    flexWrap: 'wrap',
+    fontSize: 15,
+    width: "100%",
+    flexWrap: "wrap",
+    fontFamily: "NotoSans_700Bold",
+    color: "#222455",
   },
 
   AppointmentsRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 10
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 10,
   },
   AppointmentsItems: {
-    flexDirection: 'row',
-    alignItems: 'center'
+    flexDirection: "row",
+    alignItems: "center",
   },
-  AppointmentsItemsText:{
-     color:'#A0A0A0',
-     paddingHorizontal:5,
-     flexWrap:'wrap'
+  AppointmentsItemsText: {
+    paddingHorizontal: 5,
+    flexWrap: "wrap",
+    fontFamily: "NotoSans_700Bold",
+    color: "#222455",
   },
   AppointmentsButtons: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 20,
-    alignItems: 'center',
-    justifyContent: 'space-evenly'
+    alignItems: "center",
+    justifyContent: "space-evenly",
   },
   AppointmentsButton1: {
     borderRadius: 10,
     padding: 20,
-     backgroundColor: '#3F5D7D'
+    backgroundColor: "#5663ff",
+    elevation: 5,
   },
-    AppointmentsButton2: {
+  AppointmentsButton2: {
     borderRadius: 10,
     padding: 20,
-     backgroundColor: '#E7362B'
+    backgroundColor: "#E7362B",
+    elevation: 5,
   },
-  AppointmentsButtonText:{
-      color:'#fff'
-  }
-})
+  AppointmentsButtonText: {
+    color: "#fff",
+    fontFamily: "NotoSans_700Bold",
+  },
+});
 
-export default Styles
+export default Styles;

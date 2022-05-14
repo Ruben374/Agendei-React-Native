@@ -28,7 +28,7 @@ const ChangePassword = () => {
     ) {
       if (newPassword == confirmNewPassword) {
         try {
-          const response = await Api.UpdateClient('Password', user.id, newPassword,currentPassword)
+          const response = await Api.UpdateClient('Password', user.email, newPassword,currentPassword)
           alert(response.message)
         } catch (error) {
           alert(error)

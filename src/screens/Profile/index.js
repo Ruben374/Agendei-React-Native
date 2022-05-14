@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   Text,
@@ -8,286 +8,198 @@ import {
   Modal,
   Pressable,
   TextInput,
-  ModalButtonText
-} from 'react-native'
-import styles from './styles.js'
-import { FontAwesome } from '@expo/vector-icons'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { MaterialIcons } from '@expo/vector-icons'
-import { AntDesign } from '@expo/vector-icons'
-import { Feather } from '@expo/vector-icons'
-import { Octicons } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { UserContext } from '../../contexts/UserContext'
-import * as ImagePicker from 'expo-image-picker'
-import Api from '../../Api'
+  ModalButtonText,
+  ImageBackground,
+} from "react-native";
+import styles from "./styles.js";
+import { FontAwesome } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
+import { Octicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserContext } from "../../contexts/UserContext";
+import * as ImagePicker from "expo-image-picker";
+import Api from "../../Api";
+import Config from "../../config/Api.config.js";
+import { Card } from "react-native-shadow-cards";
 
 const Profile = () => {
-  const { state: user } = useContext(UserContext)
-  const { dispatch: userDispatch } = useContext(UserContext)
-  const [modalVisible, setModalVisible] = useState(false)
-  const [name, setName] = useState(user.name)
+  const { state: user } = useContext(UserContext);
+  const { dispatch: userDispatch } = useContext(UserContext);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [name, setName] = useState(user.name);
 
-  const [image, setImage] = useState(null)
-  const [textInputFocus, setTextInputFocus] = useState(true)
-  const [modalName, setModalName] = useState(false)
-  const navigation = useNavigation()
+  const [image, setImage] = useState(
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Faenza-avatar-default-symbolic.svg/1024px-Faenza-avatar-default-symbolic.svg.png"
+  );
+  const [textInputFocus, setTextInputFocus] = useState(true);
+  const [modalName, setModalName] = useState(false);
+  const [modalImage, setModalImage] = useState("");
+
+  const navigation = useNavigation();
 
   const addImage = async () => {
     let _image = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1
-    })
+      quality: 1,
+    });
     //console.log(JSON.stringify(_image))
     if (!_image.cancelled) {
-      setImage(_image.uri)
+      setImage(_image.uri);
 
       userDispatch({
-        type: 'setavatar',
+        type: "setavatar",
         payload: {
-          avatar: _image.uri
-        }
-      })
-      let apiUrl = 'http://192.168.43.227:3005/clients/clientimage'
-      let uri = _image.uri
-      let uriParts = uri.split('.')
-      let fileType = uriParts[uriParts.length - 1]
+          avatar: _image.uri,
+        },
+      });
+      let apiUrl = `${Config.url}/clients/clientimage`;
+      let uri = _image.uri;
+      let uriParts = uri.split(".");
+      let fileType = uriParts[uriParts.length - 1];
 
-      let formData = new FormData()
-      console.log(fileType)
-      formData.append('file', {
+      let formData = new FormData();
+      console.log(fileType);
+      formData.append("file", {
         uri,
         name: `photo.` + fileType,
-        type: 'image/jpeg'
-      })
-      formData.append('id', user.id)
+        type: "image/jpeg",
+      });
+      formData.append("id", user.id);
 
       //console.log(formData)
       let options = {
-        method: 'POST',
+        method: "POST",
         body: formData,
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'multipart/form-data'
-        }
-      }
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      };
 
       try {
-        const response = await fetch(apiUrl, options)
-        console.log(response)
+        const response = await fetch(apiUrl, options);
+        console.log(response);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
-  }
+  };
 
   const getAvatar = () => {
     // avatar da api
-    console.log(user.avatar)
-    if (!user.avatar == '' && user.avatar[0] == 'u' && user.avatar[1] == 'p') {
-      const join = 'http://192.168.43.227:3005/' + user.avatar
-      setImage(join)
+    console.log(user.avatar);
+    if (!user.avatar == "" && user.avatar[0] == "u" && user.avatar[1] == "p") {
+      const join =  Config.url+"/"+ user.avatar;
+      setImage(join);
     }
     //avatar do contexto
-    else if (!user.avatar == '' && user.avatar[0] == 'f') {
-      setImage(user.avatar)
-    }
-  }
+    else if (!user.avatar == "" && user.avatar[0] == "f") {
+      setImage(user.avatar);
+    } 
+    
+  };
   useEffect(() => {
-    getAvatar()
-  }, [])
+    getAvatar();
+    console.log(user);
+  }, []);
   const GoToEdit = () => {
-    navigation.navigate('EditProfile')
-  }
+    navigation.navigate("EditProfile");
+  };
 
-  const handleLogoutButton = async () => {
-    try {
-      await AsyncStorage.removeItem('token')
-      navigation.reset({
-        routes: [{ name: 'Login' }]
-      })
-    } catch (error) {
-      Alert.alert('Erro!', error.message, [{ text: 'OK' }])
-    }
-  }
 
-  const handleModalButton = async () => {
-    try {
-      const response = await Api.UpdateClient('Name', user.id, name, '')
-      alert(response.message)
-      userDispatch({
-        type: 'setname',
-        payload: {
-          name: name
-        }
-      })
-    } catch (error) {
-      alert(error.message)
-    }
-  }
+
+  
   return (
     <ScrollView style={styles.Scroll}>
-      <Modal
-        style={{
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%) !important'
-        }}
-        animationType='fade'
-        transparent={true}
-        onRequestClose={() => setModalVisible(false)}
-        visible={modalVisible}
-      >
+      <View style={styles.Container}>
+        <View style={styles.Title}>
+          <Text style={styles.TitleText}>Meu Perfil</Text>
+        </View>
         <View
           style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'black'
+            width: 100,
+            height: 100,
+            borderRadius: 50,
+            alignSelf: "center",
+            marginTop: 80,
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <View elevation={5} style={{ borderRadius: 10 }}>
-            <Image
-              style={{ width: 300, height: 400 }}
-              source={{ uri: image }}
-            />
-          </View>
-        </View>
-      </Modal>
-
-      <View style={styles.ProfileContainer}>
-        <View style={styles.ProfileContainerTop}>
-          <TouchableOpacity>
-            <AntDesign name='arrowleft' size={24} color='black' />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={GoToEdit}>
-            <MaterialIcons name='more-vert' size={24} color='black' />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.ProfileContainerBottom}>
           <TouchableOpacity
-            style={styles.ProfileImage}
-            onPress={() => setModalVisible(true)}
-          >
-            {image ? (
-              <Image style={styles.Image} source={{ uri: image }} />
-            ) : (
-              <Image
-                style={styles.Image}
-                source={{
-                  uri:
-                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqAU9KXPynTtqeWYLQlJ9CRVULXthc2yNlRw&usqp=CAU'
-                }}
-              />
-            )}
-          </TouchableOpacity>
-          <View style={styles.ProfileUserName}>
-            <Text style={styles.ProfileName}>{user.name}</Text>
-            <Text>online</Text>
-          </View>
-        </View>
-        <View elevation={5} style={styles.ProfileAddImage}>
-          <TouchableOpacity
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-            onPress={addImage}
-          >
-            <MaterialCommunityIcons
-              name='camera-plus-outline'
-              size={30}
-              color='#3F5D7D'
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.ProfileMenu}>
-        <Text style={styles.ProfileMenuTitle}>Conta</Text>
-        <TouchableOpacity
-          style={styles.ProfileMenuItemX}
-          onPress={() => {
-            setModalName(true)
-            setTextInputFocus(true)
-          }}
-        >
-          <Text style={styles.ProfileMenuTextTitle}>{user.name}</Text>
-          <Text style={styles.ProfileMenuText}>tap to change name</Text>
-          <Modal
-            animationType='slide'
-            transparent={true}
-            visible={modalName}
-            onRequestClose={() => {
-              setModalName(!modalName)
-              setName(user.name)
+            style={{
+              elevation: 10, // Android
+            }}
+            onPress={() => {
+              setModalVisible(true);
             }}
           >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.ModalTitle}>Degite o seu nome</Text>
-                <TextInput
-                  style={{
-                    borderBottomWidth: 2,
-                    borderBottomColor: '#3F5D7D',
-                    fontSize: 18
-                  }}
-                  placeholderTextColor='#555'
-                  autoFocus={textInputFocus}
-                  selectionColor='#3F5D7D'
-                  value={name}
-                  onChangeText={text => setName(text)}
-                />
-                <View style={styles.ModalButtons}>
-                  <TouchableOpacity onPress={handleModalButton}>
-                    <Text style={styles.ModalButtonText}>Save</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </Modal>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.ProfileMenu}>
-        <TouchableOpacity
-          style={styles.ProfileSettingsItem}
-          onPress={() => {
-            navigation.navigate('ChangePassword')
+            <Image
+              style={{
+                width: 150,
+                height: 150,
+                borderRadius: 100,
+              }}
+              source={{
+                uri: image,
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.NameContent}>
+          <Text style={styles.NameText}>{user.name}</Text>
+          <Text style={styles.EmailText}>{user.email}</Text>
+          <View style={styles.Buttons}>
+            <TouchableOpacity
+              style={styles.ButtonEdit}
+              onPress={() => navigation.navigate("EditProfile")}
+            >
+              <Text style={styles.ButtonEditText}>Editar Perfil</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.ButtonSettings}
+              onPress={() => navigation.navigate("ClientSetting")}
+            >
+              <Text style={styles.ButtonSettingsText}>Definições</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
           }}
         >
-          <Feather name='lock' size={30} color='black' />
-          <Text style={styles.ProfileSettingsItemText}>
-            Alterar palavra passe
-          </Text>
-        </TouchableOpacity>
-        <View
-          style={{ borderBottomWidth: 1, width: '100%', marginLeft: 40 }}
-        ></View>
-        <TouchableOpacity style={styles.ProfileSettingsItem}>
-          <FontAwesome name='heart-o' size={30} color='black' />
-          <Text style={styles.ProfileSettingsItemText}>Meus Favoritos</Text>
-        </TouchableOpacity>
-        <View
-          style={{ borderBottomWidth: 1, width: '100%', marginLeft: 40 }}
-        ></View>
-        <TouchableOpacity style={styles.ProfileSettingsItem}>
-          <Octicons name='calendar' size={30} color='black' />
-          <Text style={styles.ProfileSettingsItemText}>Meus Agendamentos</Text>
-        </TouchableOpacity>
-        <View
-          style={{ borderBottomWidth: 1, width: '100%', marginLeft: 40 }}
-        ></View>
-        <TouchableOpacity
-          style={styles.ProfileSettingsItem}
-          onPress={handleLogoutButton}
-        >
-          <MaterialCommunityIcons name='logout' size={30} color='black' />
-          <Text style={styles.ProfileSettingsItemText}>Sair</Text>
-        </TouchableOpacity>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#000",
+            }}
+          >
+            <Image
+              source={{
+                uri: image,
+              }}
+              style={{ height: 300, width: "100%" }}
+            />
+          </View>
+        </Modal>
       </View>
     </ScrollView>
-  )
-}
-export default Profile
+  );
+};
+export default Profile;
 
 /*
 <TouchableOpacity style={styles.ProfileOptionsItem}>

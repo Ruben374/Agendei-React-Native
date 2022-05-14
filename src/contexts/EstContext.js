@@ -1,5 +1,5 @@
 import React, {createContext, useReducer} from 'react';
-import {initialState, UserReducer} from '../reducers/EstReducer';
+import {initialState, EstReducer} from '../reducers/EstReducer';
 
 export const EstContext = createContext();
 

@@ -1,91 +1,196 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet } from "react-native";
 const Styles = StyleSheet.create({
   s: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: "#fff",
   },
 
   Container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center'
+    backgroundColor: "#fff",
+    alignItems: "center",
   },
   Hero: {
     height: 240,
-    width: '100%',
-    justifyContent: 'space-between'
+    width: "100%",
+    justifyContent: "space-between",
   },
   HeroButtons: {
-    width: '100%',
+    width: "100%",
     padding: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   HeroContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
     padding: 15,
     marginBottom: 10,
     borderRadius: 10,
-    width: '70%',
-    alignSelf: 'center'
+    width: "70%",
+    alignSelf: "center",
   },
   HeroContentText: {
     fontSize: 15,
-    color: '#3F5D7D',
-    fontWeight: 'bold'
+    color: "#222455",
+    fontFamily: "NotoSans_700Bold",
   },
   ContainerInfo: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   ContainerDescription: {
-    width: '100%',
+    width: "100%",
     paddingHorizontal: 10,
     marginTop: 10,
-    justifyContent: 'center',
-  
+    justifyContent: "center",
   },
   ContainerInfoNameAndRating: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 10,
-    justifyContent: 'space-between'
+    justifyContent: "space-between",
+    marginTop: 15,
   },
   ContainerInfoTitle: {
     fontSize: 18,
-    color: '#3F5D7D',
-    fontWeight: 'bold',
+    color: "#222455",
+    fontFamily: "NotoSans_700Bold",
     flex: 1,
-    flexWrap: 'wrap'
+    flexWrap: "wrap",
   },
   ContainerInfoText: {
     fontSize: 15,
-    color: '#A0A0A0'
+    color: "#6e7faa",
+    fontFamily: "NotoSans_400Regular",
   },
   ContainerInfoAdress: {
-    width: '100%',
-    padding: 10,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  ContainerInfoOpen: {
-    width: '100%',
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 10,
-    flexDirection: 'row',
-    alignItems: 'center'
+    marginTop: 5,
+  },
+  ContainerInfoAdressText: {
+    fontSize: 14,
+    color: "#B0C4DE",
+    fontFamily: "NotoSans_700Bold",
+  },
+  SeeAll: {
+    fontSize: 13,
+    color: "#B0C4DE",
+    fontFamily: "NotoSans_400Regular",
+  },
+  Photos: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 10,
+  },
+  PhotosText: {
+    fontSize: 18,
+    color: "#222455",
+    fontFamily: "NotoSans_700Bold",
+  },
+  Services: {
+    marginTop: 10,
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 10,
+
+  },
+  ServicesText: {
+    fontSize: 18,
+    color: "#222455",
+    fontFamily: "NotoSans_700Bold",
+  },
+
+  ContainerInfoOpen: {
+    width: "100%",
+    paddingHorizontal: 10,
+    flexDirection: "row",
+    alignItems: "center",
   },
   ServicesTitle: {
-    alignSelf: 'flex-start',
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#3F5D7D',
-    paddingHorizontal: 10
+    alignSelf: "flex-start",
+    fontSize: 18,
+    color: "#222455",
+    fontFamily: "NotoSans_700Bold",
+    padding: 10,
+    marginBottom: 80,
+  },
+
+  CategoryCard: { width: 150, height: 130 },
+  RattingBtn: {
+    position: "absolute",
+    width: "100%",
+    height: 60,
+    backgroundColor: "#5663ff",
+    bottom: 0,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  RattingText: {
+    color: "#fff",
+    fontSize: 18,
+    fontFamily: "NotoSans_700Bold",
+  },
+  RattingAndReViewContainer: {
+    width: "100%",
+    padding: 15,
+  },
+  RattingAndReViewItem: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  RattingAndReViewContent: {
+    flex: 1,
+
+  },
+  RattingAndReviewContentTop: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  RattingAndReviewName: {
+    color: "#222455",
+    fontSize: 18,
+    fontFamily: "NotoSans_700Bold",
+  },
+  RattingAndReviewStars: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    height:20,
+    backgroundColor:"#B0C4DE",
+    paddingHorizontal:10,
+    borderRadius:10
+  },
+  RattingAndReviewStarsText:{
+    color: "#222455",
+    fontSize: 15,
+    fontFamily: "NotoSans_400Regular",
+  },
+  RattingAndreviewContentBottom:{
+    flex:1,
+    color: "#B0C4DE",
+    fontSize: 13,
+    fontFamily: "NotoSans_700Bold", 
+  },
+  ServicesCard:{
+
   }
-})
-export default Styles
+});
+export default Styles;

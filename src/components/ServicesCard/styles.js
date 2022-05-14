@@ -1,39 +1,39 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet } from "react-native";
 
 const Styles = StyleSheet.create({
-      CardContainer: {
-    width: '100%',
+  CardContainer: {
+    width: "100%",
     padding: 10,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row'
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
   },
   CardInfo: {},
   CardButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
-    backgroundColor: '#3F5D7D'
+    backgroundColor: "#5663ff",
   },
   CardButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-     fontSize: 15,
+    color: "#fff",
+   fontFamily:"NotoSans_700Bold",
+    fontSize: 15,
   },
   ServiceName: {
-    color: '#A0A0A0',
+    color: "#A0A0A0",
     fontSize: 20,
     flex: 1,
-    flexWrap: 'wrap',
-    fontWeight: 'bold'
+    flexWrap: "wrap",
+    fontFamily:"NotoSans_700Bold",
   },
   ServicePrice: {
     fontSize: 15,
     flex: 1,
-    flexWrap: 'wrap',
-    color: '#3F5D7D',
-    fontWeight: 'bold'
-  }
-})
+    flexWrap: "wrap",
+    color: "#222455",
+    fontFamily:"NotoSans_700Bold",
+  },
+});
 
-export default Styles
+export default Styles;

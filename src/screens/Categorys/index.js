@@ -20,17 +20,23 @@ import { useIsFocused } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Card } from "react-native-shadow-cards";
 import { Ionicons } from "@expo/vector-icons";
-import EstCardHome from "../../components/EstCardHome/index.js";
-
+import { Fontisto } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
 let vetor = [1, 2, 3, 4];
+import Config from "../../config/Api.config.js";
 
-const Search = ({ navigation, route }) => {
+const Categorys = ({ navigation, route }) => {
   const isFocused = useIsFocused();
-  const [estList, setEstList] = useState([]);
+  const [catList, setCatEstList] = useState([]);
   const [searchValue, setSearchValue] = useState("");
+  const [busca, setBusca] = useState([]);
+  const getEstForCat = async (id, name) => {
+    const response = await Api.getEst(id);
+    navigation.navigate("Search", { data: response, title: name });
+  };
 
   const lowerbusca = searchValue.toLowerCase();
-  const filtro = estList.filter((list) =>
+  const filtro = catList.filter((list) =>
     list.name.toLowerCase().includes(lowerbusca)
   );
 
@@ -39,7 +45,11 @@ const Search = ({ navigation, route }) => {
     setEstList(response);
   };
   useEffect(() => {
-    setEstList(route.params.data);
+    const setcat = () => {
+      setCatEstList(route.params.data);
+      setBusca(route.params.data);
+    };
+    setcat();
   }, [isFocused]);
 
   return (
@@ -49,7 +59,7 @@ const Search = ({ navigation, route }) => {
           <TouchableOpacity>
             <AntDesign name="arrowleft" size={30} color="#222455" />
           </TouchableOpacity>
-          <Text style={styles.HeaderText}>{route.params.title}</Text>
+          <Text style={styles.HeaderText}>Categorias</Text>
         </View>
         <Card style={styles.SearchArea} elevation={5} opacity={2}>
           <FontAwesome name="search" size={24} color="#222455" />
@@ -58,24 +68,37 @@ const Search = ({ navigation, route }) => {
             placeholder="Pesquisar"
             placeholderTextColor="#B0C4DE"
             value={searchValue}
-            onChangeText={(text) => setSearchValue(text)}
+            onChangeText={(text) => {
+              setSearchValue(text);
+            }}
           />
           <TouchableOpacity onPress={() => setSearchValue("")}>
             <AntDesign name="closecircleo" size={24} color="#222455" />
           </TouchableOpacity>
         </Card>
-
         {filtro.map((item, key) => (
           <TouchableOpacity
-            style={{ marginTop: 20 }}
+            style={styles.CardCategoryContent}
             key={key}
-            onPress={() => navigation.navigate("Est", { id: item._id })}
+            onPress={() => {
+              getEstForCat(item._id, item.name);
+            }}
           >
-            <EstCardHome data={item} />
+            <ImageBackground
+              source={{
+                uri: `${Config.url}/${item.image}`,
+              }}
+              style={styles.CategoryCard}
+              imageStyle={{ borderRadius: 10, opacity: 0.5 }}
+            >
+              <BlurView style={styles.HeroContent} intensity={10} tint="light">
+                <Text style={styles.CategoryCardText}>{item.name}</Text>
+              </BlurView>
+            </ImageBackground>
           </TouchableOpacity>
         ))}
       </View>
     </ScrollView>
   );
 };
-export default Search;
+export default Categorys;

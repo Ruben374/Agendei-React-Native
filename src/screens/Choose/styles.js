@@ -7,7 +7,6 @@ const Styles = StyleSheet.create({
   },
   Scroll: {
     flex: 1,
-    padding: 20,
     backgroundColor: '#fff'
   },
   Top: {

@@ -1,26 +1,18 @@
-import React from 'react'
-import { TouchableOpacity, View, Image, Text } from 'react-native'
-import styles from './styles.js'
+import React from "react";
+import {Image} from "react-native";
+import styles from "./styles.js";
+import Config from "../../config/Api.config.js";
 
-const CategoryCard = ({Data,onPress}) => {
-    
-    const {image,name}= Data;
+const CategoryCard = ({ data }) => {
   return (
-    <TouchableOpacity
-      style={styles.Container}
-     
-    >
-      <TouchableOpacity style={styles.Element}  onPress={e=>onPress(Data._id,Data.name)}>
-        <Image
-          style={{ width: 48, height: 48 }}
-          source={{
-            uri: `https://teste-api-api.herokuapp.com/${image}`
-          }}
-        />
-      </TouchableOpacity>
-      <Text style={{ marginBottom: 10 }}>{name}</Text>
-    </TouchableOpacity>
-  )
-}
+    <Image
+      style={styles.CategoryCard}
+      source={{
+        uri: `${Config.url}/${data.image}`,
+      }}
+    />
+  );
+  
+};
 
-export default CategoryCard
+export default CategoryCard;

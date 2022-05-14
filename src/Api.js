@@ -1,145 +1,170 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import Config from './config/Api.config.js'
-const BASE_API = Config.url
+import Config from "./config/Api.config.js";
+const BASE_API = Config.url;
 
 export default {
   Login: async (email, password) => {
     try {
       const request = await fetch(`${BASE_API}/clients/auth/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password })
-      })
-      const response = await request.json()
-      return response
+        body: JSON.stringify({ email, password }),
+      });
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   },
 
   RefreshToken: async () => {
     try {
-      const token = await AsyncStorage.getItem('token')
+      const token = await AsyncStorage.getItem("token");
       const request = await fetch(`${BASE_API}/clients/refresh`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ token })
-      })
-      const response = await request.json()
-      return response
+        body: JSON.stringify({ token }),
+      });
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
+    }
+  },
+  UploadImage: async (formData) => {
+    try {
+      const request = await fetch(`${BASE_API}/clients/clientimage`, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const response = await request.json();
+      return response;
+    } catch (error) {
+      console.log(error.message);
     }
   },
 
   getCategories: async () => {
     try {
-      const request = await fetch(`${BASE_API}/category`)
-      const response = await request.json()
-      return response
+      const request = await fetch(`${BASE_API}/category`);
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   },
-  getEst: async categoryId => {
+  getEst: async (categoryId) => {
     try {
-      const request = await fetch(`${BASE_API}/est/${categoryId}`)
-      const response = await request.json()
-      return response
+      const request = await fetch(`${BASE_API}/est/${categoryId}`);
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
+    }
+  },
+  getAllEst: async () => {
+    try {
+      const request = await fetch(`${BASE_API}/est`);
+      const response = await request.json();
+      return response;
+    } catch (error) {
+      console.log(error.message);
     }
   },
   SignUp: async (username, email, password) => {
     try {
       const request = await fetch(`${BASE_API}/clients/signup`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, email, password })
-      })
-      const response = await request.json()
-      return response
+        body: JSON.stringify({ username, email, password }),
+      });
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
-      return error
+      console.log(error.message);
+      return error;
     }
   },
   ConfirmCode: async (confirmationCode, email) => {
     try {
       const request = await fetch(`${BASE_API}/clients/auth/confirmcode`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ confirmationCode, email })
-      })
-      const response = await request.json()
-      return response
+        body: JSON.stringify({ confirmationCode, email }),
+      });
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
-      return error
+      console.log(error.message);
+      return error;
     }
   },
-  SetAppointments: async (estid, clientid, serviceid, date, hour) => {
+  SetAppointments: async (client, service, date) => {
     try {
       const request = await fetch(`${BASE_API}/appointments/post`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ estid, clientid, serviceid, date, hour })
-      })
-      const response = await request.json()
-      return response
+        body: JSON.stringify({client, service, date}),
+      });
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
-      return error
+      console.log(error.message);
+      return error;
     }
   },
-  UpdateClient: async (option, id, param, current) => {
+  UpdateClient: async (option, email, param, current) => {
     try {
       const request = await fetch(`${BASE_API}/clients/update`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ option, id, param, current })
-      })
-      const response = await request.json()
-      return response
+        body: JSON.stringify({ option, email, param, current }),
+      });
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
-      return error
+      console.log(error.message);
+      return error;
     }
   },
-  VerifyEmailToResetPassword: async email => {
+  VerifyEmailToResetPassword: async (email) => {
     try {
       const request = await fetch(`${BASE_API}/clients/resetpassword`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email })
-      })
-      const response = await request.json()
-      return response
+        body: JSON.stringify({ email }),
+      });
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
-      return error
+      console.log(error.message);
+      return error;
     }
   },
   VerifyCodeToResetPassword: async (email, resetPasswordCode) => {
@@ -147,143 +172,143 @@ export default {
       const request = await fetch(
         `${BASE_API}/clients/verifyresetpasswordcode`,
         {
-          method: 'POST',
+          method: "POST",
           headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
+            Accept: "application/json",
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, resetPasswordCode })
+          body: JSON.stringify({ email, resetPasswordCode }),
         }
-      )
-      const response = await request.json()
-      return response
+      );
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
-      return error
+      console.log(error.message);
+      return error;
     }
   },
   Ratting: async (clientId, estId, rate) => {
     try {
       const request = await fetch(`${BASE_API}/est/rating`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ clientId, estId, rate })
-      })
-      const response = await request.json()
-      return response
+        body: JSON.stringify({ clientId, estId, rate }),
+      });
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
-      return error
+      console.log(error.message);
+      return error;
     }
   },
   UploadRate: async (clientId, estId, rate) => {
     try {
       const request = await fetch(`${BASE_API}/est/uploadrate`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ clientId, estId, rate })
-      })
-      const response = await request.json()
-      return response
+        body: JSON.stringify({ clientId, estId, rate }),
+      });
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
-      return error
+      console.log(error.message);
+      return error;
     }
   },
-  getEstServices: async estId => {
+  getEstServices: async (estId) => {
     try {
-      const request = await fetch(`${BASE_API}/services/${estId}`)
-      const response = await request.json()
-      return response
+      const request = await fetch(`${BASE_API}/services/${estId}`);
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   },
-  getServ: async servId => {
+  getServ: async (servId) => {
     try {
-      const request = await fetch(`${BASE_API}/services/serv/${servId}`)
-      const response = await request.json()
-      return response
+      const request = await fetch(`${BASE_API}/services/serv/${servId}`);
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   },
-  getAppointments: async clientId => {
+  getAppointments: async (clientEmail) => {
     try {
-      const request = await fetch(`${BASE_API}/appointments/${clientId}`)
-      const response = await request.json()
-      return response
+      const request = await fetch(`${BASE_API}/appointments/${clientEmail}`);
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   },
-  GetEst: async id => {
+  GetEst: async (id) => {
     try {
-      const request = await fetch(`${BASE_API}/est/get/${id}`)
-      const response = await request.json()
-      return response
+      const request = await fetch(`${BASE_API}/est/get/${id}`);
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   },
-  getAppointmentsByServiceId: async serviceId => {
+  getAppointmentsByServiceId: async (serviceId) => {
     try {
       const request = await fetch(
         `${BASE_API}/appointments/service/${serviceId}`
-      )
-      const response = await request.json()
-      return response
+      );
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   },
   getAppointmentsDate: async (serviceId, date) => {
     try {
       const request = await fetch(
         `${BASE_API}/appointments/services/${serviceId}/${date}`
-      )
-      const response = await request.json()
-      return response
+      );
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   },
-  setAvatar: async data => {
+  setAvatar: async (data) => {
     try {
       const request = await fetch(`${BASE_API}/clients/teste`, {
-        method: 'POST',
+        method: "POST",
         body: data,
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      const response = await request.json()
-      return response
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   },
   VerifyRate: async (clientId, estId) => {
     try {
       const request = await fetch(`${BASE_API}/est/getrate`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ clientId, estId })
-      })
-      const response = await request.json()
-      return response
+        body: JSON.stringify({ clientId, estId }),
+      });
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
-  }
-}
+  },
+};

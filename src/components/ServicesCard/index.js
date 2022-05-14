@@ -1,15 +1,15 @@
-import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
-import styles from './styles'
+import React from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import styles from "./styles";
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from "@react-navigation/native";
 
 const ServicesCard = ({ item }) => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   const handleOnPress = () => {
-    navigation.navigate('ConfirmAppointments', {item:item})
-  }
+    navigation.navigate("ConfirmAppointments", { item });
+  };
 
   return (
     <View style={styles.CardContainer}>
@@ -21,7 +21,7 @@ const ServicesCard = ({ item }) => {
         <Text style={styles.CardButtonText}>Agendar</Text>
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
-export default ServicesCard
+export default ServicesCard;
