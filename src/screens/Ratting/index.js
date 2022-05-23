@@ -11,15 +11,22 @@ import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import styles from "./styles.js";
 import Api from "../../Api";
+import { UserContext } from "../../contexts/UserContext";
+import { EstContext } from "../../contexts/EstContext";
+import { UserReducer } from "../../reducers/UserReducer.js";
 const Rating = ({ route }) => {
+  const { state: user } = useContext(UserContext);
   const [star1, setStar1] = useState(false);
   const [star2, setStar2] = useState(false);
   const [star3, setStar3] = useState(false);
   const [star4, setStar4] = useState(false);
   const [star5, setStar5] = useState(false);
   const [RATE, setRATE] = useState(0);
+  const [rat, setRat] = useState();
+  const [R, setR] = useState();
   const [edit, setEdit] = useState(false);
-  const ratting = async () => {
+  const [comment, setComment] = useState("");
+  const rating = async () => {
     let rat = 0;
     if (star1) {
       rat++;
@@ -39,22 +46,33 @@ const Rating = ({ route }) => {
     setRATE(rat);
     if (edit) {
       try {
-        const response = await Api.UploadRate(
-          route.params.userId,
-          route.params.estId,
-          rat
+        const response = await Api.UpdateRate(
+          R._id,
+          route.params.id,
+          rat,
+          comment
         );
         console.log(response);
       } catch (error) {
         console.log(error.message);
       }
     } else {
+      if (comment.trim() == "") {
+        alert("Preencha o campo comment")
+        return false
+      }
       try {
-        console.log(route.params.userId, route.params.estId, rat);
+        // console.log(route.params.userId, route.params.estId, rat);
+        const est = {
+          id: route.params.id,
+        }
+        const client = {
+          email: user.email,
+          avatar: user.avatar,
+          name: user.name
+        }
         const response = await Api.Ratting(
-          route.params.userId,
-          route.params.estId,
-          rat
+          client, est, rat, comment
         );
         console.log(response);
       } catch (error) {
@@ -62,50 +80,56 @@ const Rating = ({ route }) => {
       }
     }
   };
-  const Verify = async () => {
-    const response = await Api.VerifyRate(
-      route.params.userId,
-      route.params.estId
-    );
-    if (response.status == 200) {
-      setEdit(true);
-      setRATE(Math.trunc(response.rating));
-      if (Math.trunc(response.rating) == 5) {
-        setStar1(true);
-        setStar5(true);
-        setStar4(true);
-        setStar3(true);
-        setStar2(true);
-      }
-      if (Math.trunc(response.rating) == 4) {
-        setStar1(true);
-        setStar4(true);
-        setStar3(true);
-        setStar2(true);
-      }
-      if (Math.trunc(response.rating) == 3) {
-        setStar1(true);
+  useEffect(() => {
+    const getRate = async () => {
+      try {
+        const response = await Api.VerifyRate(user.email, route.params.id)
+        console.log(response)
+        if (response.status == 200) {
+          setComment(response.rating.comment)
+          //console.log(response.rating)
+          setR(response.rating)
+          setEdit(true);
+          setRATE(Math.trunc(response.rating.rate));
+          if (Math.trunc(response.rating.rate) == 5) {
+            setStar1(true);
+            setStar5(true);
+            setStar4(true);
+            setStar3(true);
+            setStar2(true);
+          }
+          if (Math.trunc(response.rating.rate) == 4) {
+            setStar1(true);
+            setStar4(true);
+            setStar3(true);
+            setStar2(true);
+          }
+          if (Math.trunc(response.rating.rate) == 3) {
+            setStar1(true);
 
-        setStar3(true);
-        setStar2(true);
+            setStar3(true);
+            setStar2(true);
+          }
+          if (Math.trunc(response.rating.rate) == 2) {
+            setStar1(true);
+            setStar2(true);
+          }
+          if (Math.trunc(response.rating.rate) == 1) {
+            setStar1(true);
+          }
+        }
+        else {
+          setEdit(false);
+        }
       }
-      if (Math.trunc(response.rating) == 2) {
-        setStar1(true);
-        setStar2(true);
-      }
-      if (Math.trunc(response.rating) == 1) {
-        setStar1(true);
+
+      catch (error) {
+        alert(error.message)
+        console.log(error.message)
       }
     }
-    /* if(response.status==404){
-      
-    }
-    */
-    //console.log(response)
-  };
-  /*   useEffect(() => {
-    Verify()
-  }, []) */
+    getRate()
+  }, [])
 
   return (
     <>
@@ -122,20 +146,63 @@ const Rating = ({ route }) => {
           </View>
           <View style={styles.Body}>
             <View style={styles.StarContainer}>
-              <TouchableOpacity>
-                <AntDesign name="star" size={40} color="#6e7faa" />
+              <TouchableOpacity
+                onPress={() => {
+                  setStar1(!star1);
+                  setStar5(false);
+                  setStar4(false);
+                  setStar3(false);
+                  setStar2(false);
+                }}
+
+              >
+                <AntDesign name="star" size={40} color={star1 ? "yellow" : "#6e7faa"} />
               </TouchableOpacity>
-              <TouchableOpacity>
-                <AntDesign name="star" size={40} color="#6e7faa" />
+              <TouchableOpacity
+                onPress={() => {
+                  setStar1(true);
+                  setStar2(!star2);
+                  setStar3(false);
+                  setStar4(false);
+                  setStar5(false);
+                }}
+
+              >
+                <AntDesign name="star" size={40} color={star2 ? "yellow" : "#6e7faa"} />
               </TouchableOpacity>
-              <TouchableOpacity>
-                <AntDesign name="star" size={40} color="#6e7faa" />
+              <TouchableOpacity
+
+                onPress={() => {
+                  setStar1(true);
+                  setStar2(true);
+                  setStar3(!star3);
+                  setStar4(false);
+                  setStar5(false);
+                }}
+              >
+                <AntDesign name="star" size={40} color={star3 ? "yellow" : "#6e7faa"} />
               </TouchableOpacity>
-              <TouchableOpacity>
-                <AntDesign name="star" size={40} color="#6e7faa" />
+              <TouchableOpacity
+                onPress={() => {
+                  setStar1(true);
+                  setStar2(true);
+                  setStar3(true);
+                  setStar4(!star4);
+                  setStar5(false);
+                }}
+              >
+                <AntDesign name="star" size={40} color={star4 ? "yellow" : "#6e7faa"} />
               </TouchableOpacity>
-              <TouchableOpacity>
-                <AntDesign name="star" size={40} color="#6e7faa" />
+              <TouchableOpacity
+                onPress={() => {
+                  setStar1(true);
+                  setStar2(true);
+                  setStar3(true);
+                  setStar4(true);
+                  setStar5(!star5);
+                }}
+              >
+                <AntDesign name="star" size={40} color={star5 ? "yellow" : "#6e7faa"} />
               </TouchableOpacity>
             </View>
             <View style={styles.RattingTextView}>
@@ -146,12 +213,14 @@ const Rating = ({ route }) => {
                 multiline={true}
                 maxLength={100}
                 placeholder="Escreva a sua experiência"
-                placeholderTextColor=""
+                placeholderTextColor="red"
+                value={comment}
+                onChangeText={(text) => setComment(text)}
                 style={{
                   textAlignVertical: "top",
                   fontFamily: "NotoSans_400Regular",
                   color: "#222455",
-                  fontSize: 18,
+                  fontSize: 16,
                 }}
               />
             </View>
@@ -160,7 +229,7 @@ const Rating = ({ route }) => {
       </ScrollView>
       <TouchableOpacity
         style={styles.RattingBtn}
-        onPress={() => navigation.navigate("Ratting")}
+        onPress={rating}
       >
         <Text style={styles.RattingText}>Guardar</Text>
       </TouchableOpacity>
@@ -169,89 +238,3 @@ const Rating = ({ route }) => {
 };
 export default Rating;
 
-{
-  /*
-   <View style={styles.StarContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            setStar1(!star1)
-            setStar5(false)
-            setStar4(false)
-            setStar3(false)
-            setStar2(false)
-          }}
-        >
-          {star1 ? (
-            <Ionicons name='star' size={50} color='yellow' />
-          ) : (
-            <Ionicons name='star-outline' size={50} color='black' />
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            if (!star1) {
-              setStar1(!star1)
-              setStar2(!star2)
-            } else {
-              setStar5(false)
-              setStar4(false)
-              setStar3(false)
-              setStar2(!star2)
-            }
-          }}
-        >
-          {star2 ? (
-            <Ionicons name='star' size={50} color='yellow' />
-          ) : (
-            <Ionicons name='star-outline' size={50} color='black' />
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            setStar1(true)
-            setStar2(true)
-            setStar3(!star3)
-            setStar4(false)
-            setStar5(false)
-          }}
-        >
-          {star3 ? (
-            <Ionicons name='star' size={50} color='yellow' />
-          ) : (
-            <Ionicons name='star-outline' size={50} color='black' />
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            setStar1(true)
-            setStar2(true)
-            setStar3(true)
-            setStar4(!star4)
-            setStar5(false)
-          }}
-        >
-          {star4 ? (
-            <Ionicons name='star' size={50} color='yellow' />
-          ) : (
-            <Ionicons name='star-outline' size={50} color='black' />
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            setStar1(true)
-            setStar2(true)
-            setStar3(true)
-            setStar4(true)
-            setStar5(!star5)
-          }}
-        >
-          {star5 ? (
-            <Ionicons name='star' size={50} color='yellow' />
-          ) : (
-            <Ionicons name='star-outline' size={50} color='black' />
-          )}
-        </TouchableOpacity>
-      </View>
-     
-  */
-}

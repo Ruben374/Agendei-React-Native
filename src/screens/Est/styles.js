@@ -154,6 +154,7 @@ const Styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    marginBottom:5 
   },
   RattingAndReViewContent: {
     flex: 1,

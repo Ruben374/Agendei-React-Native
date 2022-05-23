@@ -38,6 +38,7 @@ const Home = ({ navigation }) => {
 
   const [searchValue, setSearchValue] = useState("");
   const [busca, setBusca] = useState([]);
+  const [loading, setLoading] = useState(false)
 
   const getEst = async () => {
     const response = await Api.getEst(route.params.id);
@@ -58,157 +59,183 @@ const Home = ({ navigation }) => {
 
   useEffect(() => {
     const getData = async () => {
-      //console.log(est.search);
-      const res = await Api.getAllEst();
-      const getCategorys = await Api.getCategories();
-      //console.log(getCategorys);
-      setCategorys(getCategorys);
-      estDispatch({
-        type: "setEst",
-        payload: {
-          est: res.est,
-        },
-      });
-      estDispatch({
-        type: "setRate",
-        payload: {
-          topRate: res.rates,
-        },
-      });
-      let b = [];
-      let c = [];
-      if (est.search.rat > -1 && est.search.category.length > 0) {
-        for (let i = 0; i <= res.est.length - 1; i++) {
-          if (
-            res.est[i].ratingmedia >= est.search.rat &&
-            est.search.category == res.est[i].category._id
-          ) {
-            b.push(res.est[i]);
+      try {
+        setLoading(true)
+        //console.log(est.search);
+        const res = await Api.getAllEst();
+        const getCategorys = await Api.getCategories();
+        //console.log(getCategorys);
+        setCategorys(getCategorys);
+        estDispatch({
+          type: "setEst",
+          payload: {
+            est: res.est,
+          },
+        });
+        estDispatch({
+          type: "setRate",
+          payload: {
+            topRate: res.rates,
+          },
+        });
+        let b = [];
+        let c = [];
+        if (est.search.rat > -1 && est.search.category) {
+          for (let i = 0; i <= res.est.length - 1; i++) {
+            if (
+              res.est[i].ratingmedia >= est.search.rat &&
+              est.search.category == res.est[i].category._id
+            ) {
+              b.push(res.est[i]);
+            }
           }
-        }
-        console.log(b.length);
-        setEstList(b);
-      } else if (est.search.rat > -1) {
-        console.log("so tem rat");
-        for (let i = 0; i <= res.est.length - 1; i++) {
-          if (res.est[i].ratingmedia >= est.search.rat) {
-            b.push(res.est[i]);
+          console.log(b.length);
+          setEstList(b);
+        } else if (est.search.rat > -1) {
+          console.log("so tem rat");
+          for (let i = 0; i <= res.est.length - 1; i++) {
+            if (res.est[i].ratingmedia >= est.search.rat) {
+              b.push(res.est[i]);
+            }
           }
+          console.log(b.length);
+          setEstList(b);
+        } else {
+          console.log("n peguei dois");
+          setEstList(res.est);
         }
-        console.log(b.length);
-        setEstList(b);
-      } else {
-        console.log("n peguei dois");
-        setEstList(res.est);
+        setEstTopRates(res.rates);
+        setLoading(false)
       }
-      setEstTopRates(res.rates);
+      catch (error) {
+        console.log(error.message)
+      }
     };
 
     getData();
   }, [isFocused]);
 
   return (
-    <ScrollView style={styles.Scroll}>
-      <View style={styles.Container}>
-        <Card style={styles.SearchArea} elevation={5} opacity={2}>
-          <FontAwesome name="search" size={24} color="#222455" />
-          <TextInput
-            style={styles.SearchInput}
-            placeholder="Encontre estabelecimentos"
-            placeholderTextColor="#B0C4DE"
-            value={searchValue}
-            onChangeText={(text) => {
-              setSearchValue(text);
-              Search();
-            }}
-          />
 
-          {searchValue.trim() == "" ? (
-            <TouchableOpacity onPress={() => navigation.navigate("Filter")}>
-              <AntDesign name="filter" size={24} color="#222455" />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity onPress={() => setSearchValue("")}>
-              <AntDesign name="closecircleo" size={24} color="#222455" />
-            </TouchableOpacity>
-          )}
-        </Card>
-        {searchValue.trim() == "" ? (
-          <View>
-            <View style={styles.CardTop}>
-              <Text style={styles.CardTopTextMessage}>
-                Estabelecimentos em alta
-              </Text>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("Search", {
-                    data: estTopRates,
-                    title: "Estabelecimentos em Alta",
-                  })
-                }
-              >
-                <Text style={styles.SeeAll}>
-                  ver todos({estTopRates.length})
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View>
-              <FlatList
-                horizontal
-                style={styles.lista}
-                data={estTopRates}
-                renderItem={({ item, index }) => (
-                  <TouchableOpacity
-                    style={{ marginRight: 20 }}
-                    key={index}
-                    onPress={() => navigation.navigate("Est", { id: item._id })}
-                  >
-                    <EstCardHome data={item} />
+    <>
+      {loading ? (
+        <View style={{ flex: 1, backgroundColor: "#ffff", alignItems: "center", justifyContent: "center" }}>
+          <Image
+            style={{ width: 300, height: 200 }}
+            source={{ uri: 'https://cdn.dribbble.com/users/935167/screenshots/2896660/project-loader-colors.gif' }} />
+        </View>
+      )
+        : (
+          <ScrollView style={styles.Scroll}>
+            <View style={styles.Container}>
+              <Card style={styles.SearchArea} elevation={5} opacity={2}>
+                <FontAwesome name="search" size={24} color="#222455" />
+                <TextInput
+                  style={styles.SearchInput}
+                  placeholder="Encontre estabelecimentos"
+                  placeholderTextColor="#B0C4DE"
+                  value={searchValue}
+                  onChangeText={(text) => {
+                    setSearchValue(text);
+                    Search();
+                  }}
+                />
+
+                {searchValue.trim() == "" ? (
+                  <TouchableOpacity onPress={() => navigation.navigate("Filter")}>
+                    <AntDesign name="filter" size={24} color="#222455" />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => setSearchValue("")}>
+                    <AntDesign name="closecircleo" size={24} color="#222455" />
                   </TouchableOpacity>
                 )}
-                keyExtractor={(item, index) => index.toString()}
-              />
-            </View>
-            <View style={styles.CardTop}>
-              <Text style={styles.CardTopTextMessage}>Categorias</Text>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("Categorys", { data: categorys })
-                }
-              >
-                <Text style={styles.SeeAll}>ver todos({categorys.length})</Text>
-              </TouchableOpacity>
-            </View>
-            <FlatList
-              horizontal
-              data={categorys}
-              renderItem={({ item, index }) => (
-                <TouchableOpacity
-                  style={{ marginRight: 20, marginTop: 20 }}
-                  key={index}
-                  onPress={() => getEstForCat(item._id, item.name)}
-                >
-                  <CategoryCard data={item} />
-                </TouchableOpacity>
+              </Card>
+              {searchValue.trim() == "" ? (
+                <View>
+                  <View style={styles.CardTop}>
+                    <Text style={styles.CardTopTextMessage}>
+                      Estabelecimentos em alta
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("Search", {
+                          data: estTopRates,
+                          title: "Estabelecimentos em Alta",
+                        })
+                      }
+                    >
+                      <Text style={styles.SeeAll}>
+                        ver todos({estTopRates.length})
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View>
+                    <FlatList
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                      style={styles.lista}
+                      data={estTopRates}
+                      renderItem={({ item, index }) => (
+                        <TouchableOpacity
+                          style={{ marginRight: 20, marginLeft: index == 0 ? 5 : 0 }}
+                          key={index}
+                          onPress={() => navigation.navigate("Est", { id: item._id })}
+                        >
+                          <Card>
+                            <EstCardHome data={item} />
+                          </Card>
+
+                        </TouchableOpacity>
+                      )}
+                      keyExtractor={(item, index) => index.toString()}
+                    />
+                  </View>
+                  <View style={styles.CardTop}>
+                    <Text style={styles.CardTopTextMessage}>Categorias</Text>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("Categorys", { data: categorys })
+                      }
+                    >
+                      <Text style={styles.SeeAll}>ver todos({categorys.length})</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <FlatList
+                    showsHorizontalScrollIndicator={false}
+                    horizontal
+                    data={categorys}
+                    renderItem={({ item, index }) => (
+                      <TouchableOpacity
+                        style={{ marginRight: 20, marginTop: 20 }}
+                        key={index}
+                        onPress={() => getEstForCat(item._id, item.name)}
+                      >
+                        <CategoryCard data={item} />
+                      </TouchableOpacity>
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                  />
+                </View>
+              ) : (
+                <View>
+                  {busca.map((item, key) => (
+                    <TouchableOpacity
+                      key={key}
+                      style={{ marginTop: 30, alignItems: "center" }}
+                      onPress={() => navigation.navigate("Est", { id: item._id })}
+                    >
+                      <EstCardHome data={item} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
               )}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          </View>
-        ) : (
-          <View>
-            {busca.map((item, key) => (
-              <TouchableOpacity
-                key={key}
-                style={{ marginTop: 30, alignItems: "center" }}
-                onPress={() => navigation.navigate("Est", { id: item._id })}
-              >
-                <EstCardHome data={item} />
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-      </View>
-    </ScrollView>
+            </View>
+          </ScrollView>
+        )
+      }
+    </>
+
   );
 };
 export default Home;

@@ -2,7 +2,7 @@ export const initialState = {
   email: "",
   name: "",
   avatar: "",
-  appointments: [],
+  favorites: [],
 };
 
 export const UserReducer = (state, action) => {
@@ -13,8 +13,8 @@ export const UserReducer = (state, action) => {
       return { ...state, name: action.payload.name };
     case "setavatar":
       return { ...state, avatar: action.payload.avatar };
-    case "setAppointments":
-      return { ...state, appointments: action.payload.appointments };
+    case "setFavorites":
+      return { ...state, favorites: action.payload.favorites };
     default:
       return state;
   }

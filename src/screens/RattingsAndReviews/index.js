@@ -27,16 +27,14 @@ let vetor = [1, 2, 3, 4];
 
 const RattingsAndReviews = ({ navigation, route }) => {
   const isFocused = useIsFocused();
-  const [estList, setEstList] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
+  const [rattings, setRattings] = useState([]);
 
-  const getEst = async () => {
-    const response = await Api.getEst(route.params.id);
-    setEstList(response);
+  const getRat = async () => {
+    setRattings(route.params.data)
   };
-  /*   useEffect(() => {
-    getEst()
-  }, [isFocused ]) */
+  useEffect(() => {
+    getRat()
+  }, [isFocused])
 
   return (
     <ScrollView style={styles.Scroll}>
@@ -48,58 +46,39 @@ const RattingsAndReviews = ({ navigation, route }) => {
           <Text style={styles.HeaderText}>Avaliações</Text>
         </View>
         <View style={styles.RattingAndReViewContainer}>
-          <View style={styles.RattingAndReViewItem}>
-            <Image
-              style={{
-                width: 60,
-                height: 60,
-                borderRadius: 30,
-                marginRight: 10,
-              }}
-              source={{
-                uri: "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000",
-              }}
-            />
-            <View style={styles.RattingAndReViewContent}>
-              <View style={styles.RattingAndReviewContentTop}>
-                <Text style={styles.RattingAndReviewName}>Ruben André</Text>
-                <View style={styles.RattingAndReviewStars}>
-                  <Text style={styles.RattingAndReviewStarsText}>3.5</Text>
-                  <Ionicons name="star" size={18} color="yellow" />
+          {
+            rattings.map((item, key) => {
+              return (
+                <View key={key} style={styles.RattingAndReViewItem}>
+                  <Image
+                    style={{
+                      width: 60,
+                      height: 60,
+                      borderRadius: 30,
+                      marginRight: 10,
+                    }}
+                    source={{
+                      uri: item.client.avatar == "" ? "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000" : `${Config.url}/${item.client.avatar}`,
+                    }}
+                  />
+                  <View style={styles.RattingAndReViewContent}>
+                    <View style={styles.RattingAndReviewContentTop}>
+                      <Text style={styles.RattingAndReviewName}>{item.client.name}</Text>
+                      <View style={styles.RattingAndReviewStars}>
+                        <Text style={styles.RattingAndReviewStarsText}>{item.rate}</Text>
+                        <Ionicons name="star" size={18} color="yellow" />
+                      </View>
+                    </View>
+                    <Text style={styles.RattingAndreviewContentBottom}>
+                      {item.comment}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-              <Text style={styles.RattingAndreviewContentBottom}>
-                Achei um estabelecimento muito bom
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.RattingAndReViewContainer}>
-          <View style={styles.RattingAndReViewItem}>
-            <Image
-              style={{
-                width: 60,
-                height: 60,
-                borderRadius: 30,
-                marginRight: 10,
-              }}
-              source={{
-                uri: "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000",
-              }}
-            />
-            <View style={styles.RattingAndReViewContent}>
-              <View style={styles.RattingAndReviewContentTop}>
-                <Text style={styles.RattingAndReviewName}>Ruben André</Text>
-                <View style={styles.RattingAndReviewStars}>
-                  <Text style={styles.RattingAndReviewStarsText}>3.5</Text>
-                  <Ionicons name="star" size={18} color="yellow" />
-                </View>
-              </View>
-              <Text style={styles.RattingAndreviewContentBottom}>
-                Achei um estabelecimento muito bom
-              </Text>
-            </View>
-          </View>
+
+
+              )
+            })
+          }
         </View>
       </View>
     </ScrollView>

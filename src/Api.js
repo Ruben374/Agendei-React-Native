@@ -124,7 +124,24 @@ export default {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({client, service, date}),
+        body: JSON.stringify({ client, service, date }),
+      });
+      const response = await request.json();
+      return response;
+    } catch (error) {
+      console.log(error.message);
+      return error;
+    }
+  },
+  DeleteAppointments: async (id) => {
+    try {
+      const request = await fetch(`${BASE_API}/appointments/delete`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
       });
       const response = await request.json();
       return response;
@@ -187,7 +204,7 @@ export default {
       return error;
     }
   },
-  Ratting: async (clientId, estId, rate) => {
+  Ratting: async (client, est, rate, comment) => {
     try {
       const request = await fetch(`${BASE_API}/est/rating`, {
         method: "POST",
@@ -195,7 +212,7 @@ export default {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ clientId, estId, rate }),
+        body: JSON.stringify({ client, est, rate, comment }),
       });
       const response = await request.json();
       return response;
@@ -204,15 +221,15 @@ export default {
       return error;
     }
   },
-  UploadRate: async (clientId, estId, rate) => {
+  UpdateRate: async (rateId, estId, rate, com) => {
     try {
-      const request = await fetch(`${BASE_API}/est/uploadrate`, {
-        method: "PATCH",
+      const request = await fetch(`${BASE_API}/est/updaterate`, {
+        method: "PUT",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ clientId, estId, rate }),
+        body: JSON.stringify({ rateId, estId, rate, com }),
       });
       const response = await request.json();
       return response;
@@ -239,9 +256,9 @@ export default {
       console.log(error.message);
     }
   },
-  getAppointments: async (clientEmail) => {
+  getAppointments: async (email) => {
     try {
-      const request = await fetch(`${BASE_API}/appointments/${clientEmail}`);
+      const request = await fetch(`${BASE_API}/appointments/${email}`);
       const response = await request.json();
       return response;
     } catch (error) {
@@ -250,7 +267,7 @@ export default {
   },
   GetEst: async (id) => {
     try {
-      const request = await fetch(`${BASE_API}/est/get/${id}`);
+      const request = await fetch(`${BASE_API}/est/get/mobile/${id}`);
       const response = await request.json();
       return response;
     } catch (error) {
@@ -295,7 +312,7 @@ export default {
       console.log(error.message);
     }
   },
-  VerifyRate: async (clientId, estId) => {
+  VerifyRate: async (email, id) => {
     try {
       const request = await fetch(`${BASE_API}/est/getrate`, {
         method: "POST",
@@ -303,7 +320,39 @@ export default {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ clientId, estId }),
+        body: JSON.stringify({ email, id }),
+      });
+      const response = await request.json();
+      return response;
+    } catch (error) {
+      console.log(error.message);
+    }
+  },
+  addfav: async (email, fav) => {
+    try {
+      const request = await fetch(`${BASE_API}/clients/addfav`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, fav }),
+      });
+      const response = await request.json();
+      return response;
+    } catch (error) {
+      console.log(error.message);
+    }
+  },
+  remfav: async (email, id) => {
+    try {
+      const request = await fetch(`${BASE_API}/clients/remfav`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, id }),
       });
       const response = await request.json();
       return response;
@@ -312,3 +361,5 @@ export default {
     }
   },
 };
+
+

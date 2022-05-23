@@ -5,21 +5,40 @@ import { Octicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { UserContext } from "../../contexts/UserContext";
+import { useIsFocused } from "@react-navigation/native";
 import Api from "../../Api";
 const Appointments = ({ state }) => {
+  const isFocused = useIsFocused();
   const { state: user } = useContext(UserContext);
   const [appointmentsList, setAppointmentsList] = useState([]);
 
-  const getAppointments = async () => {
-    const response = await Api.getAppointments(user.email);
 
-    console.log(response.length);
-    setAppointmentsList(response);
-  };
 
   useEffect(() => {
+    const getAppointments = async () => {
+      try {
+
+        const response = await Api.getAppointments(user.email);
+        console.log(response);
+        setAppointmentsList(response.agendamentos);
+      }
+      catch (error) {
+        console.log(error.message)
+      }
+    };
     getAppointments();
-  }, []);
+  }, [isFocused]);
+
+  const Delete = async (id) => {
+    try {
+      const response = await Api.DeleteAppointments(id)
+      console.log(response)
+    }
+    catch (error) {
+      console.log(error.message)
+    }
+  }
+
 
   return (
     <ScrollView style={styles.s}>
@@ -33,18 +52,18 @@ const Appointments = ({ state }) => {
             <View style={styles.AppointmentsRow}>
               <View style={styles.AppointmentsItems}>
                 <Octicons name="calendar" size={30} color="#5663ff" />
-                <Text style={styles.AppointmentsItemsText}>{item.date}</Text>
+                <Text style={styles.AppointmentsItemsText}>{new Date(item.date).getFullYear()+"-"+new Date(item.date).getMonth()+"-"+new Date(item.date).getDate()}</Text>
               </View>
               <View style={styles.AppointmentsItems}>
                 <MaterialIcons name="watch-later" size={30} color="#5663ff" />
-                <Text style={styles.AppointmentsItemsText}>h</Text>
+                <Text style={styles.AppointmentsItemsText}>{new Date(item.date).getHours()+":"+new Date(item.date).getMinutes()}h</Text>
               </View>
             </View>
             <View style={styles.AppointmentsRow}>
               <View style={styles.AppointmentsItems}>
                 <Foundation name="dollar" size={35} color="#5663ff" />
                 <Text style={styles.AppointmentsItemsText}>
-                {item.service.preco}kzs
+                  {item.service.preco}kzs
                 </Text>
               </View>
             </View>
@@ -54,17 +73,17 @@ const Appointments = ({ state }) => {
 
                 <View>
                   <Text style={styles.AppointmentsItemsText}>
-                  {item.service.est.address}
+                    {item.service.est.address}
                   </Text>
                   <Text style={styles.AppointmentsItemsText}>{/* {item.service.est.phones_number[0]}-{item.service.est.phones_number[1]} */}</Text>
                 </View>
               </View>
             </View>
             <View style={styles.AppointmentsButtons}>
-              <TouchableOpacity style={styles.AppointmentsButton1}>
+              {/*   <TouchableOpacity style={styles.AppointmentsButton1}>
                 <Text style={styles.AppointmentsButtonText}>Reagendar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.AppointmentsButton2}>
+              </TouchableOpacity> */}
+              <TouchableOpacity style={styles.AppointmentsButton2} onPress={() => Delete(item._id)}>
                 <Text style={styles.AppointmentsButtonText}>
                   Excluir Reserva
                 </Text>

@@ -3,7 +3,9 @@ import { StyleSheet } from "react-native";
 const Styles = StyleSheet.create({
   lista: {
     marginTop: 10,
-    height: 250,
+    height: 265,
+    backgroundColor: "#fff",
+  
   },
   Scroll: {
     flex: 1,

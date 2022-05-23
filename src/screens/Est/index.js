@@ -29,31 +29,41 @@ const Est = ({ navigation, route }) => {
   const vetor = [1, 2, 2, 3, 3];
   const date = new Date();
   const [open, setOpen] = useState(false);
+  const [f, setf] = useState("#222455");
   const [horarioDeFuncionamento, setHorarioDeFuncionamento] = useState(
     "Sem horarios pro dia de hoje"
   );
   const { state: user } = useContext(UserContext);
-  const [services, Setservices] = useState([]);
+  const [services, setServices] = useState([]);
+  const [rates, setRates] = useState([])
+  const [ratesx, setRatesx] = useState([])
+  const diasUteis = []
+  const [ut, setUt] = useState([])
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [opencloseColor, setOpencloseColor] = useState("red");
   const [modalVisible, setModalVisible] = useState(false);
   const [est, setEst] = useState([]);
   const [modalImage, setModalImage] = useState("");
+  const [nf, setnf] = useState(true);
+  const [topR, setTopR] = useState([]);
+  const [topServices, setTopServices] = useState([]);
+
   const estId = "";
   // const est = "";
   const userId = user.id;
+  let x = []
 
   const openClose = (open, close) => {
     var hora1 = open.split(":");
     var hora2 = close.split(":");
     var hora3 = new Date();
     var varData = new Date();
-    ["setHours", "setMinutes", "setSeconds"].forEach(function (fn, i) {
+    ["setHours", "setMinutes"].forEach(function (fn, i) {
       return varData[fn](hora1[i]);
     });
     var varData2 = new Date();
-    ["setHours", "setMinutes", "setSeconds"].forEach(function (fn, i) {
+    ["setHours", "setMinutes"].forEach(function (fn, i) {
       return varData2[fn](hora2[i]);
     });
 
@@ -61,7 +71,9 @@ const Est = ({ navigation, route }) => {
       return true;
     }
 
-    if (varData >= hora3 && hora3 <= varData2) {
+
+
+    if (hora3 >= varData && hora3 <= varData2) {
       return true;
     } else {
       return false;
@@ -69,17 +81,44 @@ const Est = ({ navigation, route }) => {
   };
 
   const getEst = async () => {
+    console.log(user.favorites)
     try {
       const response = await Api.GetEst(route.params.id);
       //console.log(response);
-      setEst(response);
-      response.open_to.forEach(function (k) {
+      if (response.status == 200) {
+        setEst(response.est);
+        let list = []
+        user.favorites.forEach(function (k) {
+          list.push(k._id)
+        })
+        if (list.includes(response.est._id)) {
+          setf("red")
+          setnf(false)
+        }
+        if (response.est)
+          setServices(response.services)
+        setRates(response.rates)
+        setTopR(response.toprate)
+        console.log(response.toserv)
+      }
+
+      response.est.open_to.forEach(function (k) {
+        diasUteis.push(k.dia)
+        setUt(diasUteis)
         //console.log(k.open);
         if (k.dia == date.getDay()) {
-          console.log("dia bom");
           if (openClose(k.open, k.close)) {
-            setOpen(true);
-            setOpencloseColor("green");
+            console.log("deu bom")
+            if (response.est.open != false) {
+              setOpen(true);
+            }
+            else {
+              setOpen(false);
+            }
+
+          }
+          else {
+            console.log("deu mau")
           }
           setHorarioDeFuncionamento(k.open + " até " + k.close);
         }
@@ -89,14 +128,36 @@ const Est = ({ navigation, route }) => {
     }
   };
   useEffect(() => {
+    console.log(user.favorites)
     getEst();
   }, []);
 
   const handleOnRefresh = () => {
     setRefreshing(false);
     getEst();
- 
   };
+
+  const addfav = async () => {
+    if (nf) {
+      try {
+        const response = await Api.addfav(user.email, est)
+        console.log(response)
+      }
+      catch (error) {
+        console.log(error.message)
+      }
+    }
+    else {
+      try {
+        const response = await Api.remfav(user.email, est._id)
+        console.log(response)
+      }
+      catch (error) {
+        console.log(error.message)
+      }
+    }
+
+  }
 
   return (
     <>
@@ -126,7 +187,7 @@ const Est = ({ navigation, route }) => {
             >
               <Image
                 source={{
-                  uri: Config.url+"/"+modalImage,
+                  uri: Config.url + "/" + modalImage,
                 }}
                 style={{ height: 300, width: "100%" }}
               />
@@ -134,7 +195,7 @@ const Est = ({ navigation, route }) => {
           </Modal>
           <ImageBackground
             source={{
-              uri: Config.url+"/"+est.img,
+              uri: Config.url + "/" + est.img,
             }}
             style={styles.Hero}
           >
@@ -142,8 +203,8 @@ const Est = ({ navigation, route }) => {
               <TouchableOpacity>
                 <AntDesign name="arrowleft" size={26} color="#222455" />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.CardContentBottomBottom}>
-                <Fontisto name="favorite" size={26} color="#222455" />
+              <TouchableOpacity style={styles.CardContentBottomBottom} onPress={addfav}>
+                <Fontisto name="favorite" size={26} color={f} />
               </TouchableOpacity>
             </View>
             <BlurView style={styles.HeroContent} intensity={70} tint="light">
@@ -259,49 +320,60 @@ const Est = ({ navigation, route }) => {
           <View style={styles.Photos}>
             <Text style={styles.PhotosText}>Avalições e Estrelas</Text>
             <TouchableOpacity
-              onPress={() => navigation.navigate("RattingsAndReviews")}
+              onPress={() => navigation.navigate("RattingsAndReviews",{ data:rates })}
             >
-              <Text style={styles.SeeAll}>Ver Todos(20)</Text>
+              <Text style={styles.SeeAll}>Ver Todos({rates.length})</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.RattingAndReViewContainer}>
-            <View style={styles.RattingAndReViewItem}>
-              <Image
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 30,
-                  marginRight: 10,
-                }}
-                source={{
-                  uri: "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000",
-                }}
-              />
-              <View style={styles.RattingAndReViewContent}>
-                <View style={styles.RattingAndReviewContentTop}>
-                  <Text style={styles.RattingAndReviewName}>Ruben André</Text>
-                  <View style={styles.RattingAndReviewStars}>
-                    <Text style={styles.RattingAndReviewStarsText}>3.5</Text>
-                    <Ionicons name="star" size={18} color="yellow" />
+
+
+            {
+              topR &&
+              topR.map((item, key) => {
+                return (
+                  <View key={key} style={styles.RattingAndReViewItem}>
+                    <Image
+                      style={{
+                        width: 60,
+                        height: 60,
+                        borderRadius: 30,
+                        marginRight: 10,
+                      }}
+                      source={{
+                        uri: item.client.avatar == "" ? "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000" : `${Config.url}/${item.client.avatar}`,
+                      }}
+                    />
+                    <View style={styles.RattingAndReViewContent}>
+                      <View style={styles.RattingAndReviewContentTop}>
+                        <Text style={styles.RattingAndReviewName}>{item.client.name}</Text>
+                        <View style={styles.RattingAndReviewStars}>
+                          <Text style={styles.RattingAndReviewStarsText}>{item.rate}</Text>
+                          <Ionicons name="star" size={18} color="yellow" />
+                        </View>
+                      </View>
+                      <Text style={styles.RattingAndreviewContentBottom}>
+                        {item.comment}
+                      </Text>
+                    </View>
                   </View>
-                </View>
-                <Text style={styles.RattingAndreviewContentBottom}>
-                  Achei um estabelecimento muito bom
-                </Text>
-              </View>
-            </View>
+
+
+                )
+              })
+            }
+
+
           </View>
 
           <View style={styles.Services}>
             <Text style={styles.ServicesText}>Lista de Serviços</Text>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("EstServices", { data: est.services })
+                navigation.navigate("EstServices", { data: services })
               }
             >
-              <Text style={styles.SeeAll}>
-                Ver Todos({est.services && est.services.length})
-              </Text>
+              <Text style={styles.SeeAll}>Ver Todos({services.length})</Text>
             </TouchableOpacity>
           </View>
           {loading && (
@@ -311,11 +383,12 @@ const Est = ({ navigation, route }) => {
               color="#3F5D7D"
             />
           )}
-          {est.services &&
-            est.services.map((item, key) => (
+          {topServices &&
+            topServices.map((item, key) => (
               <ServicesCard
                 key={key}
                 item={item}
+                uteis={ut}
                 style={styles.CardContainer}
               />
             ))}
@@ -327,7 +400,7 @@ const Est = ({ navigation, route }) => {
 
       <TouchableOpacity
         style={styles.RattingBtn}
-        onPress={() => navigation.navigate("Ratting")}
+        onPress={() => navigation.navigate("Ratting", { id: est._id })}
       >
         <Text style={styles.RattingText}>Avalie a sua experiência</Text>
       </TouchableOpacity>

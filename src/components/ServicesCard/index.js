@@ -4,11 +4,11 @@ import styles from "./styles";
 
 import { useNavigation } from "@react-navigation/native";
 
-const ServicesCard = ({ item }) => {
+const ServicesCard = ({ item,uteis }) => {
   const navigation = useNavigation();
 
   const handleOnPress = () => {
-    navigation.navigate("ConfirmAppointments", { item });
+    navigation.navigate("ConfirmAppointments", { item,uteis });
   };
 
   return (

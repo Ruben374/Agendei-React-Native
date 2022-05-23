@@ -39,6 +39,13 @@ const Preload = () => {
             avatar: response.avatar,
           },
         });
+        console.log(response.favorites)
+        userDispatch({
+          type: "setFavorites",
+          payload: {
+            favorites: response.favorites,
+          },
+        });
 
         navigation.reset({
           routes: [{ name: "MainTab" }],

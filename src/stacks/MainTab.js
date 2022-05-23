@@ -17,11 +17,13 @@ const Tab = createBottomTabNavigator()
 export default ({ navigation, route }) => {
   return (
     <Tab.Navigator
+
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarHideOnKeyboard: true,
         tabBarActiveTintColor: '#5663ff',
         tabBarInactiveTintColor: '#777',
+        tabBarShowLabel: false,
         tabBarIcon: ({ color, size }) => {
           let iconName
           switch (route.name) {
@@ -68,7 +70,7 @@ export default ({ navigation, route }) => {
     >
       <Tab.Screen name='Home' component={Home} />
       <Tab.Screen
-  
+
         name='Favorites'
         component={Favorites}
       />

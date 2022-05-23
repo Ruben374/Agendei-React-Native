@@ -78,6 +78,12 @@ const Login = () => {
             avatar: response.avatar,
           },
         });
+        userDispatch({
+          type: "setFavorites",
+          payload: {
+            favorites: response.favorites,
+          },
+        });
         navigation.reset({
           routes: [{ name: "MainTab" }],
         });

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   Text,
@@ -21,13 +21,16 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Card } from "react-native-shadow-cards";
 import { Ionicons } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
-
+import EstCardHome from "../../components/EstCardHome";
+import { UserContext } from "../../contexts/UserContext";
 let vetor = [1, 2, 3, 4];
 
 const Favorites = ({ navigation, route }) => {
+  const { state: user } = useContext(UserContext);
   const isFocused = useIsFocused();
   const [estList, setEstList] = useState([]);
   const [searchValue, setSearchValue] = useState("");
+  const [list, setList] = useState(user.favorites);
 
   const getEst = async () => {
     const response = await Api.getEst(route.params.id);
@@ -48,50 +51,16 @@ const Favorites = ({ navigation, route }) => {
         </View>
 
         <View>
-          <TouchableOpacity style={{ marginTop: 30, alignItems: "center" }}  onPress={()=>navigation.navigate("Est")}>
-            <Card style={styles.Card} elevation={12}>
-              <View>
-                <ImageBackground
-                  style={[{ width: "100%" }, styles.CardContentTop]}
-                  source={{
-                    uri: "https://cdn.shopify.com/s/files/1/0408/8473/articles/header_10-barbearias_b99bc3d5-2ed1-435e-a2ee-bf091ba5c0ac.jpg?v=1568418224",
-                  }}
-                >
-                  <View style={styles.CardContentMessages}>
-                    <View style={styles.CardContentOpenCloseMessages}>
-                      <Text style={styles.CardContentOpenCloseMessagesText}>
-                        ABERTO
-                      </Text>
-                    </View>
+          {list.map((item, key) => (
+            <TouchableOpacity
+              key={key}
+              style={{ marginTop: 30, alignItems: "center" }}
+              onPress={() => navigation.navigate("Est", { id: item._id })}
+            >
+              <EstCardHome data={item} />
+            </TouchableOpacity>
+          ))}
 
-                    <View style={styles.CardContentRatingMessage}>
-                      <Ionicons name="star" size={15} color="yellow" />
-                      <Text style={{ color: "#222455", fontFamily: "NotoSans_700Bold",marginTop:3 }}>
-                        4.5
-                      </Text>
-                    </View>
-                  </View>
-                </ImageBackground>
-
-                <View style={styles.CardContentBottom}>
-                  <View style={styles.CardContentBottomTop}>
-                    <View style={styles.CardContentBottomName}>
-                      <Text style={styles.EstName}>Catinho do corte</Text>
-                      <Text style={styles.EstCategory}>Barbearia</Text>
-                    </View>
-                    <View style={styles.CardContentBottomAddress}>
-                      <Text style={styles.EstAddress}>
-                        camama, frente ao cinfo
-                      </Text>
-                    </View>
-                  </View>
-                  <TouchableOpacity style={styles.CardContentBottomBottom}>
-                    <Fontisto name="favorite" size={24} color="#222455" />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </Card>
-          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>

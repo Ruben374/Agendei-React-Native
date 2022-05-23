@@ -34,11 +34,11 @@ const Filter = ({ navigation }) => {
   const [star5, setStar5] = useState(false);
   const isFocused = useIsFocused();
   const [category, setCategory] = useState([]);
-  const [itemSelected, setItemSelected] = useState();
+  const [itemSelected, setItemSelected] = useState("");
   const [idcat, setIdcat] = useState("");
   const [rates, setRates] = useState(0);
 
- 
+
 
   const handleCat = async (item, key) => {
     if (key == itemSelected) {
@@ -98,43 +98,43 @@ const Filter = ({ navigation }) => {
       if (est.search) {
         setItemSelected(est.search.item);
         setIdcat(est.search.category)
-        const rat=est.search.rat
-        if(rat==5){
+        const rat = est.search.rat
+        if (rat == 5) {
           setStar1(true);
           setStar5(true);
           setStar4(true);
           setStar3(true);
           setStar2(true);
         }
-        if(rat==4){
+        if (rat == 4) {
           setStar1(true);
           setStar5(false);
           setStar4(true);
           setStar3(true);
           setStar2(true);
         }
-        if(rat==3){
+        if (rat == 3) {
           setStar1(true);
           setStar5(false);
           setStar4(false);
           setStar3(true);
           setStar2(true);
         }
-        if(rat==2){
+        if (rat == 2) {
           setStar1(true);
           setStar5(false);
           setStar4(false);
           setStar3(false);
           setStar2(true);
         }
-        if(rat==1){
+        if (rat == 1) {
           setStar1(true);
           setStar5(false);
           setStar4(false);
           setStar3(false);
           setStar2(false);
         }
-        if(rat==5){
+        if (rat == 5) {
           setStar1(!star1);
           setStar5(false);
           setStar4(false);
@@ -155,9 +155,6 @@ const Filter = ({ navigation }) => {
               <AntDesign name="arrowleft" size={30} color="#222455" />
             </TouchableOpacity>
             <Text style={styles.HeaderText}>Filter</Text>
-            <TouchableOpacity>
-              <AntDesign name="close" size={30} color="#222455" />
-            </TouchableOpacity>
           </View>
           <View style={styles.Title}>
             <Text style={styles.TitleText}>Selecione a categoria</Text>

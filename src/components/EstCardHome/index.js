@@ -6,10 +6,11 @@ import styles from "./styles.js";
 import { Card } from "react-native-shadow-cards";
 import { Ionicons } from "@expo/vector-icons";
 import Config from "../../config/Api.config.js";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const EstCardHome = ({ data }) => {
   return (
-    <Card style={styles.Card} elevation={12}>
+    <View style={styles.Card}>
       <View>
         <ImageBackground
           style={styles.CardContentTop}
@@ -18,12 +19,6 @@ const EstCardHome = ({ data }) => {
           }}
         >
           <View style={styles.CardContentMessages}>
-            <View style={styles.CardContentOpenCloseMessages}>
-              <Text style={styles.CardContentOpenCloseMessagesText}>
-                ABERTO
-              </Text>
-            </View>
-
             <View style={styles.CardContentRatingMessage}>
               <Ionicons name="star" size={15} color="yellow" />
               <Text
@@ -42,8 +37,15 @@ const EstCardHome = ({ data }) => {
         <View style={styles.CardContentBottom}>
           <View style={styles.CardContentBottomTop}>
             <View style={styles.CardContentBottomName}>
-              <Text style={styles.EstName}>{data.name}</Text>
-              <Text style={styles.EstCategory}>{data.category.name}</Text>
+              <View style={{ flexDirection: 'row' ,width:"75%",alignItems:"center",justifyContent:"center" }}>
+                <Text style={styles.EstName}>{data.name}</Text>
+              </View>
+
+              <View style={{ flexDirection: 'row',width:"25%",alignItems:"center",justifyContent:"center" }}>
+                <Text style={styles.EstCategory}>{data.category.name}</Text>
+              </View>
+
+
             </View>
             <View style={styles.CardContentBottomAddress}>
               <Text style={styles.EstAddress}>{data.address}</Text>
@@ -51,7 +53,7 @@ const EstCardHome = ({ data }) => {
           </View>
         </View>
       </View>
-    </Card>
+    </View>
   );
 };
 export default EstCardHome;
