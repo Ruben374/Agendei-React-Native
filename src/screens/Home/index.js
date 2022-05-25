@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import {
   View,
   Text,
@@ -6,44 +6,29 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  ImageBackground,
   FlatList,
 } from "react-native";
-
 import styles from "./styles.js";
-
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import Api from "../../Api";
 import { useIsFocused } from "@react-navigation/native";
-
 import { Card } from "react-native-shadow-cards";
-import { Ionicons } from "@expo/vector-icons";
 import { EstContext } from "../../contexts/EstContext";
+import { FilterContext } from "../../contexts/FilterContext";
 import EstCardHome from "../../components/EstCardHome";
 import CategoryCard from "../../components/CategoryCard";
-import Categorys from "../Categorys/index.js";
-
-let vetor = [1, 2, 3, 4];
-
-const Home = ({ navigation }) => {
+const Home = ({ navigation, route }) => {
   const { state: est } = useContext(EstContext);
-
-  const { dispatch: estDispatch } = useContext(EstContext);
-  // const { dispatch: userDispatch } = useContext(UserContext);
+  const { state: filter } = useContext(FilterContext);
+  const componentMounted = useRef(true);
   const isFocused = useIsFocused();
   const [estList, setEstList] = useState([]);
   const [estTopRates, setEstTopRates] = useState([]);
   const [categorys, setCategorys] = useState([]);
-
   const [searchValue, setSearchValue] = useState("");
   const [busca, setBusca] = useState([]);
   const [loading, setLoading] = useState(false)
-
-  const getEst = async () => {
-    const response = await Api.getEst(route.params.id);
-    setEstList(response);
-  };
 
   const Search = async () => {
     const lowerbusca = searchValue.toLowerCase();
@@ -52,67 +37,47 @@ const Home = ({ navigation }) => {
     );
   };
 
+  const SearchFilter = (list) => {
+    let filtro = list.filter(
+      (e) => e.ratingmedia >= filter.rate
+    );
+    if (filter.category.trim().length > 0) {
+      filtro = filtro.filter(
+        (e) => e.category._id == filter.category
+      );
+    }
+    console.log(filtro.length)
+    setEstList(filtro)
+  }
   const getEstForCat = async (id, name) => {
     const response = await Api.getEst(id);
     navigation.navigate("Search", { data: response, title: name });
   };
-
-  useEffect(() => {
+  useEffect(async () => {
+    let abortController = new AbortController();
+    let aborted = abortController.signal.aborted; // true || false
     const getData = async () => {
+      setLoading(true)
       try {
-        setLoading(true)
-        //console.log(est.search);
         const res = await Api.getAllEst();
         const getCategorys = await Api.getCategories();
-        //console.log(getCategorys);
-        setCategorys(getCategorys);
-        estDispatch({
-          type: "setEst",
-          payload: {
-            est: res.est,
-          },
-        });
-        estDispatch({
-          type: "setRate",
-          payload: {
-            topRate: res.rates,
-          },
-        });
-        let b = [];
-        let c = [];
-        if (est.search.rat > -1 && est.search.category) {
-          for (let i = 0; i <= res.est.length - 1; i++) {
-            if (
-              res.est[i].ratingmedia >= est.search.rat &&
-              est.search.category == res.est[i].category._id
-            ) {
-              b.push(res.est[i]);
-            }
-          }
-          console.log(b.length);
-          setEstList(b);
-        } else if (est.search.rat > -1) {
-          console.log("so tem rat");
-          for (let i = 0; i <= res.est.length - 1; i++) {
-            if (res.est[i].ratingmedia >= est.search.rat) {
-              b.push(res.est[i]);
-            }
-          }
-          console.log(b.length);
-          setEstList(b);
-        } else {
-          console.log("n peguei dois");
-          setEstList(res.est);
+        if (aborted == false) {
+          setEstTopRates(res.rates);
+          setCategorys(getCategorys);
+          SearchFilter(res.est)
         }
-        setEstTopRates(res.rates);
         setLoading(false)
       }
       catch (error) {
         console.log(error.message)
+        setLoading(false)
       }
     };
 
-    getData();
+    getData()
+    return () => {
+      abortController.abort();
+    };
   }, [isFocused]);
 
   return (

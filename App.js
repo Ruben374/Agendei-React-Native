@@ -11,6 +11,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import MainStack from "./src/stacks/MainStack";
 import UserContextProvider from "./src/contexts/UserContext";
 import EstContextProvider from "./src/contexts/EstContext";
+import FilterContextProvider from "./src/contexts/FilterContext";
 import {
   AdMobBanner,
   AdMobInterstitial,
@@ -32,8 +33,10 @@ export default () => {
     <UserContextProvider>
       <NavigationContainer>
         <EstContextProvider>
-          <StatusBar animated={true} backgroundColor="black" />
-          <MainStack />
+          <FilterContextProvider>
+            <StatusBar animated={true} backgroundColor="black" />
+            <MainStack />
+          </FilterContextProvider>
         </EstContextProvider>
       </NavigationContainer>
     </UserContextProvider>

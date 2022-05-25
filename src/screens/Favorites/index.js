@@ -36,9 +36,10 @@ const Favorites = ({ navigation, route }) => {
     const response = await Api.getEst(route.params.id);
     setEstList(response);
   };
-  /*   useEffect(() => {
-    getEst()
-  }, [isFocused ]) */
+  useEffect(() => {
+    console.log(user.favorites.length)
+    setList(user.favorites)
+  }, [isFocused])
 
   return (
     <ScrollView style={styles.Scroll}>

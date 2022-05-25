@@ -14,21 +14,26 @@ const Styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 10,
     backgroundColor: "#5663ff",
+    width:"35%",
+    marginLeft:10,
+    alignItems:"center",
+    justifyContent:"center"
   },
   CardButtonText: {
     color: "#fff",
    fontFamily:"NotoSans_700Bold",
-    fontSize: 15,
+    fontSize: 14,
+
   },
   ServiceName: {
     color: "#A0A0A0",
-    fontSize: 20,
+    fontSize: 18,
     flex: 1,
     flexWrap: "wrap",
     fontFamily:"NotoSans_700Bold",
   },
   ServicePrice: {
-    fontSize: 15,
+    fontSize: 14,
     flex: 1,
     flexWrap: "wrap",
     color: "#222455",

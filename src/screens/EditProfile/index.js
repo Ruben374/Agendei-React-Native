@@ -5,29 +5,28 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
-  Modal,
-  Pressable,
+
   TextInput,
-  ModalButtonText,
-  ImageBackground,
+
 } from "react-native";
 import styles from "./styles.js";
-import { FontAwesome } from "@expo/vector-icons";
+
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
+;
 import { AntDesign } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
-import { Octicons } from "@expo/vector-icons";
+
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { UserContext } from "../../contexts/UserContext";
 import * as ImagePicker from "expo-image-picker";
+import { useIsFocused } from "@react-navigation/native";
 import Api from "../../Api";
-import { Card } from "react-native-shadow-cards";
+
 import { Ionicons } from "@expo/vector-icons";
 import Config from "../../config/Api.config.js";
 
 const EditProfile = () => {
+  const isFocused = useIsFocused();
   const { state: user } = useContext(UserContext);
   const { dispatch: userDispatch } = useContext(UserContext);
   const [modalVisible, setModalVisible] = useState(false);
@@ -96,7 +95,7 @@ const EditProfile = () => {
   };
   useEffect(() => {
     getAvatar();
-  }, []);
+  }, [isFocused]);
   const GoToEdit = () => {
     navigation.navigate("EditProfile");
   };
@@ -105,7 +104,7 @@ const EditProfile = () => {
 
   const handleUpdateButton = async () => {
     try {
-      const response = await Api.UpdateClient("Name",user.email, name, "");
+      const response = await Api.UpdateClient("Name", user.email, name, "");
       alert(response.message);
       userDispatch({
         type: "setname",
@@ -183,7 +182,7 @@ const EditProfile = () => {
         <View style={styles.FormArea}>
           <View style={styles.ViewInput}>
             <Ionicons name="ios-person-outline" size={24} color="#5663ff" />
-            <TextInput value={name} style={styles.TextInput} onChangeText={(text)=>setName(text)} />
+            <TextInput value={name} style={styles.TextInput} onChangeText={(text) => setName(text)} />
           </View>
           <TouchableOpacity style={styles.UpdateButton} onPress={handleUpdateButton}>
             <Text style={styles.UpdateButtonText}>Atualizar</Text>

@@ -17,7 +17,6 @@ const Preload = () => {
     const token = await AsyncStorage.getItem("token");
     if (token) {
       const response = await Api.RefreshToken();
-
       if (response.token) {
         const res = await Api.getAllEst();
         console.log(response);
@@ -59,15 +58,17 @@ const Preload = () => {
       });
     }
   };
-
   useEffect(() => {
     checkToken();
   }, []);
-
   return (
     <View style={styles.container}>
-      <Image source={Logo} style={styles.Logo} />
-      <ActivityIndicator size="large" color="#ffff" />
+      <View elevation={5} >
+        <Image source={Logo} style={styles.Logo} />
+      </View>
+      <Text style={styles.Text}>
+        AGENDEI
+      </Text>
     </View>
   );
 };

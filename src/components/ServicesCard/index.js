@@ -4,16 +4,16 @@ import styles from "./styles";
 
 import { useNavigation } from "@react-navigation/native";
 
-const ServicesCard = ({ item,uteis }) => {
+const ServicesCard = ({ item, uteis }) => {
   const navigation = useNavigation();
 
   const handleOnPress = () => {
-    navigation.navigate("ConfirmAppointments", { item,uteis });
+    navigation.navigate("ConfirmAppointments", { item, uteis });
   };
 
   return (
     <View style={styles.CardContainer}>
-      <View>
+      <View style={{ width: "60%" }}>
         <Text style={styles.ServiceName}>{item.name}</Text>
         <Text style={styles.ServicePrice}>{item.preco}kz</Text>
       </View>

@@ -1,7 +1,7 @@
 export const initialState = {
   est: [],
   topRate: [],
-  search: {},
+
 };
 
 export const EstReducer = (state, action) => {
@@ -10,9 +10,6 @@ export const EstReducer = (state, action) => {
       return { ...state, est: action.payload.est };
     case "setRate":
       return { ...state, topRate: action.payload.topRate };
-    case "setSearch":
-      return { ...state, search: action.payload.search };
-
     default:
       return state;
   }

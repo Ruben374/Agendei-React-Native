@@ -6,31 +6,26 @@ import {
   ScrollView,
   Image,
   Modal,
-  Pressable,
-  TextInput,
-  ModalButtonText,
-  ImageBackground,
+
 } from "react-native";
 import styles from "./styles.js";
-import { FontAwesome } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
-import { Octicons } from "@expo/vector-icons";
+
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from "@react-navigation/native";
+
 import { UserContext } from "../../contexts/UserContext";
-import * as ImagePicker from "expo-image-picker";
-import Api from "../../Api";
+
 import Config from "../../config/Api.config.js";
-import { Card } from "react-native-shadow-cards";
+
+ 
 
 const Profile = () => {
+  const isFocused = useIsFocused();
   const { state: user } = useContext(UserContext);
   const { dispatch: userDispatch } = useContext(UserContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [name, setName] = useState(user.name);
+ 
 
   const [image, setImage] = useState(
     "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Faenza-avatar-default-symbolic.svg/1024px-Faenza-avatar-default-symbolic.svg.png"
@@ -41,80 +36,33 @@ const Profile = () => {
 
   const navigation = useNavigation();
 
-  const addImage = async () => {
-    let _image = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    //console.log(JSON.stringify(_image))
-    if (!_image.cancelled) {
-      setImage(_image.uri);
-
-      userDispatch({
-        type: "setavatar",
-        payload: {
-          avatar: _image.uri,
-        },
-      });
-      let apiUrl = `${Config.url}/clients/clientimage`;
-      let uri = _image.uri;
-      let uriParts = uri.split(".");
-      let fileType = uriParts[uriParts.length - 1];
-
-      let formData = new FormData();
-      console.log(fileType);
-      formData.append("file", {
-        uri,
-        name: `photo.` + fileType,
-        type: "image/jpeg",
-      });
-      formData.append("id", user.id);
-
-      //console.log(formData)
-      let options = {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "multipart/form-data",
-        },
-      };
-
-      try {
-        const response = await fetch(apiUrl, options);
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-
   const getAvatar = () => {
+   
     // avatar da api
     console.log(user.avatar);
     if (!user.avatar == "" && user.avatar[0] == "u" && user.avatar[1] == "p") {
-      const join =  Config.url+"/"+ user.avatar;
+      console.log("1")
+      const join = Config.url + "/" + user.avatar;
       setImage(join);
     }
     //avatar do contexto
-    else if (!user.avatar == "" && user.avatar[0] == "f") {
+    else if (!user.avatar == "" && user.avatar[0] != "u" && user.avatar[1] != "p") {
+      console.log("2")
       setImage(user.avatar);
-    } 
-    
+    }
+
   };
   useEffect(() => {
     getAvatar();
     console.log(user);
-  }, []);
+  }, [isFocused]);
   const GoToEdit = () => {
     navigation.navigate("EditProfile");
   };
 
 
 
-  
+
   return (
     <ScrollView style={styles.Scroll}>
       <View style={styles.Container}>

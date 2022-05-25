@@ -57,7 +57,7 @@ const Styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  CategoryCardText: {
+       CategoryCardText: {
     fontSize: 25,
     fontFamily: "NotoSans_700Bold",
     color: "#222455",
