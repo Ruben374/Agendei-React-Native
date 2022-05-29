@@ -7,6 +7,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Modal,
+  Alert
 } from "react-native";
 import moment from "moment";
 import styles from "./styles.js";
@@ -16,7 +17,7 @@ import Api from "../../Api";
 
 const ConfirmAppointments = ({ state, route }) => {
   const { state: user } = useContext(UserContext);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   var data = new Date();
   var dia = String(data.getDate()).padStart(2, "0");
   var mes = String(data.getMonth() + 1).padStart(2, "0");
@@ -36,24 +37,21 @@ const ConfirmAppointments = ({ state, route }) => {
   const [ut, setUt] = useState(false)
   const diasUteis = route.params.uteis
 
+
+
+
+
   const handleHourItemPress = (hour, index) => {
-    setHourItemSelected(index);
-    setHour(hour);
+    if (index == hourItemSelected) {
+      setHourItemSelected();
+      setHour("");
+    } else {
+      setHourItemSelected(index);
+      setHour(hour);
+    }
   };
   const handleConfirmAppointment = async () => {
     const d = new Date()
-
-    if (selectedDate == dataAtual) {
-      const hora1 = hour.split(':')
-      var varData = new Date();
-      ["setHours", "setMinutes"].forEach(function (fn, i) {
-        return varData[fn](hora1[i]);
-      });
-      if (d > varData) {
-        alert("boy muda so a hora yhea")
-        return false
-      }
-    }
     const date = selectedDate + ":" + hour;
     const client = {
       name: user.name,
@@ -72,9 +70,11 @@ const ConfirmAppointments = ({ state, route }) => {
     try {
       const response = await Api.SetAppointments(client, service, date);
       if (response.status == 201) {
-        alert("agendou")
+        getServices() 
+        Alert.alert('Agendamento', `Serviço agendado`, [
+          { text: 'OK'},
+        ]);
       }
-      getServices()
     } catch (error) {
       alert(error.message);
     }
@@ -82,6 +82,8 @@ const ConfirmAppointments = ({ state, route }) => {
   };
 
   const onDayPress = (day) => {
+    setHourItemSelected();
+    setHour("");
     const dat = new Date(day.dateString)
     //console.log(dat.getDay())
     if (diasUteis.includes(dat.getDay())) {
@@ -132,6 +134,7 @@ const ConfirmAppointments = ({ state, route }) => {
 
 
   const getServices = async () => {
+    //setLoading(true)
     try {
       /* const date = new Date() */
       if (diasUteis.includes(data.getDay())) {
@@ -172,6 +175,7 @@ const ConfirmAppointments = ({ state, route }) => {
       }
       console.log(h)
       setHorariosIndisponiveis(h);
+      //setLoading(false)
     } catch (error) {
       alert(error.message);
     }
@@ -179,172 +183,165 @@ const ConfirmAppointments = ({ state, route }) => {
 
 
   useEffect(() => {
+    setLoading(true)
     getServices();
-    //getAppointmentsDate(selectedDate)
+    setLoading(false)
   }, []);
+
+
+  const Confirm = () => {
+    if (hour.trim() == "") {
+      alert("Por favor selecione um horario")
+      return false
+    }
+    const d = new Date()
+    if (selectedDate == dataAtual) {
+      const hora1 = hour.split(':')
+      var varData = new Date();
+      ["setHours", "setMinutes"].forEach(function (fn, i) {
+        return varData[fn](hora1[i]);
+      });
+      if (d > varData) {
+        alert("boy muda so a hora yhea")
+        return false
+      }
+    }
+
+    Alert.alert('Confirmar Reserva', `Confirmar ${route.params.item.name} em ${route.params.item.est.name} as ${hour}?`, [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      { text: 'OK', onPress: () => handleConfirmAppointment() },
+    ]);
+
+  }
+
+
 
   return (
     <ScrollView style={styles.s}>
-      <View style={styles.Container}>
-        <Calendar
-          minDate={dataAtual.toString()}
-          style={{ width: "100%" }}
-          onDayPress={(day) => {
-            onDayPress(day);
-          }}
-          markedDates={{ [selectedDate]: { selected: true } }}
-        />
-        <Text style={styles.HourItemTitle}>
-          Horarios disponiveis para {selectedDate}:
-        </Text>
-        {ut ? (
-          horariosIndisponiveis &&
-          <FlatList
-            horizontal
-            data={route.params.item.horarios}
-            style={{ width: "100%" }}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item, index }) => (
-              <View>
-                {horariosIndisponiveis.includes(item) ? (
-                  <View
-                    style={{ marginLeft: index == 0 ? 20 : 0, marginRight: 10 }}
-                  >
-                    <View>
-                      <View
-                        style={{
-                          paddingVertical: 10,
-                          paddingHorizontal: 20,
-                          backgroundColor: "red",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          borderRadius: 10,
-                          borderWidth: 1,
-                          borderColor: "red",
-                        }}
-                      >
-                        <Text style={{ fontSize: 20, color: "#fff" }}>
-                          {item}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                ) : (
-                  <TouchableOpacity
-                    onPress={() => handleHourItemPress(item, index)}
-                    style={{ marginLeft: index == 0 ? 20 : 0, marginRight: 10 }}
-                  >
-                    <View
-                      style={
-                        hourItemSelected == index
-                          ? styles.HourItemSelected
-                          : styles.HourItem
-                      }
-                    >
-                      <Text
-                        style={
-                          hourItemSelected == index
-                            ? styles.HourItemTextSelected
-                            : styles.HourItemText
-                        }
-                      >
-                        {item}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                )}
-              </View>
-            )}
-          />
+      {
+        loading ? (
+          <></>
         ) : (
-          <View style={{ width: "100%", height: 50, alignItems: "center", justifyContent: "center" }}>
-            <Text style={{
-              fontSize: 15,
-              color: "#222455",
-              fontFamily: "NotoSans_700Bold",
-            }}>
-              Agendamentos Indisponiveis Para esta Data
+          <View style={styles.Container}>
+            <Calendar
+              minDate={dataAtual.toString()}
+              style={{ width: "100%" }}
+              onDayPress={(day) => {
+                onDayPress(day);
+              }}
+              markedDates={{ [selectedDate]: { selected: true,selectedColor: '#5663ff' } }}
+            />
+            <Text style={styles.HourItemTitle}>
+              Horarios disponiveis para {selectedDate}:
             </Text>
+            {ut ? (
+              horariosIndisponiveis &&
+              <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={route.params.item.horarios}
+                style={{ width: "100%" }}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item, index }) => (
+                  <View>
+                    {horariosIndisponiveis.includes(item) ? (
+                      <View
+                        style={{ marginLeft: index == 0 ? 20 : 0, marginRight: 10 }}
+                      >
+                        <View>
+                          <View
+                            style={{
+                              paddingVertical: 10,
+                              paddingHorizontal: 20,
+                              backgroundColor: "red",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              borderRadius: 10,
+                              borderWidth: 1,
+                              borderColor: "red",
+                            }}
+                          >
+                            <Text style={{ fontSize: 20, color: "#fff" }}>
+                              {item}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                    ) : (
+                      <TouchableOpacity
+                        onPress={() => handleHourItemPress(item, index)}
+                        style={{ marginLeft: index == 0 ? 20 : 0, marginRight: 10 }}
+                      >
+                        <View
+                          style={
+                            hourItemSelected == index
+                              ? styles.HourItemSelected
+                              : styles.HourItem
+                          }
+                        >
+                          <Text
+                            style={
+                              hourItemSelected == index
+                                ? styles.HourItemTextSelected
+                                : styles.HourItemText
+                            }
+                          >
+                            {item}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                )}
+              />
+            ) : (
+              <View style={{ width: "100%", height: 50, alignItems: "center", justifyContent: "center" }}>
+                <Text style={{
+                  fontSize: 15,
+                  color: "#222455",
+                  fontFamily: "NotoSans_700Bold",
+                }}>
+                  Agendamentos Indisponiveis Para esta Data
+                </Text>
+              </View>
+
+            )}
+
+            <TouchableOpacity
+              style={styles.AppointmentButton}
+              onPress={Confirm}
+            >
+              <Text style={styles.AppointmentButtonText}>Confirmar Reserva</Text>
+            </TouchableOpacity>
+
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Text>Confirmar agenda</Text>
+                  <TouchableOpacity style={styles.ModalButton}>
+                    <Text style={styles.ModalButtonText}>Confirmar</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
           </View>
 
-        )}
-
-        <TouchableOpacity
-          style={styles.AppointmentButton}
-          onPress={handleConfirmAppointment}
-        >
-          <Text style={styles.AppointmentButtonText}>Confirmar Reserva</Text>
-        </TouchableOpacity>
-
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text>Confirmar agenda</Text>
-              <TouchableOpacity style={styles.ModalButton}>
-                <Text style={styles.ModalButtonText}>Confirmar</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-      </View>
+        )
+      }
     </ScrollView>
   );
 };
 
 export default ConfirmAppointments;
 
-/* const request = async () => {
-      try {
-        const response = await Api.getServ(serviceId)
-      } catch (error) {
-        alert(error.message)
-      }
-    }
-    //request()
-    for (let i in route.params && route.params.horarios) {
-      horar.push(route.params && route.params.horarios[i])
-    }
-    console.log(horar)
-  */
-/*  {serviceHorarios.includes(item) ? (
-      <View
-        style={
-          hourItemSelected == index
-            ? styles.HourItemSelected
-            : styles.HourItem
-        }
-      >
-        <Text
-          style={
-            hourItemSelected == index
-              ? styles.HourItemTextSelected
-              : styles.HourItemText
-          }
-        >
-          {item}
-        </Text>
-      </View>
-    ) : (
-      <View>
-        <View
-          style={{
-            paddingVertical: 10,
-            paddingHorizontal: 20,
-            backgroundColor: 'red',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 10,
-            borderWidth: 1,
-          }}
-        >
-          <Text>{item}</Text>
-        </View>
-      </View>
-    )}*/

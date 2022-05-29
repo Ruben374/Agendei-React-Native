@@ -24,13 +24,20 @@ const Styles = StyleSheet.create({
     right: -50,
     top: -50,
   },
+  Container: {
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    backgroundColor: "#fff",
+    top: -50
+  },
   ScreenTitle: {
     padding: 15,
   },
   ScreenTitleText: {
     fontSize: 40,
     color: "#222455",
-    fontFamily: "NotoSans_400Regular",
+    fontFamily: "NotoSans_700Bold",
+    marginTop:20
   },
   FormArea: {
     width: "100%",
@@ -56,7 +63,7 @@ const Styles = StyleSheet.create({
   },
   Input: {
     width: "100%",
-    fontSize: 18,
+    fontSize: 16,
     borderBottomWidth: 2,
     borderBottomColor: "#222455",
     marginTop: 5,
@@ -70,7 +77,7 @@ const Styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 30,
+    marginTop: 40,
     elevation: 5,
   },
   CostumBtnTxt: {
@@ -96,6 +103,6 @@ const Styles = StyleSheet.create({
     fontFamily: "NotoSans_700Bold",
     marginLeft: 5,
   },
- });
+});
 
 export default Styles;

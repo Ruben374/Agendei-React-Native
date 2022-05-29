@@ -18,17 +18,17 @@ const Style = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#3F5D7D'
+    borderColor: '#5663ff'
   },
   HourItemSelected: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: '#3F5D7D',
+    backgroundColor: '#5663ff',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#3F5D7D'
+    borderColor: '#5663ff'
   },
   HourItemTitle: {
     padding: 10,
@@ -37,16 +37,18 @@ const Style = StyleSheet.create({
 
   HourItemText: {
     fontSize: 20,
-    color: '#3F5D7D'
+    color: '#5663ff',
+    fontFamily: "NotoSans_400Regular",
   },
   HourItemTextSelected: {
     fontSize: 20,
-    color: '#fff'
+    color: '#fff',
+    fontFamily: "NotoSans_400Regular",
   },
   AppointmentButton: {
     width: '90%',
     flexDirection: 'row',
-    backgroundColor: '#3F5D7D',
+    backgroundColor: '#5663ff',
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
@@ -57,7 +59,7 @@ const Style = StyleSheet.create({
     padding: 10,
     fontSize: 20,
     flexWrap: 'wrap',
-    fontWeight: 'bold',
+    fontFamily: "NotoSans_700Bold",
     color: '#fff'
   },
   centeredView: {
@@ -79,10 +81,10 @@ const Style = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5
   },
-  ModalButton:{
+  ModalButton: {
 
   },
-  ModalButtonText:{
+  ModalButtonText: {
 
   }
 

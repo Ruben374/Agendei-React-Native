@@ -6,6 +6,12 @@ const Styles = StyleSheet.create({
     backgroundColor: "#fff",
     justifyContent: "center",
   },
+  Container: {
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    backgroundColor: "#fff",
+    top: -50
+  },
 
   Card: {
     width: 200,
@@ -24,7 +30,7 @@ const Styles = StyleSheet.create({
   ScreenTitleText: {
     fontSize: 40,
     color: "#222455",
-    fontFamily: "NotoSans_400Regular",
+    fontFamily: "NotoSans_700Bold",
   },
   FormArea: {
     width: "100%",
@@ -38,7 +44,7 @@ const Styles = StyleSheet.create({
   },
   Input: {
     width: "100%",
-    fontSize: 18,
+    fontSize: 16,
     borderBottomWidth: 2,
     borderBottomColor: "#222455",
     marginTop: 5,
@@ -53,7 +59,7 @@ const Styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 30,
-    elevation:5 
+    elevation: 5
   },
   CostumBtnTxt: {
     fontSize: 18,

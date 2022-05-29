@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,8 @@ import {
   FlatList,
   Image,
   Modal,
+  Animated,
+  Alert
 } from "react-native";
 import styles from "./styles.js";
 
@@ -23,11 +25,13 @@ import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
 import Config from "../../config/Api.config.js";
+import FlashMessage from "../../components/FlashMessage";
 
-import { TramRounded } from "@material-ui/icons";
+
 
 const Est = ({ navigation, route }) => {
   const { dispatch: userDispatch } = useContext(UserContext);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
   const date = new Date();
   const [open, setOpen] = useState(false);
   const [ColorFav, setColorFav] = useState("#fff");
@@ -49,6 +53,9 @@ const Est = ({ navigation, route }) => {
   const [nf, setnf] = useState(true);
   const [topR, setTopR] = useState([]);
   const [topServices, setTopServices] = useState([]);
+  const [message, setMessage] = useState("");
+  const [abertoAos, setAbertoAos] = useState(null)
+  let dias = []
 
   const estId = "";
 
@@ -88,8 +95,8 @@ const Est = ({ navigation, route }) => {
     }
   }
 
-
   const getEst = async () => {
+
     setLoading(true)
     console.log(user.favorites)
     try {
@@ -110,7 +117,42 @@ const Est = ({ navigation, route }) => {
 
       response.est.open_to.forEach(function (k) {
         diasUteis.push(k.dia)
+        console.log(k.dia)
         setUt(diasUteis)
+
+        if (k.dia == 0) {
+          dias.push("Domingo")
+        }
+        if (k.dia == 1) {
+          dias.push("Segunda feira")
+        }
+        if (k.dia == 2) {
+          dias.push("Terça feira")
+        }
+        if (k.dia == 3) {
+          dias.push("Quarta feira")
+        }
+        if (k.dia == 4) {
+          dias.push("Quinta feira")
+        }
+        if (k.dia == 5) {
+          dias.push("Sexta feira")
+        }
+        if (k.dia == 6) {
+          dias.push("Sabado")
+        }
+
+        setAbertoAos(dias)
+        console.log(dias)
+
+
+
+
+
+
+
+
+
         //console.log(k.open);
         if (k.dia == date.getDay()) {
           if (openClose(k.open, k.close)) {
@@ -146,6 +188,7 @@ const Est = ({ navigation, route }) => {
 
   const addfav = async () => {
     if (nf) {
+
       try {
         const response = await Api.addfav(user.email, est)
         console.log(response.favorites.length)
@@ -157,12 +200,15 @@ const Est = ({ navigation, route }) => {
         });
         setColorFav("#5663ff")
         setnf(false)
+        Alert.alert("Sucesso!", "Adicionado aos Favoritos", [{ text: "OK" }]);
+
       }
       catch (error) {
         console.log(error.message)
       }
     }
     else {
+      setMessage("Removido dos Favoritos")
       try {
         const response = await Api.remfav(user.email, est._id)
         console.log(response.favorites.length)
@@ -177,8 +223,8 @@ const Est = ({ navigation, route }) => {
         });
 
         setColorFav("#fff")
-        setnf(false)
-        console.log(user.favorites)
+        setnf(true)
+        Alert.alert("Sucesso!", "Removido dos Favoritos", [{ text: "OK" }]);
       }
       catch (error) {
         console.log(error.message)
@@ -204,6 +250,10 @@ const Est = ({ navigation, route }) => {
                 <RefreshControl refreshing={refreshing} onRefresh={handleOnRefresh} />
               }
             >
+
+
+
+
               <View style={styles.Container}>
                 <Modal
                   animationType="slide"
@@ -310,12 +360,25 @@ const Est = ({ navigation, route }) => {
                   <Text style={{ color: "#B0C4DE" }}> hoario de funcionamento:</Text>
                   <Text style={{ color: "#FF6347" }}> {horarioDeFuncionamento}</Text>
                 </Text>
+
+                <View style={{ width: "100%", padding: 10, flexDirection: "row", flexWrap: "wrap", alignItems: "center" }}>
+                  <Text style={{ color: "#FF6347", fontFamily: "NotoSans_700Bold" }}>Aberto: </Text>
+                  {
+                    abertoAos &&
+                    abertoAos.map((item, key) => (
+                      <Text key={key} style={{ color: "#fff", fontFamily: "NotoSans_400Regular", fontSize: 15, padding: 2, marginTop: 5, marginLeft: 5, borderRadius: 5, backgroundColor: "#3CB371" }}>
+                        {item}
+                      </Text>
+                    ))
+                  }
+                </View>
+
                 {
                   est.images ?
+
                     <>
                       <View style={styles.Photos}>
-
-                        <Text style={styles.PhotosText}>Fotos</Text>
+                        {/*   <Text style={styles.PhotosText}>Fotos</Text> */}
                       </View>
                       <FlatList
                         horizontal
@@ -347,12 +410,11 @@ const Est = ({ navigation, route }) => {
                   <Text
                     style={{
                       backgroundColor: "#B0C4DE",
-                      borderRadius: 15,
-                      fontSize: 15,
+                      borderRadius: 5,
+                      fontSize: 14,
                       padding: 10,
                       color: "#222455",
-                      fontFamily: "NotoSans_700Bold",
-                      elevation: 5,
+                      fontFamily: "NotoSans_400Regular",
                     }}
                   >
                     {est.description}
@@ -424,7 +486,7 @@ const Est = ({ navigation, route }) => {
                         <Text style={styles.ServicesText}>Lista de Serviços</Text>
                         <TouchableOpacity
                           onPress={() =>
-                            navigation.navigate("EstServices", { data: services })
+                            navigation.navigate("EstServices", { data: services, ut: ut })
                           }
                         >
                           <Text style={styles.SeeAll}>Ver Todos({services.length})</Text>

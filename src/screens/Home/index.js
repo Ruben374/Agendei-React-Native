@@ -18,6 +18,7 @@ import { EstContext } from "../../contexts/EstContext";
 import { FilterContext } from "../../contexts/FilterContext";
 import EstCardHome from "../../components/EstCardHome";
 import CategoryCard from "../../components/CategoryCard";
+
 const Home = ({ navigation, route }) => {
   const { state: est } = useContext(EstContext);
   const { state: filter } = useContext(FilterContext);
@@ -28,7 +29,7 @@ const Home = ({ navigation, route }) => {
   const [categorys, setCategorys] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [busca, setBusca] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const Search = async () => {
     const lowerbusca = searchValue.toLowerCase();
@@ -105,7 +106,6 @@ const Home = ({ navigation, route }) => {
                     Search();
                   }}
                 />
-
                 {searchValue.trim() == "" ? (
                   <TouchableOpacity onPress={() => navigation.navigate("Filter")}>
                     <AntDesign name="filter" size={24} color="#222455" />
@@ -135,6 +135,7 @@ const Home = ({ navigation, route }) => {
                       </Text>
                     </TouchableOpacity>
                   </View>
+                 
                   <View>
                     <FlatList
                       horizontal

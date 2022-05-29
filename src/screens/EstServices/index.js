@@ -49,7 +49,9 @@ const EstServices = ({ navigation, route }) => {
           <Text style={styles.HeaderText}>Serviços</Text>
         </View>
         {servicesList.map((item, key) => (
-          <ServicesCard key={key} item={item} style={styles.CardContainer} />
+          <ServicesCard key={key} item={item}
+            uteis={route.params.ut}
+            style={styles.CardContainer} />
         ))}
       </View>
     </ScrollView>

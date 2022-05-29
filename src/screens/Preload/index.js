@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { View, Text, ActivityIndicator, Image } from "react-native";
+import { View, Text, Image } from "react-native";
 import styles from "./styles";
 import Logo from "../../assets/logo.png";
 import { useNavigation } from "@react-navigation/native";
@@ -16,51 +16,56 @@ const Preload = () => {
   const checkToken = async () => {
     const token = await AsyncStorage.getItem("token");
     if (token) {
-      const response = await Api.RefreshToken();
-      if (response.token) {
-        const res = await Api.getAllEst();
-        console.log(response);
-        userDispatch({
-          type: "setEmail",
-          payload: {
-            email: response.email,
-          },
-        });
-        userDispatch({
-          type: "setname",
-          payload: {
-            name: response.name,
-          },
-        });
-        userDispatch({
-          type: "setavatar",
-          payload: {
-            avatar: response.avatar,
-          },
-        });
-        console.log(response.favorites)
-        userDispatch({
-          type: "setFavorites",
-          payload: {
-            favorites: response.favorites,
-          },
-        });
+      const response = Api.RefreshToken().then(response => {
+        if (response.token) {
+          //const res = await Api.getAllEst(); 
+          userDispatch({
+            type: "setEmail",
+            payload: {
+              email: response.email,
+            },
+          });
+          userDispatch({
+            type: "setname",
+            payload: {
+              name: response.name,
+            },
+          });
+          userDispatch({
+            type: "setavatar",
+            payload: {
+              avatar: response.avatar,
+            },
+          });
+          console.log(response.favorites)
+          userDispatch({
+            type: "setFavorites",
+            payload: {
+              favorites: response.favorites,
+            },
+          });
 
-        navigation.reset({
-          routes: [{ name: "MainTab" }],
-        });
-      } else {
-        alert("error");
-      }
+          navigation.reset({
+            routes: [{ name: "MainTab" }],
+          });
+        }
+      }).catch(err => {
+        alert("Erro de Internet", err.message)
+      });
     } else {
       navigation.reset({
         routes: [{ name: "Login" }],
       });
     }
   };
+
   useEffect(() => {
-    checkToken();
+    const interval = setInterval(() => {
+      checkToken()
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
+
   return (
     <View style={styles.container}>
       <View elevation={5} >
