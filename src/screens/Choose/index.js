@@ -12,7 +12,7 @@ import {
 import { useNavigation } from '@react-navigation/native'
 import styles from './styles.js'
 import InputField from '../../components/InputField'
-import Top from '../../assets/top.png'
+
 import CategoryCard from '../../components/CategoryCard'
 import Api from '../../Api'
 import AsyncStorage from '@react-native-async-storage/async-storage'

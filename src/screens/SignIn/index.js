@@ -13,7 +13,7 @@ import styles from "./styles.js";
 import { useNavigation } from "@react-navigation/native";
 import teste from "../../assets/teste.jpg";
 import Api from "../../Api";
-import { Ionicons } from "@expo/vector-icons";
+import InputField from "../../components/InputField";
 const SignIn = () => {
   const navigation = useNavigation();
   const [nameField, setNameField] = useState("");
@@ -184,39 +184,12 @@ const SignIn = () => {
           </View>
 
           <Text style={styles.InputMessage}>Senha</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              borderBottomWidth: 2,
-              borderBottomColor: "#222455",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <TextInput
-              style={{
-                flex: 1,
-                fontSize: 16,
-                color: "#222455",
-                fontFamily: "NotoSans_400Regular",
-              }}
-              placeholderTextColor="#555"
-              selectionColor="#3F5D7D"
-              secureTextEntry={pass2}
-              value={passwordField}
-              onChangeText={(text) => setPasswordField(text)}
-            />
-
-            {pass2 ? (
-              <TouchableOpacity onPress={() => setPass2(!pass2)}>
-                <Ionicons name="ios-eye-off-outline" size={24} color="#222455" />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity onPress={() => setPass2(!pass2)}>
-                <Ionicons name="ios-eye-outline" size={24} color="#222455" />
-              </TouchableOpacity>
-            )}
-          </View>
+          <InputField
+            pass1={pass2}
+            value={passwordField}
+            onChangeText={(t) => setPasswordField(t)}
+            onIconPress={() => setPass2(!pass2)}
+          />
           <View style={{}}>
             <Text style={{ color: "red" }}>
               {validatePassword
@@ -226,38 +199,12 @@ const SignIn = () => {
           </View>
 
           <Text style={styles.InputMessage}>Confirme senha</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              borderBottomWidth: 2,
-              borderBottomColor: "#222455",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <TextInput
-              style={{
-                flex: 1,
-                fontSize: 16,
-                color: "#222455",
-                fontFamily: "NotoSans_400Regular",
-              }}
-              placeholderTextColor="#555"
-              selectionColor="#3F5D7D"
-              secureTextEntry={pass1}
-              value={confirmPasswordField}
-              onChangeText={(text) => setConfirmPasswordField(text)}
-            />
-            {pass1 ? (
-              <TouchableOpacity onPress={() => setPass1(!pass1)}>
-                <Ionicons name="ios-eye-off-outline" size={24} color="#222455" />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity onPress={() => setPass1(!pass1)}>
-                <Ionicons name="ios-eye-outline" size={24} color="#222455" />
-              </TouchableOpacity>
-            )}
-          </View>
+          <InputField
+            pass1={pass1}
+            value={confirmPasswordField}
+            onChangeText={(t) => setConfirmPasswordField(t)}
+            onIconPress={() => setPass1(!pass1)}
+          />
           <View style={{}}>
             <Text style={{ color: "red" }}>
               {validateConfirmPassword ? "" : "As senhas divergem"}
@@ -292,68 +239,3 @@ const SignIn = () => {
 };
 
 export default SignIn;
-
-/*
-  <View style={styles.FormArea}>
-        <InputField
-          Icon={Ionicons}
-          IconName='person'
-          IconColor='#3f5d7d'
-          IconPosition='left'
-          placeholder='Degite seu nome'
-          value={nameField}
-          onChangeText={text => setNameField(text)}
-        />
-
-        <InputField
-          Icon={MaterialIcons}
-          IconName='email'
-          IconColor='#3f5d7d'
-          IconPosition='left'
-          placeholder='Digite seu email'
-          value={emailField}
-          onChangeText={text => setEmailField(text)}
-        />
-            <InputField
-          Icon={FontAwesome}
-          IconName='lock'
-          IconColor='#3f5d7d'
-          IconPosition='left'
-          placeholder='Digite sua senha'
-          value={passwordField}
-          onChangeText={text => setPasswordField(text)}
-        />
-        
-        <InputField
-          Icon={FontAwesome}
-          IconName='lock'
-          IconColor='#3f5d7d'
-          IconPosition='left'
-          placeholder='Confirme sua senha'
-          value={confirmPasswordField}
-          onChangeText={text => setConfirmPasswordField(text)}
-        />
-        {loading ? (
-          <ActivityIndicator
-            size='large'
-            style={{ marginTop: 40 }}
-            color='#3F5D7D'
-          />
-        ) : (
-          <TouchableOpacity
-            style={styles.CostumBtn}
-            onPress={handleCadastrarPress}
-          >
-            <Text style={styles.CostumBtnTxt}>CADASTRAR</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-      <TouchableOpacity
-        style={styles.SignInMessage}
-        onPress={handleSignInMessagePress}
-      >
-        <Text style={styles.SignInMessageText}>Ja possui uma conta?</Text>
-        <Text style={styles.SignInMessageTextBold}>Faça login</Text>
-      </TouchableOpacity>
-
-*/

@@ -127,7 +127,7 @@ const Styles = StyleSheet.create({
     marginBottom: 80,
   },
 
-  CategoryCard: { width: 150, height: 130 },
+  CategoryCard: { width: 120, height: 120,borderRadius:130,  },
   RattingBtn: {
     position: "absolute",
     width: "100%",

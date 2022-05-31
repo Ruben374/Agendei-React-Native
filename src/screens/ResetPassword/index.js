@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -99,8 +99,8 @@ const ResetPassword = ({ route }) => {
   return (
     <View style={styles.Container}>
       <View style={styles.TopScreen}>
-        <TouchableOpacity>
-          <AntDesign name='arrowleft' size={24} color='#3F5D7D' />
+        <TouchableOpacity onPress={()=>navigation.navigate("Login")}>
+          <AntDesign name='arrowleft' size={35} color='#222455' />
         </TouchableOpacity>
       </View>
       <View style={styles.FormArea}>
@@ -111,7 +111,7 @@ const ResetPassword = ({ route }) => {
           style={{
             flexDirection: 'row',
             borderBottomWidth: 2,
-            borderBottomColor: '#3F5D7D',
+            borderBottomColor: '#222455',
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: 5
@@ -120,10 +120,12 @@ const ResetPassword = ({ route }) => {
           <TextInput
             style={{
               flex: 1,
-              fontSize: 18
+              fontSize: 18,
+              color:"#222455",
+              fontFamily: "NotoSans_400Regular",
             }}
             placeholderTextColor='#555'
-            selectionColor='#3F5D7D'
+            selectionColor='#222455'
             secureTextEntry={viewPass1}
             value={passwordField}
             onChangeText={text => {
@@ -153,7 +155,7 @@ const ResetPassword = ({ route }) => {
           style={{
             flexDirection: 'row',
             borderBottomWidth: 2,
-            borderBottomColor: '#3F5D7D',
+            borderBottomColor: '#222455',
             justifyContent: 'center',
             alignItems: 'center'
           }}
@@ -161,10 +163,12 @@ const ResetPassword = ({ route }) => {
           <TextInput
             style={{
               flex: 1,
-              fontSize: 18
+              fontSize: 18,
+              color:"#222455",
+              fontFamily: "NotoSans_400Regular",
             }}
             placeholderTextColor='#555'
-            selectionColor='#3F5D7D'
+            selectionColor='#222455'
             secureTextEntry={viewPass2}
             value={confirmPasswordField}
             onChangeText={text => setConfirmPasswordField(text)}
@@ -194,7 +198,7 @@ const ResetPassword = ({ route }) => {
           {loading ? (
             <ActivityIndicator size='large' color='#fff' />
           ) : (
-            <Text style={styles.ButtonText}>Reset</Text>
+            <Text style={styles.ButtonText}>Definir</Text>
           )}
         </TouchableOpacity>
       </View>

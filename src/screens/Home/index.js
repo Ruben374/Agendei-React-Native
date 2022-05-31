@@ -149,7 +149,7 @@ const Home = ({ navigation, route }) => {
                           onPress={() => navigation.navigate("Est", { id: item._id })}
                         >
                           <Card>
-                            <EstCardHome data={item} />
+                            <EstCardHome data={item} show={true} />
                           </Card>
 
                         </TouchableOpacity>
@@ -191,7 +191,7 @@ const Home = ({ navigation, route }) => {
                       style={{ marginTop: 30, alignItems: "center" }}
                       onPress={() => navigation.navigate("Est", { id: item._id })}
                     >
-                      <EstCardHome data={item} />
+                      <EstCardHome data={item} show={true} />
                     </TouchableOpacity>
                   ))}
                 </View>

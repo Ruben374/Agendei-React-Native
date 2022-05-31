@@ -1,14 +1,11 @@
-import React, { useEffect } from 'react'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import React from 'react'
+import { View,TouchableOpacity, } from 'react-native'
 import styles from './styles.js'
-import HomeIcon from '../../assets/teste.png'
 
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Fontisto } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons'
 import { Ionicons } from '@expo/vector-icons'
-import { AntDesign } from '@expo/vector-icons'
-
 const CustomTabBar = ({ state, navigation, route, k }) => {
   const goTo = screenName => {
       navigation.navigate(screenName)

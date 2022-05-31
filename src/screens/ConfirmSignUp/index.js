@@ -176,13 +176,12 @@ const AnimatedExample = ({ route }) => {
 
   return (
     <SafeAreaView style={styles.root}>
-      <Text style={styles.title}>Verification</Text>
+      <Text style={styles.title}>Verificação</Text>
       <Image style={styles.icon} source={source} />
       <Text style={styles.subTitle}>
-        Please enter the verification code{"\n"}
-        we send to your email address
+        Por favor insira o codigo de verificação{"\n"}
+        nos enviamos para o seu endereço de email
       </Text>
-
       <CodeField
         ref={ref}
         {...props}
@@ -195,7 +194,7 @@ const AnimatedExample = ({ route }) => {
         renderCell={renderCell}
       />
       <TouchableOpacity onPress={handlebtnconfirm} style={styles.nextButton}>
-        <Text style={styles.nextButtonText}>Verify</Text>
+        <Text style={styles.nextButtonText}>Verificar</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

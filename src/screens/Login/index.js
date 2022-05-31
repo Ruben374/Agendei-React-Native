@@ -19,7 +19,8 @@ import teste from "../../assets/teste.jpg";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../../contexts/UserContext";
-import { Ionicons } from "@expo/vector-icons";
+
+import InputField from "../../components/InputField";
 
 import styles from "./styles";
 
@@ -89,7 +90,7 @@ const Login = () => {
         source={
           teste
         }
-        style={{ width: "100%", height: 250 ,top:-20}}
+        style={{ width: "100%", height: 250, top: -20 }}
       >
         <View style={styles.ScreenTitle}>
           <Text style={styles.ScreenTitleText}>Entrar</Text>
@@ -103,6 +104,7 @@ const Login = () => {
             selectionColor="#222455"
             value={emailField}
             onChangeText={(text) => setEmailField(text)}
+            maxLength={40}
           />
           <View style={styles.InputPasswordMessage}>
             <Text style={styles.InputMessage}>Senha</Text>
@@ -114,38 +116,12 @@ const Login = () => {
               <Text style={styles.ForgotPasswordText}>Esqueceu?</Text>
             </TouchableOpacity>
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              borderBottomWidth: 2,
-              borderBottomColor: "#222455",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <TextInput
-              style={{
-                flex: 1,
-                fontSize: 16,
-                color: "#222455",
-                fontFamily: "NotoSans_400Regular",
-              }}
-              selectionColor="#222455"
-              secureTextEntry={pass1}
-              value={passwordField}
-              onChangeText={(text) => setPasswordField(text)}
-            />
-
-            {pass1 ? (
-              <TouchableOpacity onPress={() => setPass1(!pass1)}>
-                <Ionicons name="ios-eye-off-outline" size={24} color="#222455" />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity onPress={() => setPass1(!pass1)}>
-                <Ionicons name="ios-eye-outline" size={24} color="#222455" />
-              </TouchableOpacity>
-            )}
-          </View>
+          <InputField
+            pass1={pass1}
+            value={passwordField}
+            onChangeText={(t) => setPasswordField(t)}
+            onIconPress={() => setPass1(!pass1)}
+          />
 
           {loading ? (
             <ActivityIndicator

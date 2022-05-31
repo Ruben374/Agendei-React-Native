@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
   root: {
     minHeight: 800,
     padding: 20,
+    backgroundColor:"#fff"
   },
   title: {
     paddingTop: 50,
@@ -64,9 +65,9 @@ const styles = StyleSheet.create({
   },
   nextButton: {
     marginTop: 30,
-    borderRadius: 60,
+    borderRadius: 10,
     height: 60,
-    backgroundColor: '#3557b7',
+    backgroundColor: '#5663ff',
     justifyContent: 'center',
     minWidth: 300,
     marginBottom: 100,

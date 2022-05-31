@@ -1,42 +1,39 @@
 import React from 'react'
-import { View, TextInput, Image } from 'react-native'
+import { View, TextInput, TouchableOpacity } from 'react-native'
 import styles from './styles.js'
+import { Ionicons } from "@expo/vector-icons";
 
-const InputField = ({
-  IconName,
-  IconColor,
-  placeholder,
-  value,
-  onChangeText,
-  password,
-  Icon,
-  IconPosition
-}) => {
-  let g = ''
-  let t = ''
-
-  if (IconPosition === 'left') {
-    g = styles.InputArea
-    t = styles.Input
-  } else {
-    g = styles.InputAreaR
-    t = styles.InputR
-  }
+const InputField = ({ pass1, value, onChangeText, onIconPress }) => {
   return (
-    <View style={g}>
-      {IconPosition == 'left' && (
-        <Icon name={IconName} size={35} color={IconColor} />
-      )}
+    <View
+      style={{
+        flexDirection: "row",
+        borderBottomWidth: 2,
+        borderBottomColor: "#222455",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <TextInput
-        style={t}
-        placeholder={placeholder}
-        placeholderTextColor='#555'
+        style={{
+          flex: 1,
+          fontSize: 16,
+          color: "#222455",
+          fontFamily: "NotoSans_400Regular",
+        }}
+        selectionColor="#222455"
+        secureTextEntry={pass1}
         value={value}
         onChangeText={onChangeText}
-        secureTextEntry={password}
       />
-      {IconPosition == 'right' && (
-        <Icon name={IconName} size={35} color={IconColor} />
+      {pass1 ? (
+        <TouchableOpacity onPress={onIconPress}>
+          <Ionicons name="ios-eye-off-outline" size={24} color="#222455" />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={onIconPress}>
+          <Ionicons name="ios-eye-outline" size={24} color="#222455" />
+        </TouchableOpacity>
       )}
     </View>
   )

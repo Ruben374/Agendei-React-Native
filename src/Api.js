@@ -360,6 +360,16 @@ export default {
       console.log(error.message);
     }
   },
+  check: async () => {
+    try {
+      const request = await fetch("https://api.tin-check.com/api.php?tk=9db59ee16c017486b57c8261905762ea&op=tc&ca=pt&tn=510830412");
+      const response = await request.json();
+      return response;
+    } catch (error) {
+      console.log(error.message);
+    }
+  },
 };
+
 
 

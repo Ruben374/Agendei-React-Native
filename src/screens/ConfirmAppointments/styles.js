@@ -32,7 +32,9 @@ const Style = StyleSheet.create({
   },
   HourItemTitle: {
     padding: 10,
-    fontSize: 15
+    fontSize: 15,
+    color: "#222455",
+    fontFamily: "NotoSans_700Bold",
   },
 
   HourItemText: {

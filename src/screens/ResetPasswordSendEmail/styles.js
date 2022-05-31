@@ -21,29 +21,33 @@ const Styles = StyleSheet.create({
     width: '100%',
     fontSize: 18,
     borderBottomWidth: 2,
-    borderBottomColor: '#3F5D7D',
-    marginTop: 5
+    borderBottomColor: '#222455',
+    marginTop: 5,
+    color:"#222455"
   },
   InputMessage: {
     fontSize: 18,
     marginTop: 8,
-    color: 'rgba(0, 0, 0, 0.5)'
+    color: 'rgba(0, 0, 0, 0.5)',
+    fontFamily: "NotoSans_400Regular",
   },
   Title: {
     fontSize: 26,
     marginTop: 8,
     color: '#3F5D7D',
-    fontWeight: 'bold',
+    fontFamily: "NotoSans_700Bold",
     marginBottom: 10
   },
   Message: {
     fontSize: 17,
-    marginBottom: 10
+    marginBottom: 10,
+    color:"#222455",
+    fontFamily: "NotoSans_400Regular",
   },
   Button: {
     width: '100%',
-    backgroundColor: '#3F5D7D',
-    marginTop: 10,
+    backgroundColor: "#5663ff",
+    marginTop: 40,
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -51,7 +55,8 @@ const Styles = StyleSheet.create({
   },
   ButtonText: {
     fontSize: 20,
-    color: '#fff'
+    color: '#fff',
+    fontFamily: "NotoSans_700Bold",
   }
 })
 

@@ -13,7 +13,7 @@ const Styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
   },
   HeaderText: {
     fontSize: 22,

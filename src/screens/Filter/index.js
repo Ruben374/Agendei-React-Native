@@ -196,9 +196,9 @@ const Filter = ({ navigation, route }) => {
                   <TouchableOpacity>
                     <AntDesign name="arrowleft" size={30} color="#222455" />
                   </TouchableOpacity>
-                  <Text style={styles.HeaderText}>Filter</Text>
+                  <Text style={styles.HeaderText}>Aplicar Filtro de Busca</Text>
                 </View>
-                <View style={styles.Title}>
+                <View style={styles.Title}> 
                   <Text style={styles.TitleText}>Selecione a categoria</Text>
                 </View>
                 <View style={styles.CategoryContainer}>

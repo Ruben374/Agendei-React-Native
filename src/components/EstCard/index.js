@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { View, TouchableOpacity, Text, Image } from 'react-native'
 import styles from './styles.js'
-import Dentista from '../../assets/Dentista.png'
 import { Entypo } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'

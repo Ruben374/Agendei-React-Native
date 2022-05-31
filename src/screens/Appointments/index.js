@@ -93,12 +93,10 @@ const Appointments = ({ state }) => {
             <View style={styles.AppointmentsRow}>
               <View style={styles.AppointmentsItems}>
                 <Octicons name="location" size={25} color="#5663ff" />
-
                 <View>
                   <Text style={styles.AppointmentsItemsText}>
                     {item.service.est.address}
                   </Text>
-                  <Text style={styles.AppointmentsItemsText}>{/* {item.service.est.phones_number[0]}-{item.service.est.phones_number[1]} */}</Text>
                 </View>
               </View>
             </View>
@@ -108,7 +106,7 @@ const Appointments = ({ state }) => {
               </TouchableOpacity> */}
               <TouchableOpacity style={styles.AppointmentsButton2} onPress={() => Confirm(item._id)}>
                 <Text style={styles.AppointmentsButtonText}>
-                  Excluir Reserva
+                  Cancelar Reserva
                 </Text>
               </TouchableOpacity>
             </View>

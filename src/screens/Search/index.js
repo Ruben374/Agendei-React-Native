@@ -6,23 +6,18 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  ImageBackground,
-  FlatList,
 } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
 import styles from "./styles.js";
-import EstCard from "../../components/EstCard";
-import Dentista from "../../assets/Dentista.png";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import Api from "../../Api";
 import { useIsFocused } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
+
 import { Card } from "react-native-shadow-cards";
-import { Ionicons } from "@expo/vector-icons";
+
 import EstCardHome from "../../components/EstCardHome/index.js";
 
-let vetor = [1, 2, 3, 4];
+
 
 const Search = ({ navigation, route }) => {
   const isFocused = useIsFocused();
@@ -71,7 +66,7 @@ const Search = ({ navigation, route }) => {
             key={key}
             onPress={() => navigation.navigate("Est", { id: item._id })}
           >
-            <EstCardHome data={item} />
+            <EstCardHome data={item} show={true}/>
           </TouchableOpacity>
         ))}
       </View>

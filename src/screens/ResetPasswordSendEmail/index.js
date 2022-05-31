@@ -12,7 +12,7 @@ import Api from '../../Api'
 import { useNavigation } from '@react-navigation/native'
 
 const ResetPasswordSendEmail = () => {
-    const navigation = useNavigation()
+  const navigation = useNavigation()
   const [emailField, setEmailField] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -23,7 +23,7 @@ const ResetPasswordSendEmail = () => {
         const response = await Api.VerifyEmailToResetPassword(emailField)
         if (response.status == 200) {
           setLoading(false)
-          navigation.navigate('ConfirmSignUp',{ email: emailField,type:2})
+          navigation.navigate('ConfirmSignUp', { email: emailField, type: 2 })
         } else if (response.status == 404) {
           alert(response.message)
           setLoading(false)
@@ -42,8 +42,8 @@ const ResetPasswordSendEmail = () => {
   return (
     <View style={styles.Container}>
       <View style={styles.TopScreen}>
-        <TouchableOpacity>
-          <AntDesign name='arrowleft' size={24} color='#3F5D7D' />
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <AntDesign name='arrowleft' size={35} color='#222455' />
         </TouchableOpacity>
       </View>
       <View style={styles.FormArea}>
@@ -55,10 +55,10 @@ const ResetPasswordSendEmail = () => {
         <Text style={styles.InputMessage}>Seu email</Text>
         <TextInput
           style={styles.Input}
-          placeholderTextColor='#555'
-          selectionColor='#3F5D7D'
+          selectionColor='#222455'
           value={emailField}
           onChangeText={text => setEmailField(text)}
+          maxLength={40}
         />
         <TouchableOpacity
           style={styles.Button}

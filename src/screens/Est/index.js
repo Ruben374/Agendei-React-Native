@@ -56,9 +56,7 @@ const Est = ({ navigation, route }) => {
   const [message, setMessage] = useState("");
   const [abertoAos, setAbertoAos] = useState(null)
   let dias = []
-
   const estId = "";
-
   const openClose = (open, close) => {
     var hora1 = open.split(":");
     var hora2 = close.split(":");
@@ -96,12 +94,11 @@ const Est = ({ navigation, route }) => {
   }
 
   const getEst = async () => {
-
     setLoading(true)
-    console.log(user.favorites)
+    //console.log(user.favorites)
     try {
       const response = await Api.GetEst(route.params.id);
-      //console.log(response);
+      console.log(response);
       if (response.status == 200) {
         setEst(response.est);
         if (checkFav(response.est._id)) {
@@ -109,12 +106,12 @@ const Est = ({ navigation, route }) => {
           setnf(false)
         }
         if (response.est)
+        //console.log(response.est.open_to)
           setServices(response.services)
         setRates(response.rates)
         setTopR(response.toprate)
         setTopServices(response.topserv)
       }
-
       response.est.open_to.forEach(function (k) {
         diasUteis.push(k.dia)
         console.log(k.dia)
@@ -144,15 +141,6 @@ const Est = ({ navigation, route }) => {
 
         setAbertoAos(dias)
         console.log(dias)
-
-
-
-
-
-
-
-
-
         //console.log(k.open);
         if (k.dia == date.getDay()) {
           if (openClose(k.open, k.close)) {
@@ -386,7 +374,7 @@ const Est = ({ navigation, route }) => {
                         style={{ padding: 10 }}
                         renderItem={({ item, index }) => (
                           <TouchableOpacity
-                            style={{ marginRight: 20 }}
+                            style={{ marginRight: 20}}
                             key={index}
                             onPress={() => {
                               setModalImage(item);
@@ -437,9 +425,6 @@ const Est = ({ navigation, route }) => {
                 </View>
 
                 <View style={styles.RattingAndReViewContainer}>
-
-
-
                   {
                     topR &&
                     topR.map((item, key) => {

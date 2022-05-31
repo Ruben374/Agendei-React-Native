@@ -1,21 +1,19 @@
 import React, { useEffect, useContext } from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Alert } from "react-native";
 import styles from "./styles";
 import Logo from "../../assets/logo.png";
 import { useNavigation } from "@react-navigation/native";
 import Api from "../../Api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import { UserContext } from "../../contexts/UserContext";
-import { EstContext } from "../../contexts/EstContext";
-
 const Preload = () => {
   const { dispatch: userDispatch } = useContext(UserContext);
-  const { dispatch: estDispatch } = useContext(EstContext);
   const navigation = useNavigation();
   const checkToken = async () => {
     const token = await AsyncStorage.getItem("token");
     if (token) {
+      const rev = await Api.check()
+      console.log(rev)
       const response = Api.RefreshToken().then(response => {
         if (response.token) {
           //const res = await Api.getAllEst(); 
@@ -50,7 +48,9 @@ const Preload = () => {
           });
         }
       }).catch(err => {
-        alert("Erro de Internet", err.message)
+        Alert.alert("Erro", "Não foi possivel se conectar ao servidor, tente novamente.", [
+          { text: 'OK', onPress: () => checkToken() },
+        ]);
       });
     } else {
       navigation.reset({
@@ -60,10 +60,7 @@ const Preload = () => {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      checkToken()
-    }, 5000);
-    return () => clearInterval(interval);
+    checkToken()
   }, []);
 
   return (
