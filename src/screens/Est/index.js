@@ -377,14 +377,14 @@ const Est = ({ navigation, route }) => {
                             style={{ marginRight: 20}}
                             key={index}
                             onPress={() => {
-                              setModalImage(item);
+                              setModalImage(item.img);
                               setModalVisible(true);
                             }}
                           >
                             <Image
                               style={styles.CategoryCard}
                               source={{
-                                uri: `${Config.url}/${item}`,
+                                uri: `${Config.url}/${item.img}`,
                               }}
                             />
                           </TouchableOpacity>
