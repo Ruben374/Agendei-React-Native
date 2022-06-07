@@ -13,7 +13,7 @@ import { AntDesign } from "@expo/vector-icons";
 import styles from "./styles.js";
 import Api from "../../Api";
 import { UserContext } from "../../contexts/UserContext";
-const Rating = ({ route }) => {
+const Rating = ({ navigation,route }) => {
   const { state: user } = useContext(UserContext);
   const [star1, setStar1] = useState(false);
   const [star2, setStar2] = useState(false);
@@ -155,7 +155,7 @@ const Rating = ({ route }) => {
             <ScrollView style={styles.Scroll}>
               <View style={styles.Container}>
                 <View style={styles.Header}>
-                  <TouchableOpacity>
+                  <TouchableOpacity  onPress={()=>navigation.goBack()}>
                     <AntDesign name="arrowleft" size={30} color="#222455" />
                   </TouchableOpacity>
                   <Text style={styles.HeaderText}>Avaliações & Estrelas</Text>

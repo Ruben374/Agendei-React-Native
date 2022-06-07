@@ -11,9 +11,11 @@ import styles from "./styles.js";
 import { AntDesign } from "@expo/vector-icons";
 
 import Api from "../../Api";
+import { useNavigation } from "@react-navigation/native";
 
 import { FilterContext } from "../../contexts/FilterContext";
-const Filter = ({ navigation, route }) => {
+const Filter = ({navigation,route }) => {
+  //const navigation = useNavigation();
   const { state: filter } = useContext(FilterContext);
   const { dispatch: filterDispatch } = useContext(FilterContext);
   const [star1, setStar1] = useState(false);
@@ -161,13 +163,6 @@ const Filter = ({ navigation, route }) => {
           setStar3(false);
           setStar2(false);
         }
-        if (rat == 5) {
-          setStar1(!star1);
-          setStar5(false);
-          setStar4(false);
-          setStar3(false);
-          setStar2(false);
-        }
         setLoading(false)
       }
       catch (error) {
@@ -193,8 +188,8 @@ const Filter = ({ navigation, route }) => {
             <ScrollView style={styles.Scroll}>
               <View style={styles.Container}>
                 <View style={styles.Header}>
-                  <TouchableOpacity>
-                    <AntDesign name="arrowleft" size={30} color="#222455" />
+                  <TouchableOpacity  onPress={ ()=>navigation.goBack()}>
+                    <AntDesign name="arrowleft" color="#222455" size={30}/>
                   </TouchableOpacity>
                   <Text style={styles.HeaderText}>Aplicar Filtro de Busca</Text>
                 </View>

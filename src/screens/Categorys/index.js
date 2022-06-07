@@ -53,7 +53,7 @@ const Categorys = ({ navigation, route }) => {
     <ScrollView style={styles.Scroll}>
       <View style={styles.Container}>
         <View style={styles.Header}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>navigation.goBack()}>
             <AntDesign name="arrowleft" size={30} color="#222455" />
           </TouchableOpacity>
           <Text style={styles.HeaderText}>Categorias</Text>

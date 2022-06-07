@@ -135,7 +135,7 @@ const Home = ({ navigation, route }) => {
                       </Text>
                     </TouchableOpacity>
                   </View>
-                 
+
                   <View>
                     <FlatList
                       horizontal
@@ -157,7 +157,13 @@ const Home = ({ navigation, route }) => {
                       keyExtractor={(item, index) => index.toString()}
                     />
                   </View>
-                  <View style={styles.CardTop}>
+                  <View style={{
+                    width: "100%",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginTop: 100,
+                  }}>
                     <Text style={styles.CardTopTextMessage}>Categorias</Text>
                     <TouchableOpacity
                       onPress={() =>
@@ -168,6 +174,7 @@ const Home = ({ navigation, route }) => {
                     </TouchableOpacity>
                   </View>
                   <FlatList
+
                     showsHorizontalScrollIndicator={false}
                     horizontal
                     data={categorys}

@@ -86,11 +86,13 @@ const Login = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.Scroll}>
+     <View style={{flex:1}}>
+
       <ImageBackground
         source={
           teste
         }
-        style={{ width: "100%", height: 250, top: -20 }}
+        style={{ width: "100%", height: 250,}}
       >
         <View style={styles.ScreenTitle}>
           <Text style={styles.ScreenTitleText}>Entrar</Text>
@@ -147,7 +149,9 @@ const Login = () => {
         </TouchableOpacity>
 
       </View>
-    </ScrollView>
+
+     </View>
+           </ScrollView>
   );
 };
 

@@ -39,7 +39,7 @@ const RattingsAndReviews = ({ navigation, route }) => {
       ) : (
         <View style={styles.Container}>
           <View style={styles.Header}>
-            <TouchableOpacity>
+            <TouchableOpacity  onPress={()=>navigation.goBack()}>
               <AntDesign name="arrowleft" size={30} color="#222455" />
             </TouchableOpacity>
             <Text style={styles.HeaderText}>Avaliações</Text>

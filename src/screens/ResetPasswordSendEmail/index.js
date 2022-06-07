@@ -43,7 +43,7 @@ const ResetPasswordSendEmail = () => {
     <View style={styles.Container}>
       <View style={styles.TopScreen}>
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <AntDesign name='arrowleft' size={35} color='#222455' />
+          <AntDesign name='arrowleft' size={30} color='#222455' />
         </TouchableOpacity>
       </View>
       <View style={styles.FormArea}>

@@ -142,7 +142,8 @@ const SignIn = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.Scroll}>
-      <ImageBackground
+    <View style={{flex:1}}>
+    <ImageBackground
         source={
           teste
         }
@@ -234,6 +235,7 @@ const SignIn = () => {
           <Text style={styles.SignInMessageTextBold}>Faça login</Text>
         </TouchableOpacity>
       </View>
+    </View>
     </ScrollView>
   );
 };

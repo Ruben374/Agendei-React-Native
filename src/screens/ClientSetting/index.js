@@ -38,7 +38,7 @@ const ClientSetting = ({ navigation, route }) => {
     <ScrollView style={styles.Scroll}>
       <View style={styles.Container}>
         <View style={styles.Header}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <AntDesign name="arrowleft" size={30} color="#222455" />
           </TouchableOpacity>
           <Text style={styles.HeaderText}>Definições</Text>
@@ -53,12 +53,12 @@ const ClientSetting = ({ navigation, route }) => {
           <Text style={styles.OptionText}>Alterar Palavra Passe</Text>
           <AntDesign name="arrowright" size={25} color="#222455" />
         </TouchableOpacity>
-       
+
         <View style={styles.SectionTitle}>
           <Text style={styles.SectionTitleText}>Outros</Text>
         </View>
 
-    
+
         <TouchableOpacity style={styles.Option} onPress={handleLogoutButton}>
           <Text style={styles.OptionTextLogout}>Sair</Text>
         </TouchableOpacity>

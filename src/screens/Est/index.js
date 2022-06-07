@@ -25,8 +25,6 @@ import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
 import Config from "../../config/Api.config.js";
-import FlashMessage from "../../components/FlashMessage";
-
 
 
 const Est = ({ navigation, route }) => {
@@ -97,6 +95,7 @@ const Est = ({ navigation, route }) => {
     setLoading(true)
     //console.log(user.favorites)
     try {
+      console.log(route.params.id)
       const response = await Api.GetEst(route.params.id);
       console.log(response);
       if (response.status == 200) {
@@ -260,6 +259,9 @@ const Est = ({ navigation, route }) => {
                       backgroundColor: "#000",
                     }}
                   >
+                <TouchableOpacity style={{alignItems:"flex-start",alignSelf:"flex-start",padding:10}} onPress={()=>setModalVisible(false)}>
+                <AntDesign name="closecircle" size={35} color="#222455" style={{alignSelf:"flex-start"}}  />
+                </TouchableOpacity>
                     <Image
                       source={{
                         uri: Config.url + "/" + modalImage,
@@ -276,10 +278,13 @@ const Est = ({ navigation, route }) => {
                 >
                   <View style={styles.HeroButtons}>
                     <TouchableOpacity>
-                      <AntDesign name="arrowleft" size={26} color="#222455" />
+                      <AntDesign name="arrowleft" color="#222455"size={35}  onPress={()=>navigation.goBack()}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.CardContentBottomBottom} onPress={addfav}>
+                      <View style={{padding:5, backgroundColor:"orange"}}>
                       <Fontisto name="favorite" size={26} color={ColorFav} />
+                        </View>
+
                     </TouchableOpacity>
                   </View>
                   <BlurView style={styles.HeroContent} intensity={70} tint="light">
