@@ -10,6 +10,8 @@ const Preload = () => {
   const { dispatch: userDispatch } = useContext(UserContext);
   const navigation = useNavigation();
   const checkToken = async () => {
+    const p= await fetch("http://10.254.124.49:3005")
+    console.log(p.status)
     const token = await AsyncStorage.getItem("token");
     if (token) {
       const rev = await Api.check()

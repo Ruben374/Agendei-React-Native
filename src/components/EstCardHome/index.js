@@ -42,7 +42,6 @@ const EstCardHome = ({ data, show }) => {
                 <Text style={styles.EstCategory}>{data.category.name}</Text>
               </View>
 
-
             </View>
             <View style={styles.CardContentBottomAddress}>
               <Text style={styles.EstAddress}>{data.address}</Text>
