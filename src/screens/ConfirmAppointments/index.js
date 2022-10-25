@@ -202,7 +202,7 @@ const ConfirmAppointments = ({ state, route }) => {
         return varData[fn](hora1[i]);
       });
       if (d > varData) {
-        alert("boy muda so a hora yhea")
+        alert("Horario invalido")
         return false
       }
     }
